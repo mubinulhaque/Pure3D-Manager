@@ -15,7 +15,7 @@ sky = SubResource("Sky_yya8i")
 [sub_resource type="BoxMesh" id="BoxMesh_myhq7"]
 size = Vector3(100, 1, 100)
 
-[node name="Viewer" type="GridContainer" node_paths=PackedStringArray("filenameEdit")]
+[node name="Viewer" type="GridContainer" node_paths=PackedStringArray("filenameEdit", "textBox", "view")]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -24,6 +24,8 @@ grow_vertical = 2
 columns = 2
 script = ExtResource("1_exgkj")
 filenameEdit = NodePath("LeftSide/FilenameEdit")
+textBox = NodePath("LeftSide/ErrorMessage")
+view = NodePath("SubViewportContainer/View3D")
 
 [node name="LeftSide" type="Control" parent="."]
 layout_mode = 2
@@ -41,11 +43,15 @@ size_flags_horizontal = 3
 size_flags_vertical = 0
 placeholder_text = "Enter model's filename"
 
-[node name="Label" type="Label" parent="LeftSide"]
-layout_mode = 2
-offset_top = 364.0
-offset_right = 1.0
-offset_bottom = 387.0
+[node name="ErrorMessage" type="TextEdit" parent="LeftSide"]
+custom_minimum_size = Vector2(0, 36)
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 72.0
+offset_bottom = 108.0
+grow_horizontal = 2
+editable = false
 
 [node name="SubViewportContainer" type="SubViewportContainer" parent="."]
 layout_mode = 2

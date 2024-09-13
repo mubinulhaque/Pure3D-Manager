@@ -15,42 +15,9 @@ public partial class View3D : SubViewport
 		DisplayServer.WindowSetMinSize(new Vector2I(720, 720));
 		GetTree().Root.GetViewport().SizeChanged += _OnSizeChanged;
 		_OnSizeChanged();
-
-		// Load the model at the specified path
-		if (ModelPath.StripEdges().Length > 0)
-		{
-			var file = new Pure3D.File();
-			file.Load(ModelPath);
-			_LoadChunk(file.RootChunk, 0);
-		}
-	}
-	
-	public void _LoadChunk(Pure3D.Chunk chunk, int indent)
-	{
-		GD.Print(new String('\t', indent), chunk.ToString());
-
-		foreach (var child in chunk.Children)
-		{
-			if (child is Pure3D.Chunks.Skeleton)
-			{
-				// If this child is a Pure3D Skeleton
-				// Add a new Skeleton3D
-				Skeleton3D newNode = new Skeleton3D();
-				AddChild(newNode);
-
-				// Set the name of the Skeleton3D
-				var skeleton = (Pure3D.Chunks.Skeleton)child;
-				newNode.Name = skeleton.Name;
-
-				// Load the Skeleton's Joints
-				_LoadSkeleton(skeleton.Children, newNode);
-			} else {
-				_LoadChunk(child, indent + 1);
-			}
-		}
 	}
 
-	public void _LoadSkeleton(List<Pure3D.Chunk> children, Skeleton3D skeleton)
+	public void LoadSkeleton(List<Pure3D.Chunk> children, Skeleton3D skeleton)
 	{
 		int boneIndex = 0;
 
