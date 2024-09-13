@@ -1,5 +1,6 @@
-[gd_scene load_steps=6 format=3 uid="uid://be30efbwn6oar"]
+[gd_scene load_steps=7 format=3 uid="uid://be30efbwn6oar"]
 
+[ext_resource type="Script" path="res://scripts/Viewer.cs" id="1_exgkj"]
 [ext_resource type="Script" path="res://scripts/View3D.cs" id="1_ugrps"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_4xl47"]
@@ -14,26 +15,40 @@ sky = SubResource("Sky_yya8i")
 [sub_resource type="BoxMesh" id="BoxMesh_myhq7"]
 size = Vector3(100, 1, 100)
 
-[node name="Viewer" type="Control"]
-layout_mode = 3
+[node name="Viewer" type="GridContainer" node_paths=PackedStringArray("filenameEdit")]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+columns = 2
+script = ExtResource("1_exgkj")
+filenameEdit = NodePath("LeftSide/FilenameEdit")
 
-[node name="Label" type="Label" parent="."]
-offset_right = 40.0
-offset_bottom = 23.0
+[node name="LeftSide" type="Control" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="FilenameEdit" type="LineEdit" parent="LeftSide"]
+custom_minimum_size = Vector2(0, 36)
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 36.0
+grow_horizontal = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+placeholder_text = "Enter model's filename"
+
+[node name="Label" type="Label" parent="LeftSide"]
+layout_mode = 2
+offset_top = 364.0
+offset_right = 1.0
+offset_bottom = 387.0
 
 [node name="SubViewportContainer" type="SubViewportContainer" parent="."]
-layout_mode = 1
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -360.0
-offset_bottom = 360.0
-grow_horizontal = 0
+layout_mode = 2
 
 [node name="View3D" type="SubViewport" parent="SubViewportContainer"]
 handle_input_locally = false
