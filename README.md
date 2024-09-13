@@ -1,4 +1,4 @@
-# Pure3D-Manager
+# Pure3D Manager
 Inspired by the Lucas Pure3D editor, but now cross-platform and open-source. The aim of this project is to recreate its functionality to a more modern and readily accessible standard.
 
 ## Credits

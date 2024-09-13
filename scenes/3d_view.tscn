@@ -1,12 +1,12 @@
 [gd_scene load_steps=3 format=3 uid="uid://be30efbwn6oar"]
 
-[ext_resource type="Script" path="res://scripts/ModelViewer.cs" id="1_8e0ul"]
+[ext_resource type="Script" path="res://scripts/ModelViewer.cs" id="1_o1xg6"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_myhq7"]
 size = Vector3(100, 1, 100)
 
 [node name="ModelViewer" type="Node3D" node_paths=PackedStringArray("label")]
-script = ExtResource("1_8e0ul")
+script = ExtResource("1_o1xg6")
 ModelPath = "homer_m_edited.p3d"
 label = NodePath("Label")
 

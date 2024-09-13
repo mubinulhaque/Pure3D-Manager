@@ -10,8 +10,10 @@ config_version=5
 
 [application]
 
-config/name="Pure3D Viewer"
-run/main_scene="res://scenes/model_viewer.tscn"
+config/name="Pure3D Manager"
+config/description="Recreation of the Lucas Pure3D editor"
+config/version="0.1.0-alpha"
+run/main_scene="res://scenes/3d_view.tscn"
 config/features=PackedStringArray("4.3", "C#", "Forward Plus")
 config/icon="res://icon.svg"
 
