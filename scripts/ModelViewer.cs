@@ -69,7 +69,7 @@ public partial class ModelViewer : Node3D
 				sphere.Height = sphere.Radius * 2;
 				boneIndicator.Mesh = sphere;
 				boneIndicator.Position = boneTransform.Origin;
-				skeleton.AddChild(boneIndicator);
+				//skeleton.AddChild(boneIndicator);
 			} else {
 				GD.Print(child);
 			}

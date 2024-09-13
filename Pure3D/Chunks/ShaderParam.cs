@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using System.Text;
+using System.Xml.Linq;
 
 namespace Pure3D.Chunks
 {
@@ -36,6 +37,12 @@ namespace Pure3D.Chunks
             base.ReadHeader(stream, length);
             Value = Util.ReadString(new BinaryReader(stream));
         }
+
+        public override string ToString()
+        {
+            // Prints the name of the parameter and the texture assigned to it
+            return $"{Param} Shader Texture Parameter: {Value}";
+        }
     }
 
     [ChunkType(69635)]
@@ -51,6 +58,11 @@ namespace Pure3D.Chunks
         {
             base.ReadHeader(stream, length);
             Value = new BinaryReader(stream).ReadUInt32();
+        }
+
+        public override string ToString()
+        {
+            return $"Shader Integer Parameter: {Param}, {Value}";
         }
     }
 
@@ -68,12 +80,20 @@ namespace Pure3D.Chunks
             base.ReadHeader(stream, length);
             Value = new BinaryReader(stream).ReadSingle();
         }
+
+        public override string ToString()
+        {
+            return $"Shader Float Parameter: {Param}, {Value}";
+        }
     }
 
     [ChunkType(69637)]
     public class ShaderColourParam : ShaderParam
     {
-        public uint Color;
+        public ushort Red;
+        public ushort Green;
+        public ushort Blue;
+        public ushort Unknown;
 
         public ShaderColourParam(File file, uint type) : base(file, type)
         {
@@ -82,7 +102,29 @@ namespace Pure3D.Chunks
         public override void ReadHeader(Stream stream, long length)
         {
             base.ReadHeader(stream, length);
-            Color = new BinaryReader(stream).ReadUInt32();
+            BinaryReader reader = new BinaryReader(stream);
+            Red = reader.ReadByte();
+            Green = reader.ReadByte();
+            Blue = reader.ReadByte();
+            Unknown = reader.ReadByte(); // Unclear what this byte is for, but without reading it, the program throws an error
+        }
+
+        public int getRedComponent() {
+            return 0;
+        }
+
+        public int getGreenComponent() {
+            return 0;
+        }
+
+        public int getBlueComponent() {
+            return 0;
+        }
+
+        public override string ToString()
+        {
+            // Returns the name of the parameter and the colour assigned to it in RGB format (0-255)
+            return $"{Param} Shader Colour Parameter: ({Red}, {Green}, {Blue})";
         }
     }
 }

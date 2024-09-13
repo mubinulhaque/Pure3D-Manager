@@ -2,6 +2,10 @@
 
 namespace Pure3D.Chunks
 {
+    /// <summary>
+    /// Currently unusuable, because the actual header is supposed to be 50331653 (0x3000005),
+    /// but the program can't read it, since the header's too big
+    /// </summary>
     [ChunkType(81920)]
     public class Locator : Named
     {
