@@ -13,10 +13,20 @@ config_version=5
 config/name="Pure3D Manager"
 config/description="Recreation of the Lucas Pure3D editor"
 config/version="0.1.0-alpha"
-run/main_scene="res://scenes/3d_view.tscn"
+run/main_scene="res://scenes/viewer.tscn"
 config/features=PackedStringArray("4.3", "C#", "Forward Plus")
 config/icon="res://icon.svg"
+
+[display]
+
+window/size/viewport_width=720
+window/size/viewport_height=720
 
 [dotnet]
 
 project/assembly_name="Pure3D Viewer"
+
+[rendering]
+
+renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="gl_compatibility"

@@ -1,0 +1,49 @@
+[gd_scene load_steps=6 format=3 uid="uid://be30efbwn6oar"]
+
+[ext_resource type="Script" path="res://scripts/View3D.cs" id="1_ugrps"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_4xl47"]
+
+[sub_resource type="Sky" id="Sky_yya8i"]
+sky_material = SubResource("ProceduralSkyMaterial_4xl47")
+
+[sub_resource type="Environment" id="Environment_62ldi"]
+background_mode = 2
+sky = SubResource("Sky_yya8i")
+
+[sub_resource type="BoxMesh" id="BoxMesh_myhq7"]
+size = Vector3(100, 1, 100)
+
+[node name="Viewer" type="Node3D"]
+
+[node name="Label" type="Label" parent="."]
+offset_right = 40.0
+offset_bottom = 23.0
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="."]
+offset_left = 360.0
+offset_right = 720.0
+offset_bottom = 360.0
+
+[node name="View3D" type="SubViewport" parent="SubViewportContainer"]
+handle_input_locally = false
+gui_disable_input = true
+size = Vector2i(360, 360)
+render_target_update_mode = 4
+script = ExtResource("1_ugrps")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="SubViewportContainer/View3D"]
+environment = SubResource("Environment_62ldi")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="SubViewportContainer/View3D"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="SubViewportContainer/View3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -10, 0)
+mesh = SubResource("BoxMesh_myhq7")
+skeleton = NodePath("../../..")
+
+[node name="Origin" type="Node3D" parent="SubViewportContainer/View3D"]
+
+[node name="Camera3D" type="Camera3D" parent="SubViewportContainer/View3D/Origin"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 50)
+current = true

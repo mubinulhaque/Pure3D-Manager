@@ -1,9 +1,8 @@
 using Godot;
-using Pure3D.Chunks;
 using System;
 using System.Collections.Generic;
 
-public partial class ModelViewer : Node3D
+public partial class View3D : SubViewport
 {
 	[Export]
 	public String ModelPath { get; set; } = "";
@@ -12,9 +11,12 @@ public partial class ModelViewer : Node3D
 	
 	public override void _Ready()
 	{
-		var file = new Pure3D.File();
-		file.Load(ModelPath);
-		_LoadChunk(file.RootChunk, 0);
+		if (ModelPath.StripEdges().Length > 0)
+		{
+			var file = new Pure3D.File();
+			file.Load(ModelPath);
+			_LoadChunk(file.RootChunk, 0);
+		}
 	}
 	
 	public void _LoadChunk(Pure3D.Chunk chunk, int indent)
@@ -48,7 +50,7 @@ public partial class ModelViewer : Node3D
 
 		foreach (var child in children)
 		{
-			if (child is SkeletonJoint) {
+			if (child is Pure3D.Chunks.SkeletonJoint) {
 				var joint = (Pure3D.Chunks.SkeletonJoint)child;
 				skeleton.AddBone(joint.Name);
 				skeleton.EditorDescription += "Bone: " + joint.Name + "\n";
