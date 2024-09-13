@@ -11,6 +11,12 @@ public partial class View3D : SubViewport
 	
 	public override void _Ready()
 	{
+		// Handle window resizing
+		DisplayServer.WindowSetMinSize(new Vector2I(720, 720));
+		GetTree().Root.GetViewport().SizeChanged += _OnSizeChanged;
+		_OnSizeChanged();
+
+		// Load the model at the specified path
 		if (ModelPath.StripEdges().Length > 0)
 		{
 			var file = new Pure3D.File();
@@ -78,5 +84,9 @@ public partial class View3D : SubViewport
 
 			boneIndex++;
 		}
+	}
+
+	private void _OnSizeChanged() {
+		Size = GetTree().Root.Size / 2;
 	}
 }
