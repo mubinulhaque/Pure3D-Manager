@@ -1,0 +1,7 @@
+# Godot 4+ specific ignores
+.godot/
+/android/
+
+# Pure3D files (to comply with copyright)
+*.p3d
+models/
