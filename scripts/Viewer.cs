@@ -4,18 +4,11 @@ using System;
 public partial class Viewer : Control
 {
 	[Export]
-	private LineEdit filenameEdit;
-	[Export]
 	private Label errorMessage;
 	[Export]
 	private Tree tree;
 	[Export]
 	private View3D view;
-
-	public override void _Ready()
-	{
-		filenameEdit.TextSubmitted += OnFilenameSubmitted;
-	}
 
 	private void OnFilenameSubmitted(String newText) {
 		// Load the model at the specified path
@@ -31,7 +24,7 @@ public partial class Viewer : Control
 		}
 	}
 
-	public void LoadChunk(Pure3D.Chunk chunk, TreeItem parent)
+	private void LoadChunk(Pure3D.Chunk chunk, TreeItem parent)
 	{
 		TreeItem item = tree.CreateItem(parent);
 		item.SetText(0, chunk.ToShortString());
@@ -55,5 +48,9 @@ public partial class Viewer : Control
 
 			LoadChunk(child, item);
 		}
+	}
+
+	private void ToggleShortNames(bool toggled) {
+		GD.Print("Not implemented yet");
 	}
 }
