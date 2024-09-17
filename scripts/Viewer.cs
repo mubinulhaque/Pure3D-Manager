@@ -6,7 +6,9 @@ public partial class Viewer : Control
 	[Export]
 	private LineEdit filenameEdit;
 	[Export]
-	private TextEdit textBox;
+	private Label errorMessage;
+	[Export]
+	private Tree tree;
 	[Export]
 	private View3D view;
 
@@ -22,18 +24,17 @@ public partial class Viewer : Control
 		if (FileAccess.FileExists(filename)) {
 			var file = new Pure3D.File();
 			file.Load(filename);
-			textBox.Text = "";
-			LoadChunk(file.RootChunk, "", 0);
-		} else if (textBox != null) {
-			textBox.AddThemeColorOverride("font_readonly_color", new Color(255, 0, 0));
-			textBox.Text = "No file matches " + filename;
+			errorMessage.Text = "";
+			LoadChunk(file.RootChunk, null);
+		} else if (errorMessage != null) {
+			errorMessage.Text = "No file matches " + filename;
 		}
 	}
 
-	public void LoadChunk(Pure3D.Chunk chunk, String text, int indent)
+	public void LoadChunk(Pure3D.Chunk chunk, TreeItem parent)
 	{
-		textBox.AddThemeColorOverride("font_readonly_color", new Color(255, 255, 255));
-		GD.Print(new String('\t', indent) + chunk.ToString());
+		TreeItem item = tree.CreateItem(parent);
+		item.SetText(0, chunk.ToString());
 
 		foreach (var child in chunk.Children)
 		{
@@ -52,7 +53,7 @@ public partial class Viewer : Control
 				view.LoadSkeleton(skeleton.Children, newNode);
 			}
 
-			LoadChunk(child, text, indent + 1);
+			LoadChunk(child, item);
 		}
 	}
 }
