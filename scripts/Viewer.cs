@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Collections.Generic;
 
 public partial class Viewer : Control
 {
@@ -9,6 +10,8 @@ public partial class Viewer : Control
 	private Tree tree;
 	[Export]
 	private View3D view;
+
+	private Dictionary<TreeItem, Pure3D.Chunk> chunks = new Dictionary<TreeItem, Pure3D.Chunk>();
 
 	private void OnFilenameSubmitted(String newText) {
 		// Load the model at the specified path
@@ -28,8 +31,13 @@ public partial class Viewer : Control
 
 	private void LoadChunk(Pure3D.Chunk chunk, TreeItem parent)
 	{
+		// Add a TreeItem and set its text to the chunk's string
 		TreeItem item = tree.CreateItem(parent);
 		item.SetText(0, chunk.ToShortString());
+		item.SetTooltipText(0, chunk.ToString());
+
+		// Add the chunk to the dictionary
+		chunks.Add(item, chunk);
 
 		foreach (var child in chunk.Children)
 		{
@@ -54,6 +62,15 @@ public partial class Viewer : Control
 
 	private void ToggleShortNames(bool toggled)
 	{
-		GD.Print("Not implemented yet");
+		TreeItem root = tree.GetRoot();
+
+		if (root != null)
+		{
+			foreach (KeyValuePair<TreeItem, Pure3D.Chunk> item in chunks)
+			{
+				var newName = toggled ? item.Value.ToShortString() : item.Value.ToString();
+				item.Key.SetText(0, newName);
+			}
+		}
 	}
 }
