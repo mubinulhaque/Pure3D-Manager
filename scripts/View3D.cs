@@ -23,7 +23,8 @@ public partial class View3D : SubViewport
 
 		foreach (var child in children)
 		{
-			if (child is Pure3D.Chunks.SkeletonJoint) {
+			if (child is Pure3D.Chunks.SkeletonJoint)
+			{
 				var joint = (Pure3D.Chunks.SkeletonJoint)child;
 				skeleton.AddBone(joint.Name);
 				skeleton.EditorDescription += "Bone: " + joint.Name + "\n";
@@ -45,7 +46,8 @@ public partial class View3D : SubViewport
 				boneIndicator.Mesh = sphere;
 				boneIndicator.Position = boneTransform.Origin;
 				//skeleton.AddChild(boneIndicator);
-			} else {
+			} else
+			{
 				GD.Print(child);
 			}
 
@@ -53,7 +55,8 @@ public partial class View3D : SubViewport
 		}
 	}
 
-	private void _OnSizeChanged() {
+	private void _OnSizeChanged()
+	{
 		Size = GetTree().Root.Size / 2;
 	}
 }

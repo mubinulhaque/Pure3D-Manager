@@ -14,12 +14,14 @@ public partial class Viewer : Control
 		// Load the model at the specified path
 		String filename = newText.StripEdges();
 
-		if (FileAccess.FileExists(filename)) {
+		if (FileAccess.FileExists(filename))
+		{
 			var file = new Pure3D.File();
 			file.Load(filename);
 			errorMessage.Text = "";
 			LoadChunk(file.RootChunk, null);
-		} else if (errorMessage != null) {
+		} else if (errorMessage != null)
+		{
 			errorMessage.Text = "No file matches " + filename;
 		}
 	}
@@ -50,7 +52,8 @@ public partial class Viewer : Control
 		}
 	}
 
-	private void ToggleShortNames(bool toggled) {
+	private void ToggleShortNames(bool toggled)
+	{
 		GD.Print("Not implemented yet");
 	}
 }
