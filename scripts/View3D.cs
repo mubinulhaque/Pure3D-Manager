@@ -4,11 +4,6 @@ using System.Collections.Generic;
 
 public partial class View3D : SubViewport
 {
-	[Export]
-	public String ModelPath { get; set; } = "";
-	[Export]
-	public Label label;
-	
 	public override void _Ready()
 	{
 		// Handle window resizing
@@ -17,11 +12,22 @@ public partial class View3D : SubViewport
 		_OnSizeChanged();
 	}
 
-	public void LoadSkeleton(List<Pure3D.Chunk> children, Skeleton3D skeleton)
+	public void LoadSkeleton(Pure3D.Chunks.Skeleton bones)
 	{
 		int boneIndex = 0;
 
-		foreach (var child in children)
+		// If this child is a Pure3D Skeleton
+		// Add a new Skeleton3D
+		Skeleton3D skeleton = new Skeleton3D();
+		skeleton.Name = bones.Name;
+		AddChild(skeleton);
+
+		// Define a placeholder mesh
+		SphereMesh sphere = new SphereMesh();
+		sphere.Radius = 1f;
+		sphere.Height = sphere.Radius * 2;
+
+		foreach (var child in bones.Children)
 		{
 			if (child is Pure3D.Chunks.SkeletonJoint)
 			{
@@ -38,14 +44,12 @@ public partial class View3D : SubViewport
 				));
 				skeleton.SetBoneRest(boneIndex, boneTransform);
 
+				//Node3D boneIndicator = new Node3D();
 				MeshInstance3D boneIndicator = new MeshInstance3D();
 				boneIndicator.Name = joint.Name;
-				SphereMesh sphere = new SphereMesh();
-				sphere.Radius = 0.1f;
-				sphere.Height = sphere.Radius * 2;
 				boneIndicator.Mesh = sphere;
 				boneIndicator.Position = boneTransform.Origin;
-				//skeleton.AddChild(boneIndicator);
+				AddChild(boneIndicator);
 			} else
 			{
 				GD.Print(child);

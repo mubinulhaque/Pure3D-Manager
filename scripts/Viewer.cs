@@ -43,17 +43,8 @@ public partial class Viewer : Control
 		{
 			if (child is Pure3D.Chunks.Skeleton && view != null)
 			{
-				// If this child is a Pure3D Skeleton
-				// Add a new Skeleton3D
-				Skeleton3D newNode = new Skeleton3D();
-				AddChild(newNode);
-
-				// Set the name of the Skeleton3D
-				var skeleton = (Pure3D.Chunks.Skeleton)child;
-				newNode.Name = skeleton.Name;
-
 				// Load the Skeleton's Joints
-				view.LoadSkeleton(skeleton.Children, newNode);
+				view.LoadSkeleton((Pure3D.Chunks.Skeleton)child);
 			}
 
 			LoadChunk(child, item);
