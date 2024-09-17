@@ -104,5 +104,8 @@ namespace Pure3D
             Type chunkType = chunkTypeDictionary[type];
             return (Chunk)Activator.CreateInstance(chunkType, new object[] { file, type });
         }
+
+        // Reads a short version of the ToString() method
+        public abstract String ToShortString();
     }
 }

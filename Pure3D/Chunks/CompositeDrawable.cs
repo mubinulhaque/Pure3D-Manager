@@ -21,5 +21,10 @@ namespace Pure3D.Chunks
         {
             return $"Composite Drawable: {Name} (Skeleton: {SkeletonName})";
         }
+
+        public override string ToShortString()
+        {
+            return "Composite Drawable";
+        }
     }
 }

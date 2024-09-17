@@ -20,5 +20,10 @@ namespace Pure3D.Chunks
         {
             return $"Composite Drawable Effect List ({NumElements} Elements)";
         }
+
+        public override string ToShortString()
+        {
+            return "Composite Drawable Effect List";
+        }
     }
 }

@@ -38,5 +38,10 @@ namespace Pure3D.Chunks
         {
             return $"Texture: {Name} ({Width}x{Height})";
         }
+
+        public override string ToShortString()
+        {
+            return "Texture";
+        }
     }
 }

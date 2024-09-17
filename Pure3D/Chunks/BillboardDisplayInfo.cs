@@ -30,6 +30,11 @@ namespace Pure3D.Chunks
 
         public override string ToString()
         {
+            return $"Billboard Display Info {Version}";
+        }
+
+        public override string ToShortString()
+        {
             return "Billboard Display Info";
         }
     }

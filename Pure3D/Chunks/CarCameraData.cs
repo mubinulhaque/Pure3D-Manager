@@ -29,5 +29,10 @@ namespace Pure3D.Chunks
         {
             return $"Car Camera Data ({Index})";
         }
+
+        public override string ToShortString()
+        {
+            return "Car Camera Data";
+        }
     }
 }

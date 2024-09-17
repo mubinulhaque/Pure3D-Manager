@@ -20,5 +20,10 @@ namespace Pure3D.Chunks
         {
             return $"Composite Drawable Sort Order ({SortOrder})";
         }
+
+        public override string ToShortString()
+        {
+            return "Composite Drawable Sort Order";
+        }
     }
 }

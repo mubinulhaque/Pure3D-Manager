@@ -44,5 +44,10 @@ namespace Pure3D.Chunks
         {
             return $"Vector2 Channel: {Parameter}, {NumberOfFrames} Frames, Mapping {Mapping}, Constants {Constants}";
         }
+
+        public override string ToShortString()
+        {
+            return "Vector2 Channel";
+        }
     }
 }

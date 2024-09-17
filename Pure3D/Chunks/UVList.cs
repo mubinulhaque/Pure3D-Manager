@@ -27,5 +27,10 @@ namespace Pure3D.Chunks
         {
             return $"UV List (Channel: {Channel} - {UVs.Length})";
         }
+
+        public override string ToShortString()
+        {
+            return "UV List";
+        }
     }
 }

@@ -23,5 +23,10 @@ namespace Pure3D.Chunks
         {
             return $"Billboard Perspective Info ({Perspective})";
         }
+
+        public override string ToShortString()
+        {
+            return "Billboard Perspective Info";
+        }
     }
 }

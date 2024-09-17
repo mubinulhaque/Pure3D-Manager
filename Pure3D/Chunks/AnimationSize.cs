@@ -29,5 +29,10 @@ namespace Pure3D.Chunks
         {
             return $"Animation Size: Version {Version}, PC {PC}, PS2 {PS2}, Xbox {Xbox}, GameCube {GameCube}";
         }
+
+        public override string ToShortString()
+        {
+            return "Animation Size";
+        }
     }
 }

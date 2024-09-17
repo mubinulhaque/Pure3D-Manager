@@ -24,5 +24,10 @@ namespace Pure3D.Chunks
         {
             return $"Skin: {Name} (Skeleton: {SkeletonName}) ({NumPrimGroups} Prim Groups)";
         }
+
+        public override string ToShortString()
+        {
+            return "Skin";
+        }
     }
 }

@@ -23,7 +23,12 @@ namespace Pure3D.Chunks
 
         public override string ToString()
         {
-            return $"Colour List ({Colours.Length})";
+            return $"Colour List ({Colours.Length} Colours)";
+        }
+
+        public override string ToShortString()
+        {
+            return "Colour List";
         }
     }
 }

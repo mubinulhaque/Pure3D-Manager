@@ -49,5 +49,10 @@ namespace Pure3D.Chunks
         {
             return $"Quaternion Channel: {Parameter}, {NumberOfFrames} Frames";
         }
+
+        public override string ToShortString()
+        {
+            return "Quaternion Channel";
+        }
     }
 }

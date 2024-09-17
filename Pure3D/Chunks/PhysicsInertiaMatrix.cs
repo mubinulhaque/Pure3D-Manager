@@ -21,6 +21,11 @@ namespace Pure3D.Chunks
 
         public override string ToString()
         {
+            return $"Physics Inertia Matrix ({X}, {Y})";
+        }
+
+        public override string ToShortString()
+        {
             return "Physics Inertia Matrix";
         }
     }

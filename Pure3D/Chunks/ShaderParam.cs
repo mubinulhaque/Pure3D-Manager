@@ -43,6 +43,11 @@ namespace Pure3D.Chunks
             // Prints the name of the parameter and the texture assigned to it
             return $"{Param} Shader Texture Parameter: {Value}";
         }
+
+        public override string ToShortString()
+        {
+            return "Shader Tex Parameter";
+        }
     }
 
     [ChunkType(69635)]
@@ -64,6 +69,11 @@ namespace Pure3D.Chunks
         {
             return $"Shader Integer Parameter: {Param}, {Value}";
         }
+
+        public override string ToShortString()
+        {
+            return "Shader Int Parameter";
+        }
     }
 
     [ChunkType(69636)]
@@ -84,6 +94,11 @@ namespace Pure3D.Chunks
         public override string ToString()
         {
             return $"Shader Float Parameter: {Param}, {Value}";
+        }
+
+        public override string ToShortString()
+        {
+            return "Shader Float Parameter";
         }
     }
 
@@ -125,6 +140,11 @@ namespace Pure3D.Chunks
         {
             // Returns the name of the parameter and the colour assigned to it in RGB format (0-255)
             return $"{Param} Shader Colour Parameter: ({Red}, {Green}, {Blue})";
+        }
+
+        public override string ToShortString()
+        {
+            return "Shader Colour Parameter";
         }
     }
 }

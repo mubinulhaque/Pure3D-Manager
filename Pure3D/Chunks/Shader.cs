@@ -34,5 +34,10 @@ namespace Pure3D.Chunks
         {
             return $"Shader: {Name} ({PddiShaderName})";
         }
+
+        public override string ToShortString()
+        {
+            return "Shader";
+        }
     }
 }

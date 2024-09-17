@@ -28,5 +28,10 @@ namespace Pure3D.Chunks
         {
             return $"Locator: {Name}";
         }
+
+        public override string ToShortString()
+        {
+            return "Locator";
+        }
     }
 }

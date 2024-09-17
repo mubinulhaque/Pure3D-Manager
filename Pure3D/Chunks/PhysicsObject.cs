@@ -30,5 +30,10 @@ namespace Pure3D.Chunks
         {
             return $"Physics Object: {Name}";
         }
+
+        public override string ToShortString()
+        {
+            return "Physics Object";
+        }
     }
 }

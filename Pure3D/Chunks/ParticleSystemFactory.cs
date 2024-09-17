@@ -20,7 +20,12 @@ namespace Pure3D.Chunks
 
         public override string ToString()
         {
-            return $"Unknown Chunk (TypeID: {unknownType}) (Len: {Data.Length})";
+            return $"Particle System Factory (TypeID: {unknownType}) (Len: {Data.Length})";
+        }
+
+        public override string ToShortString()
+        {
+            return "Particle System Factory";
         }
     }
 }

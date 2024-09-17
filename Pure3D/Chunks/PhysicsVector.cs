@@ -18,7 +18,12 @@ namespace Pure3D.Chunks
 
         public override string ToString()
         {
-            return $"Physics Vector";
+            return $"Physics Vector ({Vector.X}, {Vector.Y}, {Vector.Z})";
+        }
+
+        public override string ToShortString()
+        {
+            return "Physics Vector";
         }
     }
 }

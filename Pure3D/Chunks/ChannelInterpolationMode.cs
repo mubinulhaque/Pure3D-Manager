@@ -23,5 +23,10 @@ namespace Pure3D.Chunks
         {
             return $"Channel Interpolation Mode: {Mode}";
         }
+
+        public override string ToShortString()
+        {
+            return "Channel Interpolation Mode";
+        }
     }
 }

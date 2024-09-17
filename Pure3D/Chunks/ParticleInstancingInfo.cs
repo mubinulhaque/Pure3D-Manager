@@ -20,7 +20,12 @@ namespace Pure3D.Chunks
 
         public override string ToString()
         {
-            return $"Unknown Chunk (TypeID: {unknownType}) (Len: {Data.Length})";
+            return $"Particle Instancing Info (TypeID: {unknownType}) (Len: {Data.Length})";
+        }
+
+        public override string ToShortString()
+        {
+            return "Particle Instancing Info";
         }
     }
 }

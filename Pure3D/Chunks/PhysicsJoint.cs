@@ -31,5 +31,10 @@ namespace Pure3D.Chunks
         {
             return $"Physics Joint {Index}";
         }
+
+        public override string ToShortString()
+        {
+            return "Physics Joint";
+        }
     }
 }

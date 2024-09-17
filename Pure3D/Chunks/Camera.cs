@@ -36,5 +36,10 @@ namespace Pure3D.Chunks
         {
             return $"Camera: {Name}";
         }
+
+        public override string ToShortString()
+        {
+            return "Camera";
+        }
     }
 }

@@ -29,5 +29,10 @@ namespace Pure3D.Chunks
         {
             return $"Animation: {Name}, Version {Version}, Type {Type}, Frames {NumberOfFrames}, FrameRate {FrameRate}, Looping {Looping}";
         }
+
+        public override string ToShortString()
+        {
+            return "Animation";
+        }
     }
 }

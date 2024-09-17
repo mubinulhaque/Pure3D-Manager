@@ -24,5 +24,10 @@ namespace Pure3D.Chunks
         {
             return $"Mesh: {Name} ({NumPrimGroups} Prim Groups)";
         }
+
+        public override string ToShortString()
+        {
+            return "Mesh";
+        }
     }
 }

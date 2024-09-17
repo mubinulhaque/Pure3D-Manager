@@ -19,5 +19,10 @@ namespace Pure3D.Chunks
         {
             return "Root";
         }
+
+        public override string ToShortString()
+        {
+            return ToString();
+        }
     }
 }

@@ -30,5 +30,16 @@ namespace Pure3D.Chunks
                 return $"Unknown Chunk (TypeID: {unknownType}) (Len: {Data.Length})";
             }
         }
+
+        public override string ToShortString()
+        {
+            if (unknownType == 50331653)
+            {
+                return $"Locator";
+            } else
+            {
+                return $"Unknown Chunk";
+            }
+        }
     }
 }

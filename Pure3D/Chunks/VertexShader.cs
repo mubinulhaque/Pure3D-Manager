@@ -22,5 +22,10 @@ namespace Pure3D.Chunks
         {
             return $"Vertex Shader {VertexShaderName}";
         }
+
+        public override string ToShortString()
+        {
+            return "Vertex Shader";
+        }
     }
 }

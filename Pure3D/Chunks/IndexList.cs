@@ -23,7 +23,12 @@ namespace Pure3D.Chunks
 
         public override string ToString()
         {
-            return $"Indices List ({Indices.Length})";
+            return $"Index List ({Indices.Length})";
+        }
+
+        public override string ToShortString()
+        {
+            return "Index List";
         }
     }
 }

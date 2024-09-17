@@ -24,7 +24,12 @@ namespace Pure3D.Chunks
 
         public override string ToString()
         {
-            return $"Weight List ({Weights.Length})";
+            return $"Weight List ({Weights.Length} Weights)";
+        }
+
+        public override string ToShortString()
+        {
+            return "Weight List";
         }
     }
 }

@@ -22,6 +22,11 @@ namespace Pure3D.Chunks
 
         public override string ToString()
         {
+            return $"Bounding Sphere (Centre: {Centre}, Radius: {Radius})";
+        }
+
+        public override string ToShortString()
+        {
             return "Bounding Sphere";
         }
     }

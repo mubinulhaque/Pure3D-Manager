@@ -22,5 +22,10 @@ namespace Pure3D.Chunks
         {
             return $"Composite Drawable Skin: {Name}, IsTranslucent = {IsTranslucent}";
         }
+
+        public override string ToShortString()
+        {
+            return "Composite Drawable Skin";
+        }
     }
 }

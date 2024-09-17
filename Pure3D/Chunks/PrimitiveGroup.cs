@@ -56,5 +56,10 @@ namespace Pure3D.Chunks
             Weights = 256U,
             Unknown = 8192U,
         }
+
+        public override string ToShortString()
+        {
+            return "Primitive Shader Group";
+        }
     }
 }

@@ -23,5 +23,10 @@ namespace Pure3D.Chunks
         {
             return $"Named Chunk: {Name}";
         }
+
+        public override string ToShortString()
+        {
+            return "Named Chunk";
+        }
     }
 }

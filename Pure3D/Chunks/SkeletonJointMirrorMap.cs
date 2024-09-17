@@ -27,5 +27,10 @@ namespace Pure3D.Chunks
         {
             return $"Skeleton Joint Mirror Map (JointIdx: {MappedJointIndex})";
         }
+
+        public override string ToShortString()
+        {
+            return "Skeleton Joint Mirror Map";
+        }
     }
 }

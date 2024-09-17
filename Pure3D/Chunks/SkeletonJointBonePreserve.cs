@@ -18,6 +18,11 @@ namespace Pure3D.Chunks
 
         public override string ToString()
         {
+            return $"Skeleton Joint Bone Preserve ({PreserveBoneLengths} Lengths)";
+        }
+
+        public override string ToShortString()
+        {
             return "Skeleton Joint Bone Preserve";
         }
     }

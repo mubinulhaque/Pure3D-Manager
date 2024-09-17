@@ -22,6 +22,11 @@ namespace Pure3D.Chunks
 
         public override string ToString()
         {
+            return $"Bounding Box (Low: {Low}, High: {High})";
+        }
+
+        public override string ToShortString()
+        {
             return "Bounding Box";
         }
     }

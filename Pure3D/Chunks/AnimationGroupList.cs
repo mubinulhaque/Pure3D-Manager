@@ -23,5 +23,10 @@ namespace Pure3D.Chunks
         {
             return $"Animation Group List: {NumberOfGroups}";
         }
+
+        public override string ToShortString()
+        {
+            return "Animation Group List";
+        }
     }
 }

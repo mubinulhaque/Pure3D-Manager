@@ -22,5 +22,10 @@ namespace Pure3D.Chunks
         {
             return $"Image Data (Header: {Data[0].ToString("X")} {Data[1].ToString("X")} {Data[2].ToString("X")} {Data[3].ToString("X")}) (Len: {Data.Length})";
         }
+
+        public override string ToShortString()
+        {
+            return "Image Data";
+        }
     }
 }

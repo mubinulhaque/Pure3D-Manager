@@ -24,5 +24,10 @@ namespace Pure3D.Chunks
         {
             return $"Animation Group: {Name}, Channels {NumberOfChannels}, Group {GroupId}";
         }
+
+        public override string ToShortString()
+        {
+            return "Animation Group";
+        }
     }
 }

@@ -23,7 +23,12 @@ namespace Pure3D.Chunks
 
         public override string ToString()
         {
-            return $"Position List ({Positions.Length})";
+            return $"Position List ({Positions.Length} Positions)";
+        }
+
+        public override string ToShortString()
+        {
+            return "Position List";
         }
     }
 }

@@ -20,7 +20,12 @@ namespace Pure3D.Chunks
 
         public override string ToString()
         {
-            return $"Unknown Chunk (TypeID: {unknownType}) (Len: {Data.Length})";
+            return $"Sprite Emitter (TypeID: {unknownType}) (Len: {Data.Length})";
+        }
+
+        public override string ToShortString()
+        {
+            return "Sprite Emitter";
         }
     }
 }

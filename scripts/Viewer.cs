@@ -34,7 +34,7 @@ public partial class Viewer : Control
 	public void LoadChunk(Pure3D.Chunk chunk, TreeItem parent)
 	{
 		TreeItem item = tree.CreateItem(parent);
-		item.SetText(0, chunk.ToString());
+		item.SetText(0, chunk.ToShortString());
 
 		foreach (var child in chunk.Children)
 		{

@@ -22,7 +22,12 @@ namespace Pure3D.Chunks
 
         public override string ToString()
         {
-            return $"Composite Drawable Prop: {Name}";
+            return $"Composite Drawable Prop: {Name} (Joint: {SkeletonJointID})";
+        }
+
+        public override string ToShortString()
+        {
+            return "Composite Drawable Prop";
         }
     }
 }

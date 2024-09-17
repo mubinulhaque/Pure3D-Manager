@@ -44,5 +44,10 @@ namespace Pure3D.Chunks
             P3DI = 11,
             P3DI2 = 25,
         }
+
+        public override string ToShortString()
+        {
+            return "Image";
+        }
     }
 }
