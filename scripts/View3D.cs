@@ -29,13 +29,15 @@ public partial class View3D : SubViewport
 		// Iterate through the skeleton's bones and add them to the Godot Skeleton
 		foreach (var child in bones.Children)
 		{
+			// For every bone in the Pure3D Skeleton
 			if (child is Pure3D.Chunks.SkeletonJoint)
 			{
+				// Add bone to Skeleton3D
 				Pure3D.Chunks.SkeletonJoint joint = (Pure3D.Chunks.SkeletonJoint)child;
 				int boneIndex = skeleton.AddBone(joint.Name);
-				GD.Print(boneIndex);
 				if (boneIndex != joint.SkeletonParent) skeleton.SetBoneParent(boneIndex, ((int)joint.SkeletonParent));
 
+				// Set the bone's rest pose
 				Pure3D.Matrix restPose = joint.RestPose;
 				 
 				Transform3D boneTransform = new Transform3D(new Basis(
@@ -45,6 +47,7 @@ public partial class View3D : SubViewport
 				), new Vector3(restPose.M41, restPose.M42, restPose.M43));
 				skeleton.SetBoneRest(boneIndex, boneTransform);
 
+				// Add a primitive sphere to the bone to indicate its position
 				BoneAttachment3D attachment = new BoneAttachment3D();
 				attachment.Name = joint.Name;
 				attachment.BoneName = joint.Name;
@@ -55,10 +58,8 @@ public partial class View3D : SubViewport
 				indicator.Mesh = sphere;
 				attachment.AddChild(indicator);
 
+				// Set the skeleton to its rest pose
 				skeleton.ResetBonePoses();
-			} else
-			{
-				GD.Print(child);
 			}
 		}
 	}
