@@ -15,16 +15,17 @@ sky = SubResource("Sky_yya8i")
 [sub_resource type="BoxMesh" id="BoxMesh_myhq7"]
 size = Vector3(100, 1, 100)
 
-[node name="Viewer" type="HSplitContainer" node_paths=PackedStringArray("errorMessage", "tree", "view")]
+[node name="Viewer" type="HSplitContainer" node_paths=PackedStringArray("_errorMessage", "_tree", "_view", "_exportButton")]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_exgkj")
-errorMessage = NodePath("LeftSide/ErrorMessage")
-tree = NodePath("LeftSide/Tree")
-view = NodePath("RightSide/SubViewportContainer/View3D")
+_errorMessage = NodePath("LeftSide/ErrorMessage")
+_tree = NodePath("LeftSide/Tree")
+_view = NodePath("RightSide/SubViewportContainer/View3D")
+_exportButton = NodePath("RightSide/ExportButton")
 
 [node name="LeftSide" type="VBoxContainer" parent="."]
 layout_mode = 2
@@ -60,6 +61,7 @@ select_mode = 1
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+theme_override_constants/separation = 5
 
 [node name="SubViewportContainer" type="SubViewportContainer" parent="RightSide"]
 layout_mode = 2
@@ -69,7 +71,7 @@ stretch = true
 [node name="View3D" type="SubViewport" parent="RightSide/SubViewportContainer"]
 handle_input_locally = false
 gui_disable_input = true
-size = Vector2i(354, 720)
+size = Vector2i(354, 684)
 render_target_update_mode = 4
 script = ExtResource("1_ugrps")
 
@@ -90,5 +92,12 @@ skeleton = NodePath("../../../..")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 2)
 current = true
 
+[node name="ExportButton" type="Button" parent="RightSide"]
+layout_mode = 2
+disabled = true
+text = "Export as glTF"
+
 [connection signal="text_submitted" from="LeftSide/FilenameEdit" to="." method="OnFilenameSubmitted"]
 [connection signal="toggled" from="LeftSide/ShortNamesButton" to="." method="ToggleShortNames"]
+[connection signal="EnableExporting" from="RightSide/SubViewportContainer/View3D" to="." method="SetExportNode"]
+[connection signal="pressed" from="RightSide/ExportButton" to="." method="Export2Gltf"]

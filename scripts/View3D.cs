@@ -5,14 +5,16 @@ using System.Security.Cryptography.X509Certificates;
 
 public partial class View3D : SubViewport
 {
+	[Signal]
+	public delegate void EnableExportingEventHandler(Node3D rootNode);
+
 	public override void _Ready()
 	{
 		// Handle window resizing
 		DisplayServer.WindowSetMinSize(new Vector2I(720, 720));
-		GetTree().Root.GetViewport().SizeChanged += _OnSizeChanged;
-		_OnSizeChanged();
 	}
 
+	// Loads a Pure3D skeleton as a Skeleton3D
 	public void LoadSkeleton(Pure3D.Chunks.Skeleton bones)
 	{
 		// If this child is a Pure3D Skeleton
@@ -20,6 +22,7 @@ public partial class View3D : SubViewport
 		Skeleton3D skeleton = new Skeleton3D();
 		skeleton.Name = bones.Name;
 		AddChild(skeleton);
+		EmitSignal(SignalName.EnableExporting, skeleton);
 
 		// Define a placeholder mesh
 		SphereMesh sphere = new SphereMesh();
@@ -62,10 +65,5 @@ public partial class View3D : SubViewport
 				skeleton.ResetBonePoses();
 			}
 		}
-	}
-
-	private void _OnSizeChanged()
-	{
-		Size = GetTree().Root.Size / 2;
 	}
 }
