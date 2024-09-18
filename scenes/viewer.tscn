@@ -104,7 +104,7 @@ skeleton = NodePath("../../../..")
 [node name="Origin" type="Node3D" parent="RightSide/SubViewportContainer/View3D"]
 
 [node name="Camera3D" type="Camera3D" parent="RightSide/SubViewportContainer/View3D/Origin"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 20)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 2)
 current = true
 
 [connection signal="text_submitted" from="LeftSide/FilenameEdit" to="." method="OnFilenameSubmitted"]

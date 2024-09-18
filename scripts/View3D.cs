@@ -15,8 +15,6 @@ public partial class View3D : SubViewport
 
 	public void LoadSkeleton(Pure3D.Chunks.Skeleton bones)
 	{
-		int boneIndex = 0;
-
 		// If this child is a Pure3D Skeleton
 		// Add a new Skeleton3D
 		Skeleton3D skeleton = new Skeleton3D();
@@ -25,16 +23,18 @@ public partial class View3D : SubViewport
 
 		// Define a placeholder mesh
 		SphereMesh sphere = new SphereMesh();
-		sphere.Radius = .2f;
+		sphere.Radius = .05f;
 		sphere.Height = sphere.Radius * 2;
 
+		// Iterate through the skeleton's bones and add them to the Godot Skeleton
 		foreach (var child in bones.Children)
 		{
 			if (child is Pure3D.Chunks.SkeletonJoint)
 			{
 				Pure3D.Chunks.SkeletonJoint joint = (Pure3D.Chunks.SkeletonJoint)child;
-				skeleton.AddBone(joint.Name);
-				skeleton.EditorDescription += "Bone: " + joint.Name + "\n";
+				int boneIndex = skeleton.AddBone(joint.Name);
+				GD.Print(boneIndex);
+				if (boneIndex != joint.SkeletonParent) skeleton.SetBoneParent(boneIndex, ((int)joint.SkeletonParent));
 
 				Pure3D.Matrix restPose = joint.RestPose;
 				 
@@ -45,18 +45,21 @@ public partial class View3D : SubViewport
 				), new Vector3(restPose.M41, restPose.M42, restPose.M43));
 				skeleton.SetBoneRest(boneIndex, boneTransform);
 
-				//Node3D boneIndicator = new Node3D();
-				MeshInstance3D boneIndicator = new MeshInstance3D();
-				boneIndicator.Name = joint.Name;
-				boneIndicator.Mesh = sphere;
-				boneIndicator.Transform = boneTransform;
-				AddChild(boneIndicator);
+				BoneAttachment3D attachment = new BoneAttachment3D();
+				attachment.Name = joint.Name;
+				attachment.BoneName = joint.Name;
+				attachment.BoneIdx = boneIndex;
+				skeleton.AddChild(attachment);
+				
+				MeshInstance3D indicator = new MeshInstance3D();
+				indicator.Mesh = sphere;
+				attachment.AddChild(indicator);
+
+				skeleton.ResetBonePoses();
 			} else
 			{
 				GD.Print(child);
 			}
-
-			boneIndex++;
 		}
 	}
 
