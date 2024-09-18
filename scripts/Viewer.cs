@@ -15,6 +15,9 @@ public partial class Viewer : Control
 
 	private Dictionary<TreeItem, Pure3D.Chunk> _chunks = new Dictionary<TreeItem, Pure3D.Chunk>();
 	private Node3D _exportNode = null;
+	private string[] gltfFilters = {"*.gltf;glTF text file", "*.glb;glTF binary file"};
+	private GltfDocument _document = null;
+	private GltfState _state = null;
 
 	private void OnFilenameSubmitted(String newText) {
 		// Load the model at the specified path
@@ -70,12 +73,56 @@ public partial class Viewer : Control
 
 	public void SetExportNode(Node3D rootNode)
 	{
+		// Set the new node and disable the export button if the new node is null
 		_exportNode = rootNode;
 		_exportButton.Disabled = rootNode == null ? true : false;
 	}
 
 	private void Export2Gltf()
 	{
-		
+		// Load a new glTF document (for exporting glTF data)
+		// and a new glTF state (for storing glTF data)
+		_document = new GltfDocument();
+		_state = new GltfState();
+
+		// Store Godot data as glTF in the state
+		_document.AppendFromScene(_exportNode, _state);
+
+		// Show a File Dialog for the user to select where to save the glTF data
+		DisplayServer.FileDialogShow(
+			"Save as glTF file",
+			DirAccess.GetDriveName(0),
+			"new_model.gltf",
+			true,
+			DisplayServer.FileDialogMode.SaveFile,
+			gltfFilters,
+			new Callable(this, MethodName.SaveAsGltf)
+		);
+	}
+
+	private void SaveAsGltf(bool status, string[] selected_paths, int selected_filter_index)
+	{
+		if (status)
+		{
+			// If the user wants to save the file
+			string path = selected_paths[0];
+
+			if (!path.EndsWith(".gltf") && !path.EndsWith(".glb"))
+			{
+				if (selected_filter_index == 0)
+				{
+					path += ".gltf";
+				} else
+				{
+					path += ".glb";
+				}
+			}
+
+			_document.WriteToFilesystem(_state, path);
+		} else
+		{
+			// If the user cancelled the saving
+			GD.Print("Cancelled saving the glTF file!");
+		}
 	}
 }
