@@ -7,18 +7,23 @@ public partial class Viewer : Control
 	[Export]
 	private Label _errorMessage;
 	[Export]
-	private Tree _tree;
+	private Tree _tree; // Displays the chunks of a P3D file in a suitable hierarchy
 	[Export]
-	private View3D _view;
+	private View3D _view; // Used for viewing 3D objects from P3D files
 	[Export]
-	private Button _exportButton;
+	private Button _exportButton; // Used for exporting assets
 
+	// Collection of each item in the tree and its associated chunk
 	private readonly Dictionary<TreeItem, Pure3D.Chunk> _chunks = new Dictionary<TreeItem, Pure3D.Chunk>();
-	private Node3D _exportNode = null;
+	// Formats and file extensions that a glTF file can be exported to
 	private string[] gltfFilters = {"*.gltf;glTF text file", "*.glb;glTF binary file"};
+	// Converts a 3D scene into glTF data
 	private GltfDocument _document = null;
+	// Stores glTF data
 	private GltfState _state = null;
+	// Collection of each 3D item in the tree and their associated 3D scene
 	private readonly Dictionary<TreeItem, Node3D> _viewables3d = new Dictionary<TreeItem, Node3D>();
+	// Node3D that is currently being viewed and can be exported
 	private Node3D _currentNode = null;
 
 	// Load the P3D file at the specified path
@@ -77,23 +82,15 @@ public partial class Viewer : Control
 		}
 	}
 
-	// Set the new node and disable the export button if the new node is null
-	public void SetExportNode(Node3D rootNode)
-	{
-		_exportNode = rootNode;
-		_exportButton.Disabled = rootNode == null ? true : false;
-	}
-
 	// Set up exporting 3D scenes
 	private void Export2Gltf()
 	{
-		// Load a new glTF document (for exporting glTF data)
-		// and a new glTF state (for storing glTF data)
+		// Load a new glTF document and a new glTF state
 		_document = new GltfDocument();
 		_state = new GltfState();
 
 		// Store Godot data as glTF in the state
-		_document.AppendFromScene(_exportNode, _state);
+		_document.AppendFromScene(_currentNode, _state);
 
 		// Show a File Dialog for the user to select where to save the glTF data
 		DisplayServer.FileDialogShow(
@@ -149,9 +146,19 @@ public partial class Viewer : Control
 		// Make the selected item's associated Node visible
 		if (_viewables3d.ContainsKey(_tree.GetSelected()))
 		{
+			// If the selected TreeItem is associated with a Node3D
+			// Enable the export button to export the associated Node3D
+			// And make said Node3D visible
+			_exportButton.Disabled = false;
+			_exportButton.Text = "Export as glTF";
 			TreeItem item = _tree.GetSelected();
 			_viewables3d[item].Visible = true;
 			_currentNode = _viewables3d[item];
+		} else
+		{
+			// If the selected TreeItem is not associated with any Node
+			_exportButton.Disabled = true;
+			_exportButton.Text = "Select an exportable asset";
 		}
 	}
 }

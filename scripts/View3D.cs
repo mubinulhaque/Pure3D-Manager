@@ -5,9 +5,6 @@ using System.Security.Cryptography.X509Certificates;
 
 public partial class View3D : SubViewport
 {
-	[Signal]
-	public delegate void EnableExportingEventHandler(Node3D rootNode); // Emitted when an exportable 3D scene is created
-
 	public override void _Ready()
 	{
 		// Handle window resizing
@@ -27,7 +24,6 @@ public partial class View3D : SubViewport
 		Skeleton3D skeleton = new Skeleton3D();
 		skeleton.Name = bones.Name + "_skeleton";
 		parentNode.AddChild(skeleton);
-		EmitSignal(SignalName.EnableExporting, skeleton);
 
 		// Define a placeholder mesh
 		SphereMesh sphere = new SphereMesh();
