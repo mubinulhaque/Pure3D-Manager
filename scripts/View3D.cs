@@ -6,7 +6,7 @@ using System.Security.Cryptography.X509Certificates;
 public partial class View3D : SubViewport
 {
 	[Signal]
-	public delegate void EnableExportingEventHandler(Node3D rootNode);
+	public delegate void EnableExportingEventHandler(Node3D rootNode); // Emitted when an exportable 3D scene is created
 
 	public override void _Ready()
 	{
@@ -19,9 +19,12 @@ public partial class View3D : SubViewport
 	{
 		// If this child is a Pure3D Skeleton
 		// Add a new Skeleton3D
+		Node3D rootNode = new Node3D();
+		rootNode.Name = bones.Name;
 		Skeleton3D skeleton = new Skeleton3D();
-		skeleton.Name = bones.Name;
-		AddChild(skeleton);
+		skeleton.Name = bones.Name + "_skeleton";
+		AddChild(rootNode);
+		rootNode.AddChild(skeleton);
 		EmitSignal(SignalName.EnableExporting, skeleton);
 
 		// Define a placeholder mesh
@@ -57,7 +60,7 @@ public partial class View3D : SubViewport
 				attachment.BoneIdx = boneIndex;
 				attachment.SetUseExternalSkeleton(true);
 				attachment.SetExternalSkeleton("../" + skeleton.Name);
-				AddChild(attachment);
+				rootNode.AddChild(attachment);
 				
 				MeshInstance3D indicator = new MeshInstance3D();
 				indicator.Mesh = sphere;
