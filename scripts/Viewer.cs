@@ -9,7 +9,7 @@ public partial class Viewer : Control
 	[Export]
 	private Tree _tree; // Displays the chunks of a P3D file in a suitable hierarchy
 	[Export]
-	private View3D _view; // Used for viewing 3D objects from P3D files
+	private View3D _view3d; // Used for viewing 3D objects from P3D files
 	[Export]
 	private Button _exportButton; // Used for exporting assets
 
@@ -55,17 +55,31 @@ public partial class Viewer : Control
 		// Loop through the children of each chunk
 		foreach (var child in chunk.Children)
 		{
-			if (child is Pure3D.Chunks.Skeleton && _view != null)
+			switch (child)
 			{
-				// If the child is a Skeleton
-				// Load the Skeleton's Joints and add the Skeleton to the dictionary
-				_viewables3d.Add(
-					LoadChunk(child, item),
-					_view.LoadSkeleton((Pure3D.Chunks.Skeleton)child)
-				);
-			} else
-			{
-				LoadChunk(child, item);
+				case Pure3D.Chunks.Skeleton _:
+					// If the child is a Skeleton
+					// Load the Skeleton's Joints
+					// Add the Skeleton to the dictionary
+					_viewables3d.Add(
+						LoadChunk(child, item),
+						_view3d.LoadSkeleton((Pure3D.Chunks.Skeleton)child)
+					);
+					break;
+				
+				case Pure3D.Chunks.ImageData:
+					// If the child is ImageData
+					if (chunk is Pure3D.Chunks.Image)
+					{
+						GD.Print("Found an image!");
+					}
+					break;
+				
+				default:
+					// If the child is not viewable
+					// Load it normally
+					LoadChunk(child, item);
+					break;
 			}
 		}
 

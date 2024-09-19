@@ -15,7 +15,7 @@ sky = SubResource("Sky_yya8i")
 [sub_resource type="BoxMesh" id="BoxMesh_myhq7"]
 size = Vector3(100, 1, 100)
 
-[node name="Viewer" type="HSplitContainer" node_paths=PackedStringArray("_errorMessage", "_tree", "_view", "_exportButton")]
+[node name="Viewer" type="HSplitContainer" node_paths=PackedStringArray("_errorMessage", "_tree", "_view3d", "_exportButton")]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -24,7 +24,7 @@ grow_vertical = 2
 script = ExtResource("1_exgkj")
 _errorMessage = NodePath("LeftSide/ErrorMessage")
 _tree = NodePath("LeftSide/Tree")
-_view = NodePath("RightSide/SubViewportContainer/View3D")
+_view3d = NodePath("RightSide/SubViewportContainer/View3D")
 _exportButton = NodePath("RightSide/ExportButton")
 
 [node name="LeftSide" type="VBoxContainer" parent="."]

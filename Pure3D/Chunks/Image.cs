@@ -1,7 +1,11 @@
 ﻿using System.IO;
+using Godot;
 
 namespace Pure3D.Chunks
 {
+    /// <summary>
+    /// Always has a single child of ImageData, which contains the binary data of the Image
+    /// </summary>
     [ChunkType(102401)]
     public class Image : Named
     {
@@ -48,6 +52,21 @@ namespace Pure3D.Chunks
         public override string ToShortString()
         {
             return "Image";
+        }
+
+        public byte[] loadImageData()
+        {
+            if (Children.Count != 1) GD.PrintErr($"Image {Name}: invalid number of children!");
+            else if (Children[0] is not ImageData) GD.PrintErr($"Image {Name}: no ImageData child!");
+            else
+            {
+                ImageData child = (ImageData)Children[0];
+
+                if (child != null) return child.Data;
+                else GD.PrintErr($"Image {Name}: invalid ImageData child!");
+            }
+            
+            return new byte[] {};
         }
     }
 }
