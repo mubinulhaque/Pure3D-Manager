@@ -52,12 +52,17 @@ public partial class Viewer : Control
 		// Add the chunk to the dictionary
 		_chunks.Add(item, chunk);
 
+		// Loop through the children of each chunk
 		foreach (var child in chunk.Children)
 		{
 			if (child is Pure3D.Chunks.Skeleton && _view != null)
 			{
+				// If the child is a Skeleton
 				// Load the Skeleton's Joints and add the Skeleton to the dictionary
-				_viewables3d.Add(LoadChunk(child, item), _view.LoadSkeleton((Pure3D.Chunks.Skeleton)child));
+				_viewables3d.Add(
+					LoadChunk(child, item),
+					_view.LoadSkeleton((Pure3D.Chunks.Skeleton)child)
+				);
 			} else
 			{
 				LoadChunk(child, item);
@@ -67,7 +72,8 @@ public partial class Viewer : Control
 		return item;
 	}
 
-	// Go through each TreeItem and toggle whether their short names or their normal names are displayed 
+	// Go through each TreeItem
+	// Toggle whether their short names or their normal names are displayed 
 	private void ToggleShortNames(bool toggled)
 	{
 		TreeItem root = _tree.GetRoot();
