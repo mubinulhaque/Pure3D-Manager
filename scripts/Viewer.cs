@@ -1,6 +1,7 @@
 using Godot;
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 public partial class Viewer : Control
 {
@@ -9,7 +10,13 @@ public partial class Viewer : Control
 	[Export]
 	private Tree _tree; // Displays the chunks of a P3D file in a suitable hierarchy
 	[Export]
-	private View3D _view3d; // Used for viewing 3D objects from P3D files
+	private TextureRect _view2D; // Used for viewing textures
+	[Export]
+	private Container _view2DParent; // Container parent of the 2D TextureRect
+	[Export]
+	private View3D _view3D; // Used for viewing 3D objects from P3D files
+	[Export]
+	private SubViewportContainer _view3DParent; // Container parent of the 3D viewport
 	[Export]
 	private Button _exportButton; // Used for exporting assets
 
@@ -22,9 +29,13 @@ public partial class Viewer : Control
 	// Stores glTF data
 	private GltfState _state = null;
 	// Collection of each 3D item in the tree and their associated 3D scene
+	private readonly Dictionary<TreeItem, Pure3D.Chunks.Image> _viewables2d = new Dictionary<TreeItem, Pure3D.Chunks.Image>();
+	// Collection of each 3D item in the tree and their associated 3D scene
 	private readonly Dictionary<TreeItem, Node3D> _viewables3d = new Dictionary<TreeItem, Node3D>();
+	// Texture that is currently being viewed and can be exported
+	private Pure3D.Chunks.Image _currentTexture = null;
 	// Node3D that is currently being viewed and can be exported
-	private Node3D _currentNode = null;
+	private Node3D _currentNode3D = null;
 
 	// Load the P3D file at the specified path
 	private void OnFilenameSubmitted(String newText) {
@@ -63,7 +74,7 @@ public partial class Viewer : Control
 					// Add the Skeleton to the dictionary
 					_viewables3d.Add(
 						LoadChunk(child, item),
-						_view3d.LoadSkeleton((Pure3D.Chunks.Skeleton)child)
+						_view3D.LoadSkeleton((Pure3D.Chunks.Skeleton)child)
 					);
 					break;
 				
@@ -110,7 +121,7 @@ public partial class Viewer : Control
 		_state = new GltfState();
 
 		// Store Godot data as glTF in the state
-		_document.AppendFromScene(_currentNode, _state);
+		_document.AppendFromScene(_currentNode3D, _state);
 
 		// Show a File Dialog for the user to select where to save the glTF data
 		DisplayServer.FileDialogShow(
@@ -161,19 +172,36 @@ public partial class Viewer : Control
 	// Make the associated scene viewable when a TreeItem is selected
 	private void OnItemSelected() {
 		// Make the current node invisible
-		if (_currentNode != null) _currentNode.Visible = false; 
+		if (_currentNode3D != null) _currentNode3D.Visible = false;
 
 		// Make the selected item's associated Node visible
 		if (_viewables3d.ContainsKey(_tree.GetSelected()))
 		{
 			// If the selected TreeItem is associated with a Node3D
 			// Enable the export button to export the associated Node3D
-			// And make said Node3D visible
 			_exportButton.Disabled = false;
 			_exportButton.Text = "Export as glTF";
+
+			// And make said Node3D visible
 			TreeItem item = _tree.GetSelected();
 			_viewables3d[item].Visible = true;
-			_currentNode = _viewables3d[item];
+			_currentNode3D = _viewables3d[item];
+			
+			_view2DParent.Visible = false;
+			_view3DParent.Visible = true;
+		} else if (_viewables2d.ContainsKey(_tree.GetSelected()))
+		{
+			// If the selected TreeItem is associated with a texture
+			// Enable the export button to export the associated texture
+			_exportButton.Disabled = false;
+			_exportButton.Text = "Export as PNG";
+
+			// And make said texture visible
+			TreeItem item = _tree.GetSelected();
+			_currentTexture = _viewables2d[item];
+
+			_view2DParent.Visible = true;
+			_view3DParent.Visible = false;
 		} else
 		{
 			// If the selected TreeItem is not associated with any Node

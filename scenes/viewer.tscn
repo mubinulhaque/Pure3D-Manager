@@ -15,7 +15,7 @@ sky = SubResource("Sky_yya8i")
 [sub_resource type="BoxMesh" id="BoxMesh_myhq7"]
 size = Vector3(100, 1, 100)
 
-[node name="Viewer" type="HSplitContainer" node_paths=PackedStringArray("_errorMessage", "_tree", "_view3d", "_exportButton")]
+[node name="Viewer" type="HSplitContainer" node_paths=PackedStringArray("_errorMessage", "_tree", "_view2D", "_view2DParent", "_view3D", "_view3DParent", "_exportButton")]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -24,7 +24,10 @@ grow_vertical = 2
 script = ExtResource("1_exgkj")
 _errorMessage = NodePath("LeftSide/ErrorMessage")
 _tree = NodePath("LeftSide/Tree")
-_view3d = NodePath("RightSide/SubViewportContainer/View3D")
+_view2D = NodePath("RightSide/View2DContainer/View2D")
+_view2DParent = NodePath("RightSide/View2DContainer")
+_view3D = NodePath("RightSide/View3DContainer/View3D")
+_view3DParent = NodePath("RightSide/View3DContainer")
 _exportButton = NodePath("RightSide/ExportButton")
 
 [node name="LeftSide" type="VBoxContainer" parent="."]
@@ -63,32 +66,41 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/separation = 5
 
-[node name="SubViewportContainer" type="SubViewportContainer" parent="RightSide"]
+[node name="View2DContainer" type="CenterContainer" parent="RightSide"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="View2D" type="TextureRect" parent="RightSide/View2DContainer"]
+layout_mode = 2
+stretch_mode = 5
+
+[node name="View3DContainer" type="SubViewportContainer" parent="RightSide"]
+visible = false
 layout_mode = 2
 size_flags_vertical = 3
 stretch = true
 
-[node name="View3D" type="SubViewport" parent="RightSide/SubViewportContainer"]
+[node name="View3D" type="SubViewport" parent="RightSide/View3DContainer"]
 handle_input_locally = false
 gui_disable_input = true
-size = Vector2i(354, 684)
-render_target_update_mode = 4
+size = Vector2i(354, 340)
+render_target_update_mode = 0
 script = ExtResource("1_ugrps")
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="RightSide/SubViewportContainer/View3D"]
+[node name="WorldEnvironment" type="WorldEnvironment" parent="RightSide/View3DContainer/View3D"]
 environment = SubResource("Environment_62ldi")
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="RightSide/SubViewportContainer/View3D"]
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="RightSide/View3DContainer/View3D"]
 transform = Transform3D(1, 0, 0, 0, 1.19249e-08, 1, 0, -1, 1.19249e-08, 0, 40, 0)
 
-[node name="Floor" type="MeshInstance3D" parent="RightSide/SubViewportContainer/View3D"]
+[node name="Floor" type="MeshInstance3D" parent="RightSide/View3DContainer/View3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -10, 0)
 mesh = SubResource("BoxMesh_myhq7")
 skeleton = NodePath("../../../..")
 
-[node name="Origin" type="Node3D" parent="RightSide/SubViewportContainer/View3D"]
+[node name="Origin" type="Node3D" parent="RightSide/View3DContainer/View3D"]
 
-[node name="Camera3D" type="Camera3D" parent="RightSide/SubViewportContainer/View3D/Origin"]
+[node name="Camera3D" type="Camera3D" parent="RightSide/View3DContainer/View3D/Origin"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 2)
 current = true
 
