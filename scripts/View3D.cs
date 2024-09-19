@@ -15,16 +15,18 @@ public partial class View3D : SubViewport
 	}
 
 	// Loads a Pure3D skeleton as a Skeleton3D
-	public void LoadSkeleton(Pure3D.Chunks.Skeleton bones)
+	public Node3D LoadSkeleton(Pure3D.Chunks.Skeleton bones)
 	{
 		// If this child is a Pure3D Skeleton
+		// Add a parent Node
+		Node3D parentNode = new Node3D();
+		parentNode.Name = bones.Name;
+		AddChild(parentNode);
+
 		// Add a new Skeleton3D
-		Node3D rootNode = new Node3D();
-		rootNode.Name = bones.Name;
 		Skeleton3D skeleton = new Skeleton3D();
 		skeleton.Name = bones.Name + "_skeleton";
-		AddChild(rootNode);
-		rootNode.AddChild(skeleton);
+		parentNode.AddChild(skeleton);
 		EmitSignal(SignalName.EnableExporting, skeleton);
 
 		// Define a placeholder mesh
@@ -60,7 +62,7 @@ public partial class View3D : SubViewport
 				attachment.BoneIdx = boneIndex;
 				attachment.SetUseExternalSkeleton(true);
 				attachment.SetExternalSkeleton("../" + skeleton.Name);
-				rootNode.AddChild(attachment);
+				parentNode.AddChild(attachment);
 				
 				MeshInstance3D indicator = new MeshInstance3D();
 				indicator.Mesh = sphere;
@@ -70,5 +72,9 @@ public partial class View3D : SubViewport
 				skeleton.ResetBonePoses();
 			}
 		}
+
+		// Return the parent node after making it invisible
+		parentNode.Visible = false;
+		return parentNode;
 	}
 }
