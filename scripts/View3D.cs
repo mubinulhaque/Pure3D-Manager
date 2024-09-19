@@ -55,7 +55,9 @@ public partial class View3D : SubViewport
 				attachment.Name = joint.Name;
 				attachment.BoneName = joint.Name;
 				attachment.BoneIdx = boneIndex;
-				skeleton.AddChild(attachment);
+				attachment.SetUseExternalSkeleton(true);
+				attachment.SetExternalSkeleton("../" + skeleton.Name);
+				AddChild(attachment);
 				
 				MeshInstance3D indicator = new MeshInstance3D();
 				indicator.Mesh = sphere;
