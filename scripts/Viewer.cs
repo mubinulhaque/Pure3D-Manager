@@ -29,15 +29,20 @@ public partial class Viewer : Control
 	// Stores glTF data
 	private GltfState _state = null;
 	// Collection of each 3D item in the tree and their associated 3D scene
-	private readonly Dictionary<TreeItem, Pure3D.Chunks.Image> _viewables2d = new Dictionary<TreeItem, Pure3D.Chunks.Image>();
+	private readonly Dictionary<TreeItem, Pure3D.Chunks.Image> _viewables2D = new Dictionary<TreeItem, Pure3D.Chunks.Image>();
 	// Collection of each 3D item in the tree and their associated 3D scene
-	private readonly Dictionary<TreeItem, Node3D> _viewables3d = new Dictionary<TreeItem, Node3D>();
+	private readonly Dictionary<TreeItem, Node3D> _viewables3D = new Dictionary<TreeItem, Node3D>();
 	// Texture that is currently being viewed and can be exported
 	private Pure3D.Chunks.Image _currentTexture = null;
+	// Image that displays the currently viewed texture
+	private Image _currentImage = new Image();
 	// Node3D that is currently being viewed and can be exported
 	private Node3D _currentNode3D = null;
 
-	// Load the P3D file at the specified path
+	/// <summary>
+	/// Load the P3D file at the specified path
+	/// </summary>
+	/// <param name="newText">Text of the LineEdit</param>
 	private void OnFilenameSubmitted(String newText) {
 		String filename = newText.StripEdges();
 
@@ -53,6 +58,12 @@ public partial class Viewer : Control
 		}
 	}
 
+	/// <summary>
+	/// Recursively loads a chunk and its children
+	/// </summary>
+	/// <param name="chunk">Root chunk</param>
+	/// <param name="parent">TreeItem to parent the child chunk to</param>
+	/// <returns></returns>
 	private TreeItem LoadChunk(Pure3D.Chunk chunk, TreeItem parent)
 	{
 		// Add a TreeItem and set its text to the chunk's string
@@ -68,11 +79,11 @@ public partial class Viewer : Control
 		{
 			switch (child)
 			{
-				case Pure3D.Chunks.Skeleton _:
+				case Pure3D.Chunks.Skeleton:
 					// If the child is a Skeleton
 					// Load the Skeleton's Joints
 					// Add the Skeleton to the dictionary
-					_viewables3d.Add(
+					_viewables3D.Add(
 						LoadChunk(child, item),
 						_view3D.LoadSkeleton((Pure3D.Chunks.Skeleton)child)
 					);
@@ -80,9 +91,10 @@ public partial class Viewer : Control
 				
 				case Pure3D.Chunks.ImageData:
 					// If the child is ImageData
-					if (chunk is Pure3D.Chunks.Image)
+					// And the parent is an Image
+					if (chunk is Pure3D.Chunks.Image image)
 					{
-						GD.Print("Found an image!");
+						_viewables2D.Add(item, image);
 					}
 					break;
 				
@@ -97,8 +109,10 @@ public partial class Viewer : Control
 		return item;
 	}
 
-	// Go through each TreeItem
-	// Toggle whether their short names or their normal names are displayed 
+	/// <summary>
+	/// Go through each TreeItem and toggle whether only the chunk's name is displayed
+	/// </summary>
+	/// <param name="toggled">Wheter to display the chunk's properties</param>
 	private void ToggleShortNames(bool toggled)
 	{
 		TreeItem root = _tree.GetRoot();
@@ -113,7 +127,9 @@ public partial class Viewer : Control
 		}
 	}
 
-	// Set up exporting 3D scenes
+	/// <summary>
+	/// Set up exporting 3D scenes
+	/// </summary>
 	private void Export2Gltf()
 	{
 		// Load a new glTF document and a new glTF state
@@ -135,7 +151,12 @@ public partial class Viewer : Control
 		);
 	}
 
-	// Finish exporting a 3D scene
+	/// <summary>
+	/// Finish exporting a 3D scene
+	/// </summary>
+	/// <param name="status">Whether the user wants to save the file</param>
+	/// <param name="selected_paths">Single-element array with the path the file should be saved to</param>
+	/// <param name="selected_filter_index">What file extension was chosen for the file</param>
 	private void SaveAsGltf(bool status, string[] selected_paths, int selected_filter_index)
 	{
 		if (status)
@@ -169,13 +190,16 @@ public partial class Viewer : Control
 		}
 	}
 
-	// Make the associated scene viewable when a TreeItem is selected
-	private void OnItemSelected() {
-		// Make the current node invisible
+	/// <summary>
+	/// Make the associated scene viewable when a TreeItem is selected
+	/// </summary>
+	private void OnItemSelected()
+	{
+		// Make the current Node3D invisible
 		if (_currentNode3D != null) _currentNode3D.Visible = false;
 
 		// Make the selected item's associated Node visible
-		if (_viewables3d.ContainsKey(_tree.GetSelected()))
+		if (_viewables3D.ContainsKey(_tree.GetSelected()))
 		{
 			// If the selected TreeItem is associated with a Node3D
 			// Enable the export button to export the associated Node3D
@@ -184,12 +208,12 @@ public partial class Viewer : Control
 
 			// And make said Node3D visible
 			TreeItem item = _tree.GetSelected();
-			_viewables3d[item].Visible = true;
-			_currentNode3D = _viewables3d[item];
+			_viewables3D[item].Visible = true;
+			_currentNode3D = _viewables3D[item];
 			
 			_view2DParent.Visible = false;
 			_view3DParent.Visible = true;
-		} else if (_viewables2d.ContainsKey(_tree.GetSelected()))
+		} else if (_viewables2D.ContainsKey(_tree.GetSelected()))
 		{
 			// If the selected TreeItem is associated with a texture
 			// Enable the export button to export the associated texture
@@ -198,7 +222,9 @@ public partial class Viewer : Control
 
 			// And make said texture visible
 			TreeItem item = _tree.GetSelected();
-			_currentTexture = _viewables2d[item];
+			_currentTexture = _viewables2D[item];
+			GD.Print(_currentTexture.ToString() + ":" + item.GetText(0));
+			_view2D.Texture = loadCurrentTexture();
 
 			_view2DParent.Visible = true;
 			_view3DParent.Visible = false;
@@ -207,6 +233,28 @@ public partial class Viewer : Control
 			// If the selected TreeItem is not associated with any Node
 			_exportButton.Disabled = true;
 			_exportButton.Text = "Select an exportable asset";
+		}
+	}
+
+	/// <summary>
+	/// Loads the currently viewed texture into a format that a TextureRect supports
+	/// </summary>
+	/// <returns>Returns </returns>
+	private ImageTexture loadCurrentTexture()
+	{
+		// Load the image from the chunk
+		Error err = _currentImage.LoadPngFromBuffer(_currentTexture.LoadImageData());
+
+		if (err == Error.Ok)
+		{
+			// If there are no problems loading the image
+			// Convert it into a ImageTexture and return it
+			return ImageTexture.CreateFromImage(_currentImage);
+		} else
+		{
+			// If there are problems loading the image
+			GD.PrintErr("Error while loading the current texture: " + err);
+			return null;
 		}
 	}
 }
