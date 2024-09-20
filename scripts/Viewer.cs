@@ -43,18 +43,34 @@ public partial class Viewer : Control
 	private Node3D _currentNode3D = null;
 
 	/// <summary>
-	/// Load the P3D file at the specified path
+	/// Load a P3D file
 	/// </summary>
-	/// <param name="newText">Text of the LineEdit</param>
+	/// <param name="newText">Path of the file</param>
 	private void OnFilenameSubmitted(String newText) {
 		String filename = newText.StripEdges();
 
 		if (FileAccess.FileExists(filename))
 		{
+			// Empty the tree
+			TreeItem root = _tree.GetRoot();
+
+			if (root != null)
+			{
+				while(root.GetChildCount() > 0)
+				{
+					root.GetFirstChild().Free();
+				}
+
+				root.Free();
+			}
+
+			// Load the file's chunks
 			var file = new Pure3D.File();
 			file.Load(filename);
-			_errorMessage.Text = "";
 			LoadChunk(file.RootChunk, null);
+
+			// Reset the error message
+			_errorMessage.Text = "";
 		} else if (_errorMessage != null)
 		{
 			_errorMessage.Text = "No file matches " + filename;
@@ -287,7 +303,6 @@ public partial class Viewer : Control
 			// And make said texture visible
 			TreeItem item = _tree.GetSelected();
 			_currentTexture = _viewables2D[item];
-			GD.Print(_currentTexture.ToString() + ":" + item.GetText(0));
 			_view2D.Texture = loadCurrentTexture();
 
 			_view2DParent.Visible = true;
