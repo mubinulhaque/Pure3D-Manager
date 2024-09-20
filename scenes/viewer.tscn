@@ -112,4 +112,4 @@ text = "Select an exportable asset"
 [connection signal="text_submitted" from="LeftSide/FilenameEdit" to="." method="OnFilenameSubmitted"]
 [connection signal="toggled" from="LeftSide/ShortNamesButton" to="." method="ToggleShortNames"]
 [connection signal="item_selected" from="LeftSide/Tree" to="." method="OnItemSelected"]
-[connection signal="pressed" from="RightSide/ExportButton" to="." method="Export2Gltf"]
+[connection signal="pressed" from="RightSide/ExportButton" to="." method="OnExportButtonClicked"]

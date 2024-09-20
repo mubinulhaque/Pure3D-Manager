@@ -1,6 +1,7 @@
 using Godot;
 using System;
 using System.Collections.Generic;
+using System.Reflection.Metadata;
 using System.Runtime.CompilerServices;
 
 public partial class Viewer : Control
@@ -24,6 +25,8 @@ public partial class Viewer : Control
 	private readonly Dictionary<TreeItem, Pure3D.Chunk> _chunks = new Dictionary<TreeItem, Pure3D.Chunk>();
 	// Formats and file extensions that a glTF file can be exported to
 	private string[] gltfFilters = {"*.gltf;glTF text file", "*.glb;glTF binary file"};
+	// Formats and file extensions that a texture can be exported to
+	private string[] texFilters = {"*.png;PNG texture file"};
 	// Converts a 3D scene into glTF data
 	private GltfDocument _document = null;
 	// Stores glTF data
@@ -124,6 +127,67 @@ public partial class Viewer : Control
 				var newName = toggled ? item.Value.ToShortString() : item.Value.ToString();
 				item.Key.SetText(0, newName);
 			}
+		}
+	}
+
+	/// <summary>
+	/// Decides whether to export a 3D scene or a texture
+	/// </summary>
+	private void OnExportButtonClicked()
+	{
+		if (_view2DParent.Visible)
+		{
+			Export2Png();
+		} else if (_view3DParent.Visible)
+		{
+			Export2Gltf();
+		}
+	}
+
+	/// <summary>
+	/// Set up exporting textures
+	/// </summary>
+	private void Export2Png()
+	{
+		// Show a File Dialog for the user to select where to save the texture
+		DisplayServer.FileDialogShow(
+			"Save as PNG",
+			DirAccess.GetDriveName(0),
+			"new_texture.png",
+			true,
+			DisplayServer.FileDialogMode.SaveFile,
+			texFilters,
+			new Callable(this, MethodName.SaveAsPng)
+		);
+	}
+
+	/// <summary>
+	/// Finish exporting a texture
+	/// </summary>
+	/// <param name="status">Whether the user wants to save the file</param>
+	/// <param name="selected_paths">Single-element array with the path the file should be saved to</param>
+	/// <param name="selected_filter_index">What file extension was chosen for the file</param>
+	private void SaveAsPng(bool status, string[] selected_paths, int selected_filter_index)
+	{
+		if (status)
+		{
+			// If the user wants to save the file
+			// Get the first path they want to save to
+			// As the array only contains one element
+			string path = selected_paths[0];
+
+			// If the user saved the file with an incorrect extension
+			if (!path.EndsWith(".png"))
+			{
+				path += ".png";
+			}
+			
+			// Write the file
+			_view2D.Texture.GetImage().SavePng(path);
+		} else
+		{
+			// If the user cancelled the saving
+			GD.Print("Cancelled saving the glTF file!");
 		}
 	}
 
