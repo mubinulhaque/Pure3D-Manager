@@ -1,6 +1,5 @@
 ﻿using System.IO;
 using System.Text;
-using System.Xml.Linq;
 
 namespace Pure3D.Chunks
 {
@@ -108,7 +107,7 @@ namespace Pure3D.Chunks
         public ushort Red;
         public ushort Green;
         public ushort Blue;
-        public ushort Unknown;
+        public ushort Alpha;
 
         public ShaderColourParam(File file, uint type) : base(file, type)
         {
@@ -121,7 +120,7 @@ namespace Pure3D.Chunks
             Red = reader.ReadByte();
             Green = reader.ReadByte();
             Blue = reader.ReadByte();
-            Unknown = reader.ReadByte(); // Unclear what this byte is for, but without reading it, the program throws an error
+            Alpha = reader.ReadByte();
         }
 
         public int getRedComponent() {
@@ -139,7 +138,7 @@ namespace Pure3D.Chunks
         public override string ToString()
         {
             // Returns the name of the parameter and the colour assigned to it in RGB format (0-255)
-            return $"{Param} Shader Colour Parameter: ({Red}, {Green}, {Blue})";
+            return $"{Param} Shader Colour Parameter: ({Red}, {Green}, {Blue}, {Alpha})";
         }
 
         public override string ToShortString()
