@@ -42,24 +42,8 @@ namespace Pure3D.Chunks
     {
         /// <summary>
         /// <para>Number from 0 to 15 that determines the object of the Locator</para>
-        /// <para><c>0</c> - Triggers events</para>
-        /// <para><c>1</c> - Triggers scripts</para>
-        /// <para><c>2</c> - Wasps, gag models and gag triggers</para>
-        /// <para><c>3</c> - Cars and characters</para>
-        /// <para><c>4</c> - Splines</para>
-        /// <para><c>5</c> - Loads/unloads specific parts of the world</para>
-        /// <para><c>6</c> - Occlusion zones</para>
-        /// <para><c>7</c> - Interior entrances</para>
-        /// <para><c>8</c> - Player's rotation upon entering an interior</para>
-        /// <para><c>9</c> - Creates an <c>Action Button</c></para>
-        /// <para><c>10</c> - FOV</para>
-        /// <para><c>11</c> - Unused</para>
-        /// <para><c>12</c> - Static cameras</para>
-        /// <para><c>13</c> - Changes active <c>Ped Group</c></para>
-        /// <para><c>14</c> - Coins</para>
-        /// <para><c>15</c> - Spawns a Wasp Camera at a Type 2 Locator</para>
         /// </summary>
-        public uint LocatorType;
+        public Types LocatorType;
         /// <summary>
         /// Amount of Trigger Volumes attached
         /// </summary>
@@ -86,7 +70,7 @@ namespace Pure3D.Chunks
             BinaryReader reader = new BinaryReader(stream);
             base.ReadHeader(stream, length);
 
-            LocatorType = reader.ReadUInt32();
+            LocatorType = (Types)reader.ReadUInt32();
             DataSize = reader.ReadUInt32();
             Data = new Locator2Data[DataSize];
 
@@ -112,6 +96,56 @@ namespace Pure3D.Chunks
         public override string ToShortString()
         {
             return "Locator 2";
+        }
+
+        public enum Types : uint
+        {
+            /// <summary>
+            /// Triggers events
+            /// </summary>
+            EVENT,
+            /// <summary>
+            /// Triggers scripts
+            /// </summary>
+            SCRIPT,
+            /// <summary>
+            /// Wasps, gag models and gag triggers
+            /// </summary>
+            WASP_GAG,
+            /// <summary>
+            /// Cars and characters
+            /// </summary>
+            CAR_CHAR,
+            SPLINE,
+            /// <summary>
+            /// Loads/unloads specific parts of the world
+            /// </summary>
+            WORLD_LOADING,
+            OCCLUSION,
+            INTERIOR,
+            /// <summary>
+            /// Defines player's rotation upon entering an interior
+            /// </summary>
+            PLAYER_ROT,
+            /// <summary>
+            /// Creates an <c>Action Button</c>
+            /// </summary>
+            ACTION_BUTTON,
+            FOV,
+            /// <summary>
+            /// Unused in Hit & Run
+            /// </summary>
+            UNUSED,
+            CAMERA,
+            /// <summary>
+            /// Changes active <c>Ped Group</c>
+            /// </summary>
+            PED,
+            COIN,
+            /// <summary>
+            /// Spawns a Wasp Camera at a <c>WASP_GAG</c> Locator
+            /// </summary>
+            WASP_SPAWN
         }
     }
 
