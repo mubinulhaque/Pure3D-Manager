@@ -122,6 +122,12 @@ public partial class Viewer : Control
 					break;
 			}
 		}
+		
+		// Collapse all child chunks of the Root chunk
+		if (parent != null)
+		{
+			if (parent.GetText(0) == "Root") item.Collapsed = true;
+		}
 
 		return item;
 	}
