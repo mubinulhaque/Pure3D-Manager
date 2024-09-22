@@ -19,16 +19,7 @@ namespace Pure3D.Chunks
 
         public override string ToString()
         {
-            if (unknownType == 50331653)
-            {
-                // Currently Locators cannot be created as a Chunk,
-                // so this is just to let the user know that it is there
-                // (check the Locator class for more detail)
-                return $"Locator (TypeID: {unknownType}) (Len: {Data.Length})";
-            } else
-            {
-                return $"Unknown Chunk (TypeID: {unknownType}) (Len: {Data.Length})";
-            }
+            return $"Unknown Chunk (TypeID: {unknownType} (0x{unknownType})) (Len: {Data.Length})";
         }
 
         public override string ToShortString()
