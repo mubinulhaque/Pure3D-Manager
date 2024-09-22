@@ -31,13 +31,11 @@ namespace Pure3D.Chunks
             }
 
             Values = new string[NumberOfFrames];
-            reader.ReadByte();
+            
             for (int i = 0; i < NumberOfFrames; i++)
             {
-                Values[i] = Util.ZeroTerminate(Encoding.ASCII.GetString(reader.ReadBytes(17)));
+                Values[i] = Util.ReadString(reader);
             }
-
-            reader.ReadBytes(19); // Unsure what the last few bytes are for
         }
 
         public override string ToString()
