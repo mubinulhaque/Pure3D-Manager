@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using Pure3D.Chunks;
 
 namespace Pure3D
 {
@@ -62,7 +63,16 @@ namespace Pure3D
             uint chunkSize = reader.ReadUInt32();
 
             if (headerSize > chunkSize)
-                throw new Exception($"Header size {headerSize} greater then chunk size {chunkSize}.");
+            {
+                if (this is Unknown)
+                {
+                    throw new Exception($"Chunk {Type} (0x{Type:X}) header size {headerSize} greater then chunk size {chunkSize}.");
+                } else
+                {
+                    throw new Exception($"Chunk {ToShortString()} header size {headerSize} greater then chunk size {chunkSize}.");
+                }
+            }
+                
 
             if (!readChildren)
                 headerSize = chunkSize;

@@ -51,15 +51,9 @@ public partial class Viewer : Control
 		{
 			// Empty the tree
 			TreeItem root = _tree.GetRoot();
-
-			if (root != null)
-			{
-				while(root.GetChildCount() > 0)
-				{
-					root.GetFirstChild().Free();
-				}
-
+			if (root != null) {
 				root.Free();
+				_chunks.Clear();
 			}
 
 			// Load the file's chunks
