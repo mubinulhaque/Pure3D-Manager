@@ -4,6 +4,11 @@ namespace Pure3D
     {
         public float X;
         public float Y;
+
+        public override string ToString()
+        {
+            return $"({X}, {Y})";
+        }
     }
 
     public struct Vector3
@@ -11,6 +16,11 @@ namespace Pure3D
         public float X;
         public float Y;
         public float Z;
+
+        public override string ToString()
+        {
+            return $"({X}, {Y}, {Z})";
+        }
     }
 
     public struct Quaternion
@@ -27,6 +37,11 @@ namespace Pure3D
         public float Y;
         public float Z;
         public float W;
+
+        public override string ToString()
+        {
+            return $"({X}, {Y}, {Z}, {W})";
+        }
     }
 
     public struct Matrix
