@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using Godot;
 
 namespace Pure3D.Chunks
 {
@@ -14,9 +15,10 @@ namespace Pure3D.Chunks
         public override void ReadHeader(Stream stream, long length)
         {
             BinaryReader reader = new BinaryReader(stream);
-            base.ReadHeader(stream, length);
+            Name = Util.ReadString(new BinaryReader(stream));
             Version = reader.ReadUInt32();
             SkeletonName = Util.ReadString(reader);
+            GD.Print("Skeleton: " + SkeletonName);
             NumPrimGroups = reader.ReadUInt32();
         }
 
