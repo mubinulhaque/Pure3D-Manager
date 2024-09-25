@@ -25,12 +25,12 @@ namespace Pure3D.Chunks
 
         public override string ToString()
         {
-            return $"UV List (Channel: {Channel} - {UVs.Length})";
+            return $"UV List (Channel: {Channel}, {UVs.Length} UVs)";
         }
 
         public override string ToShortString()
         {
-            return "UV List";
+            return $"{UVs.Length} UVs";
         }
     }
 }

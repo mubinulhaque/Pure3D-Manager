@@ -29,7 +29,7 @@ namespace Pure3D.Chunks
 
         public override string ToShortString()
         {
-            return "Weight List";
+            return $"{Weights.Length} Weights";
         }
     }
 }

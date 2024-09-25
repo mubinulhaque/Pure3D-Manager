@@ -28,7 +28,7 @@ namespace Pure3D.Chunks
 
         public override string ToShortString()
         {
-            return "Normal List";
+            return $"{Normals.Length} Normals";
         }
     }
 }

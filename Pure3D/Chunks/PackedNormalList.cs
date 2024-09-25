@@ -26,7 +26,7 @@ namespace Pure3D.Chunks
 
         public override string ToShortString()
         {
-            return "Packed Normal List";
+            return $"{Normals.Length} Packed Normals";
         }
     }
 }

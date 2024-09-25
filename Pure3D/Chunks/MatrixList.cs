@@ -33,7 +33,7 @@ namespace Pure3D.Chunks
 
         public override string ToShortString()
         {
-            return "Matrix List";
+            return $"{Matrices.Length} Matrices";
         }
     }
 }

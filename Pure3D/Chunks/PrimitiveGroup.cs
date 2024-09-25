@@ -32,7 +32,7 @@ namespace Pure3D.Chunks
 
         public override string ToString()
         {
-            return $"Primitive {PrimitiveType} Group {ShaderName}";
+            return $"Primitive {PrimitiveType} Group {ShaderName} (Contains {VertexType})";
         }
 
         public enum PrimitiveTypes : uint
@@ -59,7 +59,7 @@ namespace Pure3D.Chunks
 
         public override string ToShortString()
         {
-            return "Primitive Shader Group";
+            return "Primitive Group";
         }
     }
 }

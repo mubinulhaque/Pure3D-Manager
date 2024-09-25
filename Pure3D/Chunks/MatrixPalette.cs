@@ -28,7 +28,7 @@ namespace Pure3D.Chunks
 
         public override string ToShortString()
         {
-            return "Matrix Palette";
+            return $"{Matrices.Length} Palette Matrices";
         }
     }
 }

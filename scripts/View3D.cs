@@ -1,7 +1,5 @@
 using Godot;
-using System;
-using System.Collections.Generic;
-using System.Security.Cryptography.X509Certificates;
+using Pure3D;
 
 public partial class View3D : SubViewport
 {
@@ -34,21 +32,20 @@ public partial class View3D : SubViewport
 		foreach (var child in bones.Children)
 		{
 			// For every bone in the Pure3D Skeleton
-			if (child is Pure3D.Chunks.SkeletonJoint)
+			if (child is Pure3D.Chunks.SkeletonJoint joint)
 			{
 				// Add bone to Skeleton3D
-				Pure3D.Chunks.SkeletonJoint joint = (Pure3D.Chunks.SkeletonJoint)child;
 				int boneIndex = skeleton.AddBone(joint.Name);
-				if (boneIndex != joint.SkeletonParent) skeleton.SetBoneParent(boneIndex, ((int)joint.SkeletonParent));
+				if (boneIndex != joint.SkeletonParent) skeleton.SetBoneParent(boneIndex, (int)joint.SkeletonParent);
 
 				// Set the bone's rest pose
 				Pure3D.Matrix restPose = joint.RestPose;
-				 
+
 				Transform3D boneTransform = new Transform3D(new Basis(
-					new Vector3(restPose.M11, restPose.M12, restPose.M13),
-					new Vector3(restPose.M21, restPose.M22, restPose.M23),
-					new Vector3(restPose.M31, restPose.M32, restPose.M33)
-				), new Vector3(restPose.M41, restPose.M42, restPose.M43));
+					new Godot.Vector3(restPose.M11, restPose.M12, restPose.M13),
+					new Godot.Vector3(restPose.M21, restPose.M22, restPose.M23),
+					new Godot.Vector3(restPose.M31, restPose.M32, restPose.M33)
+				), new Godot.Vector3(restPose.M41, restPose.M42, restPose.M43));
 				skeleton.SetBoneRest(boneIndex, boneTransform);
 
 				// Add a primitive sphere to the bone to indicate its position
@@ -59,7 +56,7 @@ public partial class View3D : SubViewport
 				attachment.SetUseExternalSkeleton(true);
 				attachment.SetExternalSkeleton("../" + skeleton.Name);
 				parentNode.AddChild(attachment);
-				
+
 				MeshInstance3D indicator = new MeshInstance3D();
 				indicator.Mesh = sphere;
 				attachment.AddChild(indicator);
@@ -74,7 +71,41 @@ public partial class View3D : SubViewport
 		return parentNode;
 	}
 
-	public void LoadMesh(Pure3D.Chunks.Mesh mesh) {
-		GD.Print("Loading " + mesh.Name);
+	public void LoadMesh(Pure3D.Chunks.Mesh mesh)
+	{
+		GD.Print("Loading mesh " + mesh.Name);
+
+		// Iterate through the Mesh's children
+		foreach (Pure3D.Chunk chunk in mesh.Children)
+		{
+			if (chunk is Pure3D.Chunks.PrimitiveGroup prim)
+			{
+				// If the child is a Primitive Group
+				// Create a Surface Tool for generating the mesh
+				var st = new SurfaceTool();
+
+				// Set the Tool's Primitive Type
+				switch (prim.PrimitiveType)
+				{
+					case Pure3D.Chunks.PrimitiveGroup.PrimitiveTypes.TriangleList:
+						st.Begin(Mesh.PrimitiveType.Triangles);
+						break;
+
+					case Pure3D.Chunks.PrimitiveGroup.PrimitiveTypes.TriangleStrip:
+						st.Begin(Mesh.PrimitiveType.TriangleStrip);
+						break;
+
+					case Pure3D.Chunks.PrimitiveGroup.PrimitiveTypes.LineList:
+						st.Begin(Mesh.PrimitiveType.Lines);
+						break;
+
+					case Pure3D.Chunks.PrimitiveGroup.PrimitiveTypes.LineStrip:
+						st.Begin(Mesh.PrimitiveType.LineStrip);
+						break;
+				}
+
+
+			}
+		}
 	}
 }
