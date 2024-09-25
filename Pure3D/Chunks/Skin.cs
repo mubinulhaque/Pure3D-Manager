@@ -18,7 +18,6 @@ namespace Pure3D.Chunks
             Name = Util.ReadString(new BinaryReader(stream));
             Version = reader.ReadUInt32();
             SkeletonName = Util.ReadString(reader);
-            GD.Print("Skeleton: " + SkeletonName);
             NumPrimGroups = reader.ReadUInt32();
         }
 

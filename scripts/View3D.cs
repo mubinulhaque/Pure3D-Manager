@@ -73,4 +73,8 @@ public partial class View3D : SubViewport
 		parentNode.Visible = false;
 		return parentNode;
 	}
+
+	public void LoadMesh(Pure3D.Chunks.Mesh mesh) {
+		GD.Print("Loading " + mesh.Name);
+	}
 }

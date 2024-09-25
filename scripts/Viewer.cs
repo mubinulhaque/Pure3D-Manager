@@ -90,13 +90,13 @@ public partial class Viewer : Control
 		{
 			switch (child)
 			{
-				case Pure3D.Chunks.Skeleton:
+				case Pure3D.Chunks.Skeleton skel:
 					// If the child is a Skeleton
 					// Load the Skeleton's Joints
 					// Add the Skeleton to the dictionary
 					_viewables3D.Add(
 						LoadChunk(child, item),
-						_view3D.LoadSkeleton((Pure3D.Chunks.Skeleton)child)
+						_view3D.LoadSkeleton(skel)
 					);
 					break;
 				
@@ -107,6 +107,14 @@ public partial class Viewer : Control
 					{
 						_viewables2D.Add(item, image);
 					}
+					break;
+				
+				case Pure3D.Chunks.Mesh mesh:
+					// If the child is a mesh
+					// Add it to the tree
+					// And build it in the 3D view
+					LoadChunk(child, item);
+					_view3D.LoadMesh(mesh);
 					break;
 				
 				default:
