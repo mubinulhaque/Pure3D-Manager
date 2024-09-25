@@ -115,7 +115,7 @@ namespace Pure3D.Chunks
             /// <summary>
             /// Cars and characters
             /// </summary>
-            CAR_CHAR,
+            CAR_START,
             SPLINE,
             /// <summary>
             /// Loads/unloads specific parts of the world
@@ -124,13 +124,13 @@ namespace Pure3D.Chunks
             OCCLUSION,
             INTERIOR,
             /// <summary>
-            /// Defines player's rotation upon entering an interior
+            /// Defines player's position upon entering an interior
             /// </summary>
-            PLAYER_ROT,
+            PLAYER_POS,
             /// <summary>
-            /// Creates an <c>Action Button</c>
+            /// Creates an Action that the player can trigger
             /// </summary>
-            ACTION_BUTTON,
+            ACTION,
             FOV,
             /// <summary>
             /// Unused in Hit & Run
