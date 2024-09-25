@@ -43,7 +43,7 @@ namespace Pure3D.Chunks
 
         public override string ToString()
         {
-            return $"Billboard Quad: {Name}";
+            return $"Billboard Quad: {Name} ({Width}x{Height})";
         }
 
         public override string ToShortString()

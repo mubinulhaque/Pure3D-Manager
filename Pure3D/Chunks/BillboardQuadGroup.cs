@@ -30,12 +30,12 @@ namespace Pure3D.Chunks
 
         public override string ToString()
         {
-            return $"Billboard Quad Group: {Name}";
+            return $"Billboard Quad Group: {Name}, {NumQuads} Quads";
         }
 
         public override string ToShortString()
         {
-            return "Billboard Quad Group";
+            return $"{NumQuads} Billboard Quads";
         }
     }
 }

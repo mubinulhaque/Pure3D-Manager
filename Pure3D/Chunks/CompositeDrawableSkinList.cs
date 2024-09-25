@@ -23,7 +23,7 @@ namespace Pure3D.Chunks
 
         public override string ToShortString()
         {
-            return "Composite Drawable Skin List";
+            return $"{NumElements} Composite Drawable Skins";
         }
     }
 }

@@ -23,7 +23,7 @@ namespace Pure3D.Chunks
 
         public override string ToShortString()
         {
-            return "Composite Drawable Prop List";
+            return $"{NumElements} Composite Drawable Props";
         }
     }
 }

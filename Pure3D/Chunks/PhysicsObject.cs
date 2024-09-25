@@ -28,7 +28,7 @@ namespace Pure3D.Chunks
 
         public override string ToString()
         {
-            return $"Physics Object: {Name}";
+            return $"Physics Object: {Name} ({NumJoints} Joints)";
         }
 
         public override string ToShortString()
