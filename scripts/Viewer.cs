@@ -116,8 +116,10 @@ public partial class Viewer : Control
 					// If the child is a mesh
 					// Add it to the tree
 					// And build it in the 3D view
-					LoadChunk(child, item);
-					_view3D.LoadMesh(mesh);
+					_viewables3D.Add(
+						LoadChunk(child, item),
+						_view3D.LoadMesh(mesh)
+					);
 					break;
 
 				default:

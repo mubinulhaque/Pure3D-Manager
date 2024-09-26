@@ -81,6 +81,7 @@ public partial class View3D : SubViewport
 		// Add a Node to the scene tree for the mesh to be under
 		Node3D parent = new();
 		parent.Name = "M_" + mesh.Name;
+		parent.Visible = false;
 		AddChild(parent);
 
 		// Iterate through the Mesh's children
@@ -174,7 +175,6 @@ public partial class View3D : SubViewport
 				MeshInstance3D newInstance = new();
 				newInstance.Name = prim.ShaderName + "_" + chunk.GetHashCode();
 				newInstance.Mesh = newMesh;
-				newInstance.Visible = false;
 				parent.AddChild(newInstance);
 			}
 		}
