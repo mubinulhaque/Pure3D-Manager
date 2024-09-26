@@ -19,7 +19,7 @@ public partial class View3D : SubViewport
 		// If this child is a Pure3D Skeleton
 		// Add a parent Node
 		Node3D parentNode = new Node3D();
-		parentNode.Name = bones.Name;
+		parentNode.Name = "Skel_" + bones.Name;
 		AddChild(parentNode);
 
 		// Add a new Skeleton3D
@@ -76,9 +76,12 @@ public partial class View3D : SubViewport
 		return parentNode;
 	}
 
-	public void LoadMesh(Pure3D.Chunks.Mesh mesh)
+	public Node3D LoadMesh(Pure3D.Chunks.Mesh mesh)
 	{
-		GD.Print("Loading mesh " + mesh.Name);
+		// Add a Node to the scene tree for the mesh to be under
+		Node3D parent = new();
+		parent.Name = "M_" + mesh.Name;
+		AddChild(parent);
 
 		// Iterate through the Mesh's children
 		foreach (Pure3D.Chunk chunk in mesh.Children)
@@ -168,11 +171,14 @@ public partial class View3D : SubViewport
 
 				// Finish generating the new Mesh and add it to the scene
 				newMesh = st.Commit();
-				MeshInstance3D newNode = new();
-				newNode.Name = prim.ShaderName;
-				newNode.Mesh = newMesh;
-				AddChild(newNode);
+				MeshInstance3D newInstance = new();
+				newInstance.Name = prim.ShaderName + "_" + chunk.GetHashCode();
+				newInstance.Mesh = newMesh;
+				newInstance.Visible = false;
+				parent.AddChild(newInstance);
 			}
 		}
+
+		return parent;
 	}
 }
