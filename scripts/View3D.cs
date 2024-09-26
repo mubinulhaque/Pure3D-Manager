@@ -114,7 +114,7 @@ public partial class View3D : SubViewport
 				// Get normals
 				var normals = (NormalList)prim.Children.Find(x => x is NormalList);
 				var colours = (ColourList)prim.Children.Find(x => x is ColourList);
-				var weights = (WeightList)prim.Children.Find(x => x is WeightList);
+				var uvs = (UVList)prim.Children.Find(x => x is UVList);
 				var verts = (PositionList)prim.Children.Find(x => x is PositionList);
 
 				for (uint i = 0; i < prim.NumVertices; i++)
@@ -133,14 +133,35 @@ public partial class View3D : SubViewport
 						st.SetColor(new Color(colour));
 					}
 
+					// Set the UV of the next vertex
+					if (uvs != null)
+					{
+						Pure3D.Vector2 uv = uvs.UVs[i];
+						st.SetUV(new Godot.Vector2(uv.X, uv.Y));
+					}
+
 					// Add the next vertex
 					Pure3D.Vector3 vert = verts.Positions[i];
 					st.AddVertex(new Godot.Vector3(vert.X, vert.Y, vert.Z));
 				}
 
+				// Add tangents to the Mesh
+				if (normals != null && uvs != null) st.GenerateTangents();
+
+				// Add indices
+				var indices = (IndexList)prim.Children.Find(x => x is IndexList);
+
+				if (indices != null)
+					foreach (uint index in indices.Indices)
+					{
+						st.SetSmoothGroup(index);
+						st.AddIndex((int)index);
+					}
+
 				// Finish generating the new Mesh and add it to the scene
 				newMesh = st.Commit();
 				MeshInstance3D newNode = new();
+				newNode.Name = prim.ShaderName;
 				newNode.Mesh = newMesh;
 				AddChild(newNode);
 			}
