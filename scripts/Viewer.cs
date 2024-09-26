@@ -6,14 +6,87 @@ using Pure3D;
 using Pure3D.Chunks;
 
 /// <summary>
-/// Displays textures and 3D scenes
+/// Displays Pure3D textures and 3D assets
 /// </summary>
 public partial class Viewer : Node
 {
+	#region Export Variables
 	[Export]
-	private SubViewport _3d_root;
+	private Container _2d_root; // Scene used to display 2D assets
+	[Export]
+	private TextureRect _texture_view; // Used for viewing textures
+	[Export]
+	private SubViewportContainer _3d_root; // Scene used to display 3D assets
+	[Export]
+	private SubViewport _3d_view; // Used for viewing 3D scenes
+	#endregion
 
-	// Loads a Pure3D skeleton as a Skeleton3D
+	#region Private Variables
+	// Collection of each Pure3D Image and their associated texture
+	private readonly Dictionary<Pure3D.Chunks.Image, Godot.ImageTexture> _textures = new();
+	// Collection of each 3D item in the tree and their associated 3D scene
+	private readonly Dictionary<TreeItem, Node3D> _viewables3D = new();
+	// Node3D that is currently being viewed and can be exported
+	private Node3D _currentNode3D = null;
+	// Formats and file extensions that a glTF file can be exported to
+	private string[] _gltfFilters = { "*.gltf;glTF text file", "*.glb;glTF binary file" };
+	// Formats and file extensions that a texture can be exported to
+	private string[] _texFilters = { "*.png;PNG texture file" };
+	// Converts a 3D scene into glTF data
+	private GltfDocument _document = null;
+	// Stores glTF data
+	private GltfState _state = null;
+	#endregion
+
+	/// <summary>
+	/// Views a selected chunk in the appropriate viewer
+	/// </summary>
+	/// <param name="chunk">Pure3D chunk to be viewed</param>
+	public void ViewChunk(Pure3D.Chunk chunk)
+	{
+		// TODO: Change viewer based on chunk
+		GD.Print(chunk.ToShortString() + " is clicked!");
+	}
+
+	#region 2D Chunk Loading
+	/// <summary>
+	/// Views a Pure3D Image in a Texture Rect
+	/// </summary>
+	/// <param name="image">Pure3D Image chunk to be viewed</param>
+	public void LoadImage(Pure3D.Chunks.Image image)
+	{
+		if (!_textures.ContainsKey(image))
+		{
+			// If the Image has not been loaded yet
+			// Load the Image from the chunk
+			Godot.Image newImage = new Godot.Image();
+			Error err = newImage.LoadPngFromBuffer(image.LoadImageData());
+
+			if (err == Error.Ok)
+			{
+				// If there are no problems loading the image
+				// Convert it into a ImageTexture and add it to the dictionary
+				_textures.Add(image, ImageTexture.CreateFromImage(newImage));
+			}
+			else
+			{
+				// If there are problems loading the image
+				GD.PrintErr("Error while loading the current texture: " + err);
+				return;
+			}
+		}
+
+		// Display the associated ImageTexture
+		_texture_view.Texture = _textures[image];
+	}
+	#endregion
+
+	#region 3D Chunk Loading
+	/// <summary>
+	/// Loads a Pure3D Skeleton as a Skeleton3D
+	/// </summary>
+	/// <param name="bones">Pure3D Skeleton to be loaded</param>
+	/// <returns></returns>
 	public Node3D LoadSkeleton(Pure3D.Chunks.Skeleton bones)
 	{
 		// If this child is a Pure3D Skeleton
@@ -76,6 +149,11 @@ public partial class Viewer : Node
 		return parentNode;
 	}
 
+	/// <summary>
+	/// Loads a Pure3D Mesh as a group of MeshInstance3Ds
+	/// </summary>
+	/// <param name="bones">Pure3D Mesh to be loaded</param>
+	/// <returns></returns>
 	public Node3D LoadMesh(Pure3D.Chunks.Mesh mesh)
 	{
 		// Add a Node to the scene tree for the mesh to be under
@@ -181,4 +259,120 @@ public partial class Viewer : Node
 
 		return parent;
 	}
+	#endregion
+
+	#region Exporting
+	/// <summary>
+	/// Set up exporting textures
+	/// </summary>
+	private void Export2Png()
+	{
+		// Show a File Dialog for the user to select where to save the texture
+		DisplayServer.FileDialogShow(
+			"Save as PNG",
+			DirAccess.GetDriveName(0),
+			"new_texture.png",
+			true,
+			DisplayServer.FileDialogMode.SaveFile,
+			_texFilters,
+			new Callable(this, MethodName.SaveAsPng)
+		);
+	}
+
+	/// <summary>
+	/// Finish exporting a texture
+	/// </summary>
+	/// <param name="status">Whether the user wants to save the file</param>
+	/// <param name="selected_paths">Single-element array with the path the file should be saved to</param>
+	/// <param name="selected_filter_index">What file extension was chosen for the file</param>
+	private void SaveAsPng(bool status, string[] selected_paths, int selected_filter_index)
+	{
+		if (status)
+		{
+			// If the user wants to save the file
+			// Get the first path they want to save to
+			// As the array only contains one element
+			string path = selected_paths[0];
+
+			// If the user saved the file with an incorrect extension
+			if (!path.EndsWith(".png"))
+			{
+				path += ".png";
+			}
+
+			// Write the file
+			_texture_view.Texture.GetImage().SavePng(path);
+		}
+		else
+		{
+			// If the user cancelled the saving
+			GD.Print("Cancelled saving the glTF file!");
+		}
+	}
+
+	/// <summary>
+	/// Set up exporting 3D scenes
+	/// </summary>
+	private void Export2Gltf()
+	{
+		// Load a new glTF document and a new glTF state
+		_document = new GltfDocument();
+		_state = new GltfState();
+
+		// Store Godot data as glTF in the state
+		_document.AppendFromScene(_3d_view, _state);
+
+		// Show a File Dialog for the user to select where to save the glTF data
+		DisplayServer.FileDialogShow(
+			"Save as glTF file",
+			DirAccess.GetDriveName(0),
+			"new_model.gltf",
+			true,
+			DisplayServer.FileDialogMode.SaveFile,
+			_gltfFilters,
+			new Callable(this, MethodName.SaveAsGltf)
+		);
+	}
+
+	/// <summary>
+	/// Finish exporting a 3D scene
+	/// </summary>
+	/// <param name="status">Whether the user wants to save the file</param>
+	/// <param name="selected_paths">Single-element array with the path the file should be saved to</param>
+	/// <param name="selected_filter_index">What file extension was chosen for the file</param>
+	private void SaveAsGltf(bool status, string[] selected_paths, int selected_filter_index)
+	{
+		if (status)
+		{
+			// If the user wants to save the file
+			// Get the first path they want to save to
+			// As the array only contains one element
+			string path = selected_paths[0];
+
+			// If the user saved the file with an incorrect extension
+			if (!path.EndsWith(".gltf") && !path.EndsWith(".glb"))
+			{
+				// Add the correct extension
+				if (selected_filter_index == 0)
+				{
+					// If the user selected .gltf
+					path += ".gltf";
+				}
+				else
+				{
+					// If the user selected .glb
+					path += ".glb";
+				}
+			}
+
+			// Write the file
+			_document.WriteToFilesystem(_state, path);
+		}
+		else
+		{
+			// If the user cancelled the saving
+			GD.Print("Cancelled saving the glTF file!");
+		}
+	}
+	#endregion
 }

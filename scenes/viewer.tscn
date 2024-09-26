@@ -12,7 +12,7 @@ sky_material = SubResource("ProceduralSkyMaterial_4xl47")
 background_mode = 2
 sky = SubResource("Sky_yya8i")
 
-[node name="Manager" type="HSplitContainer" node_paths=PackedStringArray("_errorMessage", "_tree", "_view2D", "_view2DParent", "_view3D", "_view3DParent", "_exportButton")]
+[node name="Manager" type="HSplitContainer" node_paths=PackedStringArray("_errorMessage", "_chunk_tree", "_viewer")]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -20,12 +20,8 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_exgkj")
 _errorMessage = NodePath("LeftSide/ErrorMessage")
-_tree = NodePath("LeftSide/ChunkTree")
-_view2D = NodePath("RightSide/ViewContainer/View2DContainer/View2D")
-_view2DParent = NodePath("RightSide/ViewContainer/View2DContainer")
-_view3D = NodePath("RightSide/ViewContainer")
-_view3DParent = NodePath("RightSide/ViewContainer/View3DContainer/ViewportContainer")
-_exportButton = NodePath("RightSide/ViewContainer/View3DContainer/ExportButton")
+_chunk_tree = NodePath("LeftSide/ChunkTree")
+_viewer = NodePath("RightSide/ViewContainer")
 
 [node name="LeftSide" type="VBoxContainer" parent="."]
 layout_mode = 2
@@ -63,11 +59,14 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/separation = 5
 
-[node name="ViewContainer" type="VBoxContainer" parent="RightSide" node_paths=PackedStringArray("_3d_root")]
+[node name="ViewContainer" type="VBoxContainer" parent="RightSide" node_paths=PackedStringArray("_2d_root", "_texture_view", "_3d_root", "_3d_view")]
 layout_mode = 2
 size_flags_vertical = 3
 script = ExtResource("2_vppfs")
-_3d_root = NodePath("View3DContainer/ViewportContainer/View3D")
+_2d_root = NodePath("View2DContainer")
+_texture_view = NodePath("View2DContainer/View2D")
+_3d_root = NodePath("View3DContainer/ViewportContainer")
+_3d_view = NodePath("View3DContainer/ViewportContainer/View3D")
 
 [node name="View2DContainer" type="CenterContainer" parent="RightSide/ViewContainer"]
 visible = false
@@ -127,7 +126,7 @@ text = "+"
 [node name="ExportButton" type="Button" parent="RightSide/ViewContainer/View3DContainer"]
 layout_mode = 2
 disabled = true
-text = "Select an exportable chunk"
+text = "Export as glTF"
 
 [node name="DetailsContainer" type="VBoxContainer" parent="RightSide"]
 layout_mode = 2
