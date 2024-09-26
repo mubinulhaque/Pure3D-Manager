@@ -68,14 +68,18 @@ _texture_view = NodePath("View2DContainer/View2D")
 _3d_root = NodePath("View3DContainer")
 _3d_view = NodePath("View3DContainer/ViewportContainer/View3D")
 
-[node name="View2DContainer" type="CenterContainer" parent="RightSide/ViewContainer"]
+[node name="View2DContainer" type="VBoxContainer" parent="RightSide/ViewContainer"]
 visible = false
 layout_mode = 2
-size_flags_vertical = 3
 
 [node name="View2D" type="TextureRect" parent="RightSide/ViewContainer/View2DContainer"]
 layout_mode = 2
+size_flags_vertical = 3
 stretch_mode = 5
+
+[node name="ExportButton" type="Button" parent="RightSide/ViewContainer/View2DContainer"]
+layout_mode = 2
+text = "Export as png"
 
 [node name="View3DContainer" type="VBoxContainer" parent="RightSide/ViewContainer"]
 visible = false
@@ -126,7 +130,6 @@ text = "+"
 
 [node name="ExportButton" type="Button" parent="RightSide/ViewContainer/View3DContainer"]
 layout_mode = 2
-disabled = true
 text = "Export as glTF"
 
 [node name="DetailsContainer" type="VBoxContainer" parent="RightSide"]
@@ -136,3 +139,5 @@ size_flags_vertical = 3
 [connection signal="text_submitted" from="LeftSide/FilenameEdit" to="." method="OnFilenameSubmitted"]
 [connection signal="toggled" from="LeftSide/ShortNamesButton" to="." method="ToggleShortNames"]
 [connection signal="item_selected" from="LeftSide/ChunkTree" to="." method="OnItemSelected"]
+[connection signal="pressed" from="RightSide/ViewContainer/View2DContainer/ExportButton" to="RightSide/ViewContainer" method="Export2Png"]
+[connection signal="pressed" from="RightSide/ViewContainer/View3DContainer/ExportButton" to="RightSide/ViewContainer" method="Export2Gltf"]

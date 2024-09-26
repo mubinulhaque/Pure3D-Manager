@@ -370,7 +370,7 @@ public partial class Viewer : Node
 		else
 		{
 			// If the user cancelled the saving
-			GD.Print("Cancelled saving the glTF file!");
+			GD.Print("Cancelled saving the PNG file!");
 		}
 	}
 
@@ -384,7 +384,7 @@ public partial class Viewer : Node
 		_state = new GltfState();
 
 		// Store Godot data as glTF in the state
-		_document.AppendFromScene(_3d_view, _state);
+		_document.AppendFromScene(_currentNode3D, _state);
 
 		// Show a File Dialog for the user to select where to save the glTF data
 		DisplayServer.FileDialogShow(
