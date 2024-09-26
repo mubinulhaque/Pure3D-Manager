@@ -13,8 +13,8 @@ namespace Pure3D.Chunks
         public uint Width;
         public uint Height;
         public uint Bpp;
-        public uint Palettized;
-        public uint HasAlpha;
+        public bool Palettized;
+        public bool HasAlpha;
         public Formats Format;
 
         public Image(File file, uint type) : base(file, type)
@@ -29,8 +29,8 @@ namespace Pure3D.Chunks
             Width = reader.ReadUInt32();
             Height = reader.ReadUInt32();
             Bpp = reader.ReadUInt32();
-            Palettized = reader.ReadUInt32();
-            HasAlpha = reader.ReadUInt32();
+            Palettized = reader.ReadUInt32() == 1;
+            HasAlpha = reader.ReadUInt32() == 1;
             Format = (Formats)reader.ReadUInt32();
         }
 
@@ -69,8 +69,8 @@ namespace Pure3D.Chunks
                 if (child != null && Format == Formats.PNG) return child.Data;
                 else GD.PrintErr($"Image {Name}: invalid ImageData child!");
             }
-            
-            return new byte[] {};
+
+            return new byte[] { };
         }
     }
 }

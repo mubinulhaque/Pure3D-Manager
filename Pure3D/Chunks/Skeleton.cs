@@ -6,7 +6,7 @@ namespace Pure3D.Chunks
     public class Skeleton : Named
     {
         public uint Version;
-        protected uint NumJoints; // should be equal to # of children
+        protected uint NumJoints;
 
         public Skeleton(File file, uint type) : base(file, type)
         {
@@ -28,6 +28,11 @@ namespace Pure3D.Chunks
         public override string ToShortString()
         {
             return "Skeleton";
+        }
+
+        public string GetNumJoints()
+        {
+            return NumJoints.ToString();
         }
     }
 }

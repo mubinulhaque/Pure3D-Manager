@@ -15,6 +15,8 @@ public partial class Manager : Control
 	private Tree _chunk_tree; // Displays the chunks of a P3D file in a suitable hierarchy
 	[Export]
 	private Viewer _viewer; // Used for viewing assets
+	[Export]
+	public Detailer _details; // Used for viewing the details of a Chunk
 	#endregion
 
 	// Collection of each item in the tree and its associated chunk
@@ -107,5 +109,6 @@ public partial class Manager : Control
 	private void OnItemSelected()
 	{
 		_viewer.ViewChunk(_chunks[_chunk_tree.GetSelected()]);
+		_details.ViewChunk(_chunks[_chunk_tree.GetSelected()]);
 	}
 }

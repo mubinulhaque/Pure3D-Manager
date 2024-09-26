@@ -24,13 +24,7 @@ namespace Pure3D.Chunks
 
         public override string ToShortString()
         {
-            if (unknownType == 50331653)
-            {
-                return $"Locator";
-            } else
-            {
-                return $"Unknown Chunk";
-            }
+            return $"Chunk 0x{unknownType:X}";
         }
     }
 }

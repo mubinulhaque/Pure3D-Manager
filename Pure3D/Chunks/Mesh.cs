@@ -6,7 +6,7 @@ namespace Pure3D.Chunks
     public class Mesh : Named
     {
         public uint Version;
-        public uint NumPrimGroups; // should be equal to children.
+        public uint NumPrimGroups;
 
         public Mesh(File file, uint type) : base(file, type)
         {

@@ -6,6 +6,9 @@ namespace Pure3D.Chunks
     [ChunkType(65537)]
     public class Skin : Mesh
     {
+        /// <summary>
+        /// Name of the associated Skeleton
+        /// </summary>
         public string SkeletonName;
 
         public Skin(File file, uint type) : base(file, type)

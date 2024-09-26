@@ -1,7 +1,8 @@
-[gd_scene load_steps=6 format=3 uid="uid://be30efbwn6oar"]
+[gd_scene load_steps=7 format=3 uid="uid://be30efbwn6oar"]
 
 [ext_resource type="Script" path="res://scripts/Manager.cs" id="1_exgkj"]
 [ext_resource type="Script" path="res://scripts/Viewer.cs" id="2_vppfs"]
+[ext_resource type="Script" path="res://scripts/Detailer.cs" id="3_1b7rh"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_4xl47"]
 
@@ -12,7 +13,7 @@ sky_material = SubResource("ProceduralSkyMaterial_4xl47")
 background_mode = 2
 sky = SubResource("Sky_yya8i")
 
-[node name="Manager" type="HSplitContainer" node_paths=PackedStringArray("_errorMessage", "_chunk_tree", "_viewer")]
+[node name="Manager" type="HSplitContainer" node_paths=PackedStringArray("_errorMessage", "_chunk_tree", "_viewer", "_details")]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -22,6 +23,7 @@ script = ExtResource("1_exgkj")
 _errorMessage = NodePath("LeftSide/ErrorMessage")
 _chunk_tree = NodePath("LeftSide/ChunkTree")
 _viewer = NodePath("RightSide/ViewContainer")
+_details = NodePath("RightSide/DetailsTree")
 
 [node name="LeftSide" type="VBoxContainer" parent="."]
 layout_mode = 2
@@ -59,7 +61,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/separation = 5
 
-[node name="ViewContainer" type="VBoxContainer" parent="RightSide" node_paths=PackedStringArray("_2d_root", "_texture_view", "_3d_root", "_3d_view")]
+[node name="ViewContainer" type="VBoxContainer" parent="RightSide" node_paths=PackedStringArray("_2d_root", "_texture_view", "_3d_root", "_3d_view", "_details")]
 layout_mode = 2
 size_flags_vertical = 3
 script = ExtResource("2_vppfs")
@@ -67,10 +69,12 @@ _2d_root = NodePath("View2DContainer")
 _texture_view = NodePath("View2DContainer/View2D")
 _3d_root = NodePath("View3DContainer")
 _3d_view = NodePath("View3DContainer/ViewportContainer/View3D")
+_details = NodePath("../DetailsTree")
 
 [node name="View2DContainer" type="VBoxContainer" parent="RightSide/ViewContainer"]
 visible = false
 layout_mode = 2
+size_flags_vertical = 3
 
 [node name="View2D" type="TextureRect" parent="RightSide/ViewContainer/View2DContainer"]
 layout_mode = 2
@@ -132,9 +136,11 @@ text = "+"
 layout_mode = 2
 text = "Export as glTF"
 
-[node name="DetailsContainer" type="VBoxContainer" parent="RightSide"]
+[node name="DetailsTree" type="Tree" parent="RightSide"]
 layout_mode = 2
 size_flags_vertical = 3
+select_mode = 1
+script = ExtResource("3_1b7rh")
 
 [connection signal="text_submitted" from="LeftSide/FilenameEdit" to="." method="OnFilenameSubmitted"]
 [connection signal="toggled" from="LeftSide/ShortNamesButton" to="." method="ToggleShortNames"]

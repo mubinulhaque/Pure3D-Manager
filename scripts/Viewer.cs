@@ -17,6 +17,8 @@ public partial class Viewer : Node
 	private Container _3d_root; // Scene used to display 3D assets
 	[Export]
 	private SubViewport _3d_view; // Used for viewing 3D scenes
+	[Export]
+	private Tree _details;
 	#endregion
 
 	#region Private Variables
@@ -49,33 +51,25 @@ public partial class Viewer : Node
 		switch (chunk)
 		{
 			case Skeleton skel:
-				// If the child is a Skeleton
-				// Load the Skeleton's Joints
 				LoadSkeleton(skel);
 				break;
 
 			case Pure3D.Chunks.Mesh mesh:
-				// If the child is a Mesh
-				// Load the Mesh
 				LoadMesh(mesh);
 				break;
 
 			case Pure3D.Chunks.Image image:
-				// If the child is Image Data
-				// Load the Data
-				_2d_root.Visible = true;
 				LoadImage(image);
 				break;
 
-			case Pure3D.Chunks.ImageData image:
-				// If the child is Image Data
-				// Load the Data
-				_2d_root.Visible = true;
+			case ImageData image:
+				// If the chunk is Image Data
+				// Load the Data via its parent
 				LoadImage((Pure3D.Chunks.Image)image.Parent);
 				break;
 
 			default:
-				// If the child is not viewable
+				// If the chunk is not viewable
 				// Make the 2D view and 3D view invisible
 				_2d_root.Visible = false;
 				_3d_root.Visible = false;
