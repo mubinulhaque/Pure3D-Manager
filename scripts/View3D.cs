@@ -1,5 +1,9 @@
+using System;
+using System.Collections.Generic;
+using System.Numerics;
 using Godot;
 using Pure3D;
+using Pure3D.Chunks;
 
 public partial class View3D : SubViewport
 {
@@ -36,7 +40,8 @@ public partial class View3D : SubViewport
 			{
 				// Add bone to Skeleton3D
 				int boneIndex = skeleton.AddBone(joint.Name);
-				if (boneIndex != joint.SkeletonParent) skeleton.SetBoneParent(boneIndex, (int)joint.SkeletonParent);
+				if (boneIndex != joint.SkeletonParent)
+					skeleton.SetBoneParent(boneIndex, (int)joint.SkeletonParent);
 
 				// Set the bone's rest pose
 				Pure3D.Matrix restPose = joint.RestPose;
@@ -81,30 +86,63 @@ public partial class View3D : SubViewport
 			if (chunk is Pure3D.Chunks.PrimitiveGroup prim)
 			{
 				// If the child is a Primitive Group
-				// Create a Surface Tool for generating the mesh
+				// Create a Surface Tool for generating a mesh
+				// and an ArrayMesh to store the mesh
 				var st = new SurfaceTool();
+				ArrayMesh newMesh;
 
 				// Set the Tool's Primitive Type
 				switch (prim.PrimitiveType)
 				{
-					case Pure3D.Chunks.PrimitiveGroup.PrimitiveTypes.TriangleList:
-						st.Begin(Mesh.PrimitiveType.Triangles);
+					case PrimitiveGroup.PrimitiveTypes.TriangleList:
+						st.Begin(Godot.Mesh.PrimitiveType.Triangles);
 						break;
 
-					case Pure3D.Chunks.PrimitiveGroup.PrimitiveTypes.TriangleStrip:
-						st.Begin(Mesh.PrimitiveType.TriangleStrip);
+					case PrimitiveGroup.PrimitiveTypes.TriangleStrip:
+						st.Begin(Godot.Mesh.PrimitiveType.TriangleStrip);
 						break;
 
-					case Pure3D.Chunks.PrimitiveGroup.PrimitiveTypes.LineList:
-						st.Begin(Mesh.PrimitiveType.Lines);
+					case PrimitiveGroup.PrimitiveTypes.LineList:
+						st.Begin(Godot.Mesh.PrimitiveType.Lines);
 						break;
 
-					case Pure3D.Chunks.PrimitiveGroup.PrimitiveTypes.LineStrip:
-						st.Begin(Mesh.PrimitiveType.LineStrip);
+					case PrimitiveGroup.PrimitiveTypes.LineStrip:
+						st.Begin(Godot.Mesh.PrimitiveType.LineStrip);
 						break;
 				}
 
+				// Get normals
+				var normals = (NormalList)prim.Children.Find(x => x is NormalList);
+				var colours = (ColourList)prim.Children.Find(x => x is ColourList);
+				var weights = (WeightList)prim.Children.Find(x => x is WeightList);
+				var verts = (PositionList)prim.Children.Find(x => x is PositionList);
 
+				for (uint i = 0; i < prim.NumVertices; i++)
+				{
+					// Set the normal of the next vertex
+					if (normals != null)
+					{
+						Pure3D.Vector3 normal = normals.Normals[i];
+						st.SetNormal(new Godot.Vector3(normal.X, normal.Y, normal.Z));
+					}
+
+					// Set the colour of the next vertex
+					if (colours != null)
+					{
+						uint colour = colours.Colours[i];
+						st.SetColor(new Color(colour));
+					}
+
+					// Add the next vertex
+					Pure3D.Vector3 vert = verts.Positions[i];
+					st.AddVertex(new Godot.Vector3(vert.X, vert.Y, vert.Z));
+				}
+
+				// Finish generating the new Mesh and add it to the scene
+				newMesh = st.Commit();
+				MeshInstance3D newNode = new();
+				newNode.Mesh = newMesh;
+				AddChild(newNode);
 			}
 		}
 	}

@@ -1,5 +1,4 @@
 ﻿using System.IO;
-using System.Text;
 
 namespace Pure3D.Chunks
 {
@@ -28,6 +27,7 @@ namespace Pure3D.Chunks
             NumVertices = reader.ReadUInt32();
             NumIndices = reader.ReadUInt32();
             NumMatrices = reader.ReadUInt32();
+
         }
 
         public override string ToString()
@@ -59,7 +59,7 @@ namespace Pure3D.Chunks
 
         public override string ToShortString()
         {
-            return "Primitive Group";
+            return $"{NumVertices} Vertices, {NumIndices} Indices, {NumMatrices} Palette Matrices";
         }
     }
 }
