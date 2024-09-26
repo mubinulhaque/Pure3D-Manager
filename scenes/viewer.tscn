@@ -1,7 +1,7 @@
-[gd_scene load_steps=7 format=3 uid="uid://be30efbwn6oar"]
+[gd_scene load_steps=6 format=3 uid="uid://be30efbwn6oar"]
 
-[ext_resource type="Script" path="res://scripts/Viewer.cs" id="1_exgkj"]
-[ext_resource type="Script" path="res://scripts/View3D.cs" id="1_ugrps"]
+[ext_resource type="Script" path="res://scripts/Manager.cs" id="1_exgkj"]
+[ext_resource type="Script" path="res://scripts/Viewer.cs" id="2_vppfs"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_4xl47"]
 
@@ -12,10 +12,7 @@ sky_material = SubResource("ProceduralSkyMaterial_4xl47")
 background_mode = 2
 sky = SubResource("Sky_yya8i")
 
-[sub_resource type="BoxMesh" id="BoxMesh_myhq7"]
-size = Vector3(100, 1, 100)
-
-[node name="Viewer" type="HSplitContainer" node_paths=PackedStringArray("_errorMessage", "_tree", "_view2D", "_view2DParent", "_view3D", "_view3DParent", "_exportButton")]
+[node name="Manager" type="HSplitContainer" node_paths=PackedStringArray("_errorMessage", "_tree", "_view2D", "_view2DParent", "_view3D", "_view3DParent", "_exportButton")]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -23,12 +20,12 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_exgkj")
 _errorMessage = NodePath("LeftSide/ErrorMessage")
-_tree = NodePath("LeftSide/Tree")
-_view2D = NodePath("RightSide/View2DContainer/View2D")
-_view2DParent = NodePath("RightSide/View2DContainer")
-_view3D = NodePath("RightSide/View3DContainer/View3D")
-_view3DParent = NodePath("RightSide/View3DContainer")
-_exportButton = NodePath("RightSide/ExportButton")
+_tree = NodePath("LeftSide/ChunkTree")
+_view2D = NodePath("RightSide/ViewContainer/View2DContainer/View2D")
+_view2DParent = NodePath("RightSide/ViewContainer/View2DContainer")
+_view3D = NodePath("RightSide/ViewContainer")
+_view3DParent = NodePath("RightSide/ViewContainer/View3DContainer/ViewportContainer")
+_exportButton = NodePath("RightSide/ViewContainer/View3DContainer/ExportButton")
 
 [node name="LeftSide" type="VBoxContainer" parent="."]
 layout_mode = 2
@@ -54,63 +51,88 @@ layout_mode = 2
 button_pressed = true
 text = "Use Short Names"
 
-[node name="Tree" type="Tree" parent="LeftSide"]
+[node name="ChunkTree" type="Tree" parent="LeftSide"]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/draw_relationship_lines = 1
 select_mode = 1
 
-[node name="RightSide" type="VBoxContainer" parent="."]
+[node name="RightSide" type="VSplitContainer" parent="."]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/separation = 5
 
-[node name="View2DContainer" type="CenterContainer" parent="RightSide"]
+[node name="ViewContainer" type="VBoxContainer" parent="RightSide" node_paths=PackedStringArray("_3d_root")]
+layout_mode = 2
+size_flags_vertical = 3
+script = ExtResource("2_vppfs")
+_3d_root = NodePath("View3DContainer/ViewportContainer/View3D")
+
+[node name="View2DContainer" type="CenterContainer" parent="RightSide/ViewContainer"]
+visible = false
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="View2D" type="TextureRect" parent="RightSide/View2DContainer"]
+[node name="View2D" type="TextureRect" parent="RightSide/ViewContainer/View2DContainer"]
 layout_mode = 2
 stretch_mode = 5
 
-[node name="View3DContainer" type="SubViewportContainer" parent="RightSide"]
-visible = false
+[node name="View3DContainer" type="VBoxContainer" parent="RightSide/ViewContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ViewportContainer" type="SubViewportContainer" parent="RightSide/ViewContainer/View3DContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 stretch = true
 
-[node name="View3D" type="SubViewport" parent="RightSide/View3DContainer"]
+[node name="View3D" type="SubViewport" parent="RightSide/ViewContainer/View3DContainer/ViewportContainer"]
 handle_input_locally = false
 gui_disable_input = true
-size = Vector2i(354, 684)
-render_target_update_mode = 0
-script = ExtResource("1_ugrps")
+size = Vector2i(354, 286)
+render_target_update_mode = 4
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="RightSide/View3DContainer/View3D"]
+[node name="WorldEnvironment" type="WorldEnvironment" parent="RightSide/ViewContainer/View3DContainer/ViewportContainer/View3D"]
 environment = SubResource("Environment_62ldi")
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="RightSide/View3DContainer/View3D"]
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="RightSide/ViewContainer/View3DContainer/ViewportContainer/View3D"]
 transform = Transform3D(1, 0, 0, 0, 1.19249e-08, 1, 0, -1, 1.19249e-08, 0, 40, 0)
 
-[node name="Floor" type="MeshInstance3D" parent="RightSide/View3DContainer/View3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -10, 0)
-mesh = SubResource("BoxMesh_myhq7")
-skeleton = NodePath("../../../..")
-
-[node name="Origin" type="Node3D" parent="RightSide/View3DContainer/View3D"]
+[node name="Origin" type="Node3D" parent="RightSide/ViewContainer/View3DContainer/ViewportContainer/View3D"]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
 
-[node name="Camera3D" type="Camera3D" parent="RightSide/View3DContainer/View3D/Origin"]
+[node name="Camera3D" type="Camera3D" parent="RightSide/ViewContainer/View3DContainer/ViewportContainer/View3D/Origin"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 2)
 current = true
 
-[node name="ExportButton" type="Button" parent="RightSide"]
+[node name="ZoomButtons" type="HBoxContainer" parent="RightSide/ViewContainer/View3DContainer"]
+layout_mode = 2
+
+[node name="MinusButton" type="Button" parent="RightSide/ViewContainer/View3DContainer/ZoomButtons"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "-"
+
+[node name="CurrentZoom" type="LineEdit" parent="RightSide/ViewContainer/View3DContainer/ZoomButtons"]
+layout_mode = 2
+text = "2.0"
+alignment = 1
+
+[node name="PlusButton" type="Button" parent="RightSide/ViewContainer/View3DContainer/ZoomButtons"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "+"
+
+[node name="ExportButton" type="Button" parent="RightSide/ViewContainer/View3DContainer"]
 layout_mode = 2
 disabled = true
-text = "Select an exportable asset"
+text = "Select an exportable chunk"
+
+[node name="DetailsContainer" type="VBoxContainer" parent="RightSide"]
+layout_mode = 2
+size_flags_vertical = 3
 
 [connection signal="text_submitted" from="LeftSide/FilenameEdit" to="." method="OnFilenameSubmitted"]
 [connection signal="toggled" from="LeftSide/ShortNamesButton" to="." method="ToggleShortNames"]
-[connection signal="item_selected" from="LeftSide/Tree" to="." method="OnItemSelected"]
-[connection signal="pressed" from="RightSide/ExportButton" to="." method="OnExportButtonClicked"]
+[connection signal="item_selected" from="LeftSide/ChunkTree" to="." method="OnItemSelected"]
