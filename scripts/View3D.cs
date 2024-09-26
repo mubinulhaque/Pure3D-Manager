@@ -111,6 +111,14 @@ public partial class View3D : SubViewport
 						break;
 				}
 
+				// Set the mesh to cull front faces
+				// Godot uses clockwise winding order to determine front-faces of
+				// primitive triangles, whereas Pure3D uses anti-clockwise
+				// So, without this, Godot displays the mesh's back faces only
+				StandardMaterial3D mat = new();
+				mat.CullMode = BaseMaterial3D.CullModeEnum.Front;
+				st.SetMaterial(mat);
+
 				// Get normals
 				var normals = (NormalList)prim.Children.Find(x => x is NormalList);
 				var colours = (ColourList)prim.Children.Find(x => x is ColourList);
@@ -123,7 +131,7 @@ public partial class View3D : SubViewport
 					if (normals != null)
 					{
 						Pure3D.Vector3 normal = normals.Normals[i];
-						st.SetNormal(new Godot.Vector3(normal.X, normal.Y, normal.Z));
+						st.SetNormal(new Godot.Vector3(-normal.X, -normal.Y, -normal.Z));
 					}
 
 					// Set the colour of the next vertex
