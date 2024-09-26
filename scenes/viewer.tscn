@@ -65,7 +65,7 @@ size_flags_vertical = 3
 script = ExtResource("2_vppfs")
 _2d_root = NodePath("View2DContainer")
 _texture_view = NodePath("View2DContainer/View2D")
-_3d_root = NodePath("View3DContainer/ViewportContainer")
+_3d_root = NodePath("View3DContainer")
 _3d_view = NodePath("View3DContainer/ViewportContainer/View3D")
 
 [node name="View2DContainer" type="CenterContainer" parent="RightSide/ViewContainer"]
@@ -78,6 +78,7 @@ layout_mode = 2
 stretch_mode = 5
 
 [node name="View3DContainer" type="VBoxContainer" parent="RightSide/ViewContainer"]
+visible = false
 layout_mode = 2
 size_flags_vertical = 3
 
@@ -90,7 +91,7 @@ stretch = true
 handle_input_locally = false
 gui_disable_input = true
 size = Vector2i(354, 286)
-render_target_update_mode = 4
+render_target_update_mode = 0
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="RightSide/ViewContainer/View3DContainer/ViewportContainer/View3D"]
 environment = SubResource("Environment_62ldi")

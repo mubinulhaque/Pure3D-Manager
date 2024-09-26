@@ -1,6 +1,4 @@
-using System;
 using System.Collections.Generic;
-using System.Numerics;
 using Godot;
 using Pure3D;
 using Pure3D.Chunks;
@@ -16,16 +14,16 @@ public partial class Viewer : Node
 	[Export]
 	private TextureRect _texture_view; // Used for viewing textures
 	[Export]
-	private SubViewportContainer _3d_root; // Scene used to display 3D assets
+	private Container _3d_root; // Scene used to display 3D assets
 	[Export]
 	private SubViewport _3d_view; // Used for viewing 3D scenes
 	#endregion
 
 	#region Private Variables
 	// Collection of each Pure3D Image and their associated texture
-	private readonly Dictionary<Pure3D.Chunks.Image, Godot.ImageTexture> _textures = new();
+	private readonly Dictionary<Pure3D.Chunks.Image, ImageTexture> _textures = new();
 	// Collection of each 3D item in the tree and their associated 3D scene
-	private readonly Dictionary<TreeItem, Node3D> _viewables3D = new();
+	private readonly Dictionary<Chunk, Node3D> _3d_scenes = new();
 	// Node3D that is currently being viewed and can be exported
 	private Node3D _currentNode3D = null;
 	// Formats and file extensions that a glTF file can be exported to
@@ -42,18 +40,66 @@ public partial class Viewer : Node
 	/// Views a selected chunk in the appropriate viewer
 	/// </summary>
 	/// <param name="chunk">Pure3D chunk to be viewed</param>
-	public void ViewChunk(Pure3D.Chunk chunk)
+	public void ViewChunk(Chunk chunk)
 	{
-		// TODO: Change viewer based on chunk
-		GD.Print(chunk.ToShortString() + " is clicked!");
+		// Make the current Node3D invisible
+		if (_currentNode3D != null) _currentNode3D.Visible = false;
+
+		// Load the chunk based on its type
+		switch (chunk)
+		{
+			case Skeleton skel:
+				// If the child is a Skeleton
+				// Load the Skeleton's Joints
+				LoadSkeleton(skel);
+				break;
+
+			case Pure3D.Chunks.Mesh mesh:
+				// If the child is a Mesh
+				// Load the Mesh
+				LoadMesh(mesh);
+				break;
+
+			case Pure3D.Chunks.Image image:
+				// If the child is Image Data
+				// Load the Data
+				_2d_root.Visible = true;
+				LoadImage(image);
+				break;
+
+			case Pure3D.Chunks.ImageData image:
+				// If the child is Image Data
+				// Load the Data
+				_2d_root.Visible = true;
+				LoadImage((Pure3D.Chunks.Image)image.Parent);
+				break;
+
+			default:
+				// If the child is not viewable
+				// Make the 2D view and 3D view invisible
+				_2d_root.Visible = false;
+				_3d_root.Visible = false;
+				_currentNode3D = null;
+				break;
+		}
+
+		// Make the current Node3D visible
+		if (_currentNode3D != null) _currentNode3D.Visible = true;
 	}
 
 	#region 2D Chunk Loading
+	private void Set2DViewVisible(Pure3D.Chunks.Image image)
+	{
+		_3d_root.Visible = false;
+		_texture_view.Texture = _textures[image];
+		_2d_root.Visible = true;
+	}
+
 	/// <summary>
 	/// Views a Pure3D Image in a Texture Rect
 	/// </summary>
 	/// <param name="image">Pure3D Image chunk to be viewed</param>
-	public void LoadImage(Pure3D.Chunks.Image image)
+	private void LoadImage(Pure3D.Chunks.Image image)
 	{
 		if (!_textures.ContainsKey(image))
 		{
@@ -78,186 +124,204 @@ public partial class Viewer : Node
 
 		// Display the associated ImageTexture
 		_texture_view.Texture = _textures[image];
+		Set2DViewVisible(image);
 	}
 	#endregion
 
 	#region 3D Chunk Loading
+	private void View3dScene(Chunk chunk)
+	{
+		_2d_root.Visible = false;
+		_currentNode3D = _3d_scenes[chunk];
+		_3d_root.Visible = true;
+	}
+
 	/// <summary>
 	/// Loads a Pure3D Skeleton as a Skeleton3D
 	/// </summary>
 	/// <param name="bones">Pure3D Skeleton to be loaded</param>
-	/// <returns></returns>
-	public Node3D LoadSkeleton(Pure3D.Chunks.Skeleton bones)
+	private void LoadSkeleton(Pure3D.Chunks.Skeleton bones)
 	{
-		// If this child is a Pure3D Skeleton
-		// Add a parent Node
-		Node3D parentNode = new Node3D();
-		parentNode.Name = "Skel_" + bones.Name;
-		_3d_root.AddChild(parentNode);
-
-		// Add a new Skeleton3D
-		Skeleton3D skeleton = new Skeleton3D();
-		skeleton.Name = bones.Name + "_skeleton";
-		parentNode.AddChild(skeleton);
-
-		// Define a placeholder mesh
-		SphereMesh sphere = new SphereMesh();
-		sphere.Radius = .05f;
-		sphere.Height = sphere.Radius * 2;
-
-		// Iterate through the skeleton's bones and add them to the Godot Skeleton
-		foreach (var child in bones.Children)
+		if (!_3d_scenes.ContainsKey(bones))
 		{
-			// For every bone in the Pure3D Skeleton
-			if (child is Pure3D.Chunks.SkeletonJoint joint)
+			// If the Skeleton has not been loaded yet
+			// Load the Skeleton from the chunk
+			// Add a parent Node and make it invisible
+			Node3D parent = new();
+			parent.Name = "Skel_" + bones.Name;
+			parent.Visible = false;
+			_3d_scenes.Add(bones, parent);
+			_3d_root.AddChild(parent);
+
+			// Add a new Skeleton3D
+			Skeleton3D skeleton = new();
+			skeleton.Name = bones.Name + "_skeleton";
+			parent.AddChild(skeleton);
+
+			// Define a placeholder mesh
+			SphereMesh sphere = new();
+			sphere.Radius = .05f;
+			sphere.Height = sphere.Radius * 2;
+
+			// Iterate through the skeleton's bones and add them to the Godot Skeleton
+			foreach (var child in bones.Children)
 			{
-				// Add bone to Skeleton3D
-				int boneIndex = skeleton.AddBone(joint.Name);
-				if (boneIndex != joint.SkeletonParent)
-					skeleton.SetBoneParent(boneIndex, (int)joint.SkeletonParent);
+				// For every bone in the Pure3D Skeleton
+				if (child is SkeletonJoint joint)
+				{
+					// Add bone to Skeleton3D
+					int boneIndex = skeleton.AddBone(joint.Name);
+					if (boneIndex != joint.SkeletonParent)
+						skeleton.SetBoneParent(boneIndex, (int)joint.SkeletonParent);
 
-				// Set the bone's rest pose
-				Pure3D.Matrix restPose = joint.RestPose;
+					// Set the bone's rest pose
+					Pure3D.Matrix restPose = joint.RestPose;
 
-				Transform3D boneTransform = new Transform3D(new Basis(
-					new Godot.Vector3(restPose.M11, restPose.M12, restPose.M13),
-					new Godot.Vector3(restPose.M21, restPose.M22, restPose.M23),
-					new Godot.Vector3(restPose.M31, restPose.M32, restPose.M33)
-				), new Godot.Vector3(restPose.M41, restPose.M42, restPose.M43));
-				skeleton.SetBoneRest(boneIndex, boneTransform);
+					Transform3D boneTransform = new(new Basis(
+						new Godot.Vector3(restPose.M11, restPose.M12, restPose.M13),
+						new Godot.Vector3(restPose.M21, restPose.M22, restPose.M23),
+						new Godot.Vector3(restPose.M31, restPose.M32, restPose.M33)
+					), new Godot.Vector3(restPose.M41, restPose.M42, restPose.M43));
+					skeleton.SetBoneRest(boneIndex, boneTransform);
 
-				// Add a primitive sphere to the bone to indicate its position
-				BoneAttachment3D attachment = new BoneAttachment3D();
-				attachment.Name = joint.Name;
-				attachment.BoneName = joint.Name;
-				attachment.BoneIdx = boneIndex;
-				attachment.SetUseExternalSkeleton(true);
-				attachment.SetExternalSkeleton("../" + skeleton.Name);
-				parentNode.AddChild(attachment);
+					// Add a primitive sphere to the bone to indicate its position
+					BoneAttachment3D attachment = new();
+					attachment.Name = joint.Name;
+					attachment.BoneName = joint.Name;
+					attachment.BoneIdx = boneIndex;
+					attachment.SetUseExternalSkeleton(true);
+					attachment.SetExternalSkeleton("../" + skeleton.Name);
+					parent.AddChild(attachment);
 
-				MeshInstance3D indicator = new MeshInstance3D();
-				indicator.Mesh = sphere;
-				attachment.AddChild(indicator);
+					MeshInstance3D indicator = new();
+					indicator.Mesh = sphere;
+					attachment.AddChild(indicator);
 
-				// Set the skeleton to its rest pose
-				skeleton.ResetBonePoses();
+					// Set the skeleton to its rest pose
+					skeleton.ResetBonePoses();
+				}
 			}
 		}
 
-		// Return the parent node after making it invisible
-		parentNode.Visible = false;
-		return parentNode;
+		// View the Skeleton
+		View3dScene(bones);
 	}
 
 	/// <summary>
 	/// Loads a Pure3D Mesh as a group of MeshInstance3Ds
 	/// </summary>
-	/// <param name="bones">Pure3D Mesh to be loaded</param>
-	/// <returns></returns>
-	public Node3D LoadMesh(Pure3D.Chunks.Mesh mesh)
+	/// <param name="mesh">Pure3D Mesh to be loaded</param>
+	private void LoadMesh(Pure3D.Chunks.Mesh mesh)
 	{
-		// Add a Node to the scene tree for the mesh to be under
-		Node3D parent = new();
-		parent.Name = "M_" + mesh.Name;
-		parent.Visible = false;
-		_3d_root.AddChild(parent);
-
-		// Iterate through the Mesh's children
-		foreach (Pure3D.Chunk chunk in mesh.Children)
+		if (!_3d_scenes.ContainsKey(mesh))
 		{
-			if (chunk is Pure3D.Chunks.PrimitiveGroup prim)
+			// If the Mesh has not been loaded yet
+			// Load the Mesh from the chunk
+			// Add a Node to the scene tree for the mesh to be under
+			Node3D parent = new();
+			parent.Name = "M_" + mesh.Name;
+			parent.Visible = false;
+			_3d_scenes.Add(mesh, parent);
+			_3d_root.AddChild(parent);
+
+			// Iterate through the Mesh's children
+			foreach (Chunk chunk in mesh.Children)
 			{
-				// If the child is a Primitive Group
-				// Create a Surface Tool for generating a mesh
-				// and an ArrayMesh to store the mesh
-				var st = new SurfaceTool();
-				ArrayMesh newMesh;
-
-				// Set the Tool's Primitive Type
-				switch (prim.PrimitiveType)
+				if (chunk is PrimitiveGroup prim)
 				{
-					case PrimitiveGroup.PrimitiveTypes.TriangleList:
-						st.Begin(Godot.Mesh.PrimitiveType.Triangles);
-						break;
+					// If the child is a Primitive Group
+					// Create a Surface Tool for generating a mesh
+					// and an ArrayMesh to store the mesh
+					var st = new SurfaceTool();
+					ArrayMesh newMesh;
 
-					case PrimitiveGroup.PrimitiveTypes.TriangleStrip:
-						st.Begin(Godot.Mesh.PrimitiveType.TriangleStrip);
-						break;
+					// Set the Tool's Primitive Type
+					switch (prim.PrimitiveType)
+					{
+						case PrimitiveGroup.PrimitiveTypes.TriangleList:
+							st.Begin(Godot.Mesh.PrimitiveType.Triangles);
+							break;
 
-					case PrimitiveGroup.PrimitiveTypes.LineList:
-						st.Begin(Godot.Mesh.PrimitiveType.Lines);
-						break;
+						case PrimitiveGroup.PrimitiveTypes.TriangleStrip:
+							st.Begin(Godot.Mesh.PrimitiveType.TriangleStrip);
+							break;
 
-					case PrimitiveGroup.PrimitiveTypes.LineStrip:
-						st.Begin(Godot.Mesh.PrimitiveType.LineStrip);
-						break;
+						case PrimitiveGroup.PrimitiveTypes.LineList:
+							st.Begin(Godot.Mesh.PrimitiveType.Lines);
+							break;
+
+						case PrimitiveGroup.PrimitiveTypes.LineStrip:
+							st.Begin(Godot.Mesh.PrimitiveType.LineStrip);
+							break;
+					}
+
+					// Set the mesh to cull front faces
+					// Godot uses clockwise winding order to determine front-faces of
+					// primitive triangles, whereas Pure3D uses anti-clockwise
+					// So, without this, Godot displays the mesh's back faces only
+					StandardMaterial3D mat = new();
+					mat.CullMode = BaseMaterial3D.CullModeEnum.Front;
+					st.SetMaterial(mat);
+
+					// Get normals
+					var normals = (NormalList)prim.Children.Find(x => x is NormalList);
+					var colours = (ColourList)prim.Children.Find(x => x is ColourList);
+					var uvs = (UVList)prim.Children.Find(x => x is UVList);
+					var verts = (PositionList)prim.Children.Find(x => x is PositionList);
+
+					for (uint i = 0; i < prim.NumVertices; i++)
+					{
+						// Set the normal of the next vertex
+						if (normals != null)
+						{
+							Pure3D.Vector3 normal = normals.Normals[i];
+							st.SetNormal(new Godot.Vector3(-normal.X, -normal.Y, -normal.Z));
+						}
+
+						// Set the colour of the next vertex
+						if (colours != null)
+						{
+							uint colour = colours.Colours[i];
+							st.SetColor(new Color(colour));
+						}
+
+						// Set the UV of the next vertex
+						if (uvs != null)
+						{
+							Pure3D.Vector2 uv = uvs.UVs[i];
+							st.SetUV(new Godot.Vector2(uv.X, uv.Y));
+						}
+
+						// Add the next vertex
+						Pure3D.Vector3 vert = verts.Positions[i];
+						st.AddVertex(new Godot.Vector3(vert.X, vert.Y, vert.Z));
+					}
+
+					// Add tangents to the Mesh
+					if (normals != null && uvs != null) st.GenerateTangents();
+
+					// Add indices
+					var indices = (IndexList)prim.Children.Find(x => x is IndexList);
+
+					if (indices != null)
+						foreach (uint index in indices.Indices)
+						{
+							st.SetSmoothGroup(index);
+							st.AddIndex((int)index);
+						}
+
+					// Finish generating the new Mesh and add it to the scene
+					newMesh = st.Commit();
+					MeshInstance3D newInstance = new();
+					newInstance.Name = prim.ShaderName + "_" + chunk.GetHashCode();
+					newInstance.Mesh = newMesh;
+					parent.AddChild(newInstance);
 				}
-
-				// Set the mesh to cull front faces
-				// Godot uses clockwise winding order to determine front-faces of
-				// primitive triangles, whereas Pure3D uses anti-clockwise
-				// So, without this, Godot displays the mesh's back faces only
-				StandardMaterial3D mat = new();
-				mat.CullMode = BaseMaterial3D.CullModeEnum.Front;
-				st.SetMaterial(mat);
-
-				// Get normals
-				var normals = (NormalList)prim.Children.Find(x => x is NormalList);
-				var colours = (ColourList)prim.Children.Find(x => x is ColourList);
-				var uvs = (UVList)prim.Children.Find(x => x is UVList);
-				var verts = (PositionList)prim.Children.Find(x => x is PositionList);
-
-				for (uint i = 0; i < prim.NumVertices; i++)
-				{
-					// Set the normal of the next vertex
-					if (normals != null)
-					{
-						Pure3D.Vector3 normal = normals.Normals[i];
-						st.SetNormal(new Godot.Vector3(-normal.X, -normal.Y, -normal.Z));
-					}
-
-					// Set the colour of the next vertex
-					if (colours != null)
-					{
-						uint colour = colours.Colours[i];
-						st.SetColor(new Color(colour));
-					}
-
-					// Set the UV of the next vertex
-					if (uvs != null)
-					{
-						Pure3D.Vector2 uv = uvs.UVs[i];
-						st.SetUV(new Godot.Vector2(uv.X, uv.Y));
-					}
-
-					// Add the next vertex
-					Pure3D.Vector3 vert = verts.Positions[i];
-					st.AddVertex(new Godot.Vector3(vert.X, vert.Y, vert.Z));
-				}
-
-				// Add tangents to the Mesh
-				if (normals != null && uvs != null) st.GenerateTangents();
-
-				// Add indices
-				var indices = (IndexList)prim.Children.Find(x => x is IndexList);
-
-				if (indices != null)
-					foreach (uint index in indices.Indices)
-					{
-						st.SetSmoothGroup(index);
-						st.AddIndex((int)index);
-					}
-
-				// Finish generating the new Mesh and add it to the scene
-				newMesh = st.Commit();
-				MeshInstance3D newInstance = new();
-				newInstance.Name = prim.ShaderName + "_" + chunk.GetHashCode();
-				newInstance.Mesh = newMesh;
-				parent.AddChild(newInstance);
 			}
 		}
 
-		return parent;
+		// View the Mesh
+		View3dScene(mesh);
 	}
 	#endregion
 

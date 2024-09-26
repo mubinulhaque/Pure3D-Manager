@@ -1,4 +1,5 @@
 using Godot;
+using Pure3D;
 using System;
 using System.Collections.Generic;
 
@@ -17,7 +18,7 @@ public partial class Manager : Control
 	#endregion
 
 	// Collection of each item in the tree and its associated chunk
-	private readonly Dictionary<TreeItem, Pure3D.Chunk> _chunks = new Dictionary<TreeItem, Pure3D.Chunk>();
+	private readonly Dictionary<TreeItem, Chunk> _chunks = new Dictionary<TreeItem, Pure3D.Chunk>();
 
 	public override void _Ready()
 	{
@@ -63,7 +64,7 @@ public partial class Manager : Control
 	/// <param name="chunk">Root chunk</param>
 	/// <param name="parent">TreeItem to parent the child chunk to</param>
 	/// <returns></returns>
-	private TreeItem LoadChunk(Pure3D.Chunk chunk, TreeItem parent)
+	private TreeItem LoadChunk(Chunk chunk, TreeItem parent)
 	{
 		// Add a TreeItem and set its text to the chunk's string
 		TreeItem item = _chunk_tree.CreateItem(parent);
@@ -74,45 +75,7 @@ public partial class Manager : Control
 		_chunks.Add(item, chunk);
 
 		// Recursively load the children of each chunk
-		foreach (var child in chunk.Children)
-		{
-			// switch (child)
-			// {
-			// 	case Pure3D.Chunks.Skeleton skel:
-			// 		// If the child is a Skeleton
-			// 		// Load the Skeleton's Joints
-			// 		// Add the Skeleton to the dictionary
-			// 		LoadChunk(child, item);
-			// 		_viewer.LoadSkeleton(skel);
-			// 		break;
-
-			// 	case Pure3D.Chunks.ImageData:
-			// 		// If the child is ImageData
-			// 		// And the parent is an Image
-			// 		if (chunk is Pure3D.Chunks.Image image)
-			// 		{
-			// 			_viewer.LoadImage
-			// 		}
-			// 		break;
-
-			// 	case Pure3D.Chunks.Mesh mesh:
-			// 		// If the child is a mesh
-			// 		// Add it to the tree
-			// 		// And build it in the 3D view
-			// 		_viewables3D.Add(
-			// 			LoadChunk(child, item),
-			// 			_view3D.LoadMesh(mesh)
-			// 		);
-			// 		break;
-
-			// 	default:
-			// 		// If the child is not viewable
-			// 		// Load it normally
-			// 		LoadChunk(child, item);
-			// 		break;
-			// }
-			LoadChunk(child, item);
-		}
+		foreach (var child in chunk.Children) LoadChunk(child, item);
 
 		// Collapse all child chunks of the Root chunk
 		if (parent != null) if (parent.GetText(0) == "Root") item.Collapsed = true;
