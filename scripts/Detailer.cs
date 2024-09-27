@@ -16,13 +16,7 @@ public partial class Detailer : Tree
 		// Load the chunk's details based on its type
 		switch (chunk)
 		{
-			case Root rootChunk:
-				root.SetText(
-					0,
-					"Root Chunk"
-				);
-				break;
-
+			// 3D chunks
 			case Skeleton skel:
 				root.SetText(
 					0,
@@ -86,6 +80,7 @@ public partial class Detailer : Tree
 				);
 				break;
 
+			// 2D chunks
 			case Pure3D.Chunks.Image img:
 				root.SetText(
 					0,
@@ -136,6 +131,220 @@ public partial class Detailer : Tree
 				);
 				break;
 
+			// Miscellaneous Chunks
+			case Root rootChunk:
+				root.SetText(
+					0,
+					"Root Chunk"
+				);
+				break;
+
+			case AnimationGroupList list:
+				root.SetText(
+					0,
+					"Animation Group List"
+				);
+
+				TreeItem aglVers = CreateItem(root);
+				aglVers.SetText(
+					0,
+					$"Version: {list.Version}"
+				);
+
+				TreeItem aglGroups = CreateItem(root);
+				aglGroups.SetText(
+					0,
+					$"{list.Version} Groups"
+				);
+				break;
+
+			case ColourList list:
+				root.SetText(
+					0,
+					"Colour List"
+				);
+
+				for (uint i = 0; i < list.Colours.Length; i++)
+				{
+					Color colour = new(list.Colours[i]);
+
+					TreeItem colourItem = CreateItem(root);
+					colourItem.SetText(
+						0,
+						$"Colour {i + 1}: ({colour.R}, {colour.G}, {colour.B}, {colour.A})"
+					);
+					colourItem.SetCustomBgColor(0, colour);
+				}
+				break;
+
+			case CompositeDrawableEffectList list:
+				root.SetText(
+					0,
+					"Composite Drawable Effect List"
+				);
+
+				TreeItem cdelCount = CreateItem(root);
+				cdelCount.SetText(
+					0,
+					$"{list.NumElements} Elements"
+				);
+				break;
+
+			case CompositeDrawablePropList list:
+				root.SetText(
+					0,
+					"Composite Drawable Prop List"
+				);
+
+				TreeItem cdplCount = CreateItem(root);
+				cdplCount.SetText(
+					0,
+					$"{list.NumElements} Elements"
+				);
+				break;
+
+			case CompositeDrawableSkinList list:
+				root.SetText(
+					0,
+					"Composite Drawable Skin List"
+				);
+
+				TreeItem cdslCount = CreateItem(root);
+				cdslCount.SetText(
+					0,
+					$"{list.NumElements} Elements"
+				);
+				break;
+
+			case IndexList list:
+				root.SetText(
+					0,
+					"Index List"
+				);
+
+				for (uint i = 0; i < list.Indices.Length; i++)
+				{
+					TreeItem member = CreateItem(root);
+					member.SetText(
+						0,
+						$"Index {i + 1}: {list.Indices[i]}"
+					);
+				}
+				break;
+
+			case MatrixList list:
+				root.SetText(
+					0,
+					"Matrix List"
+				);
+
+				for (uint i = 0; i < list.Matrices.Length; i++)
+				{
+					TreeItem member = CreateItem(root);
+					member.SetText(
+						0,
+						$"Matrix {i + 1}: ({list.Matrices[i][0]}, {list.Matrices[i][1]}, {list.Matrices[i][2]}, {list.Matrices[i][3]})"
+					);
+				}
+				break;
+
+			case MatrixPalette list:
+				root.SetText(
+					0,
+					"Matrix Palette"
+				);
+
+				for (uint i = 0; i < list.Matrices.Length; i++)
+				{
+					TreeItem member = CreateItem(root);
+					member.SetText(
+						0,
+						$"Matrix {i + 1}: {list.Matrices[i]}"
+					);
+				}
+				break;
+
+			case NormalList list:
+				root.SetText(
+					0,
+					"Normal List"
+				);
+
+				for (uint i = 0; i < list.Normals.Length; i++)
+				{
+					TreeItem member = CreateItem(root);
+					member.SetText(
+						0,
+						$"Normal {i + 1}: ({list.Normals[i].X}, {list.Normals[i].Y}, {list.Normals[i].Z})"
+					);
+				}
+				break;
+
+			case PackedNormalList list:
+				root.SetText(
+					0,
+					"Packed Normal List"
+				);
+
+				for (uint i = 0; i < list.Normals.Length; i++)
+				{
+					TreeItem member = CreateItem(root);
+					member.SetText(
+						0,
+						$"Normal {i + 1}: {list.Normals[i]}"
+					);
+				}
+				break;
+
+			case PositionList list:
+				root.SetText(
+					0,
+					"Position List"
+				);
+
+				for (uint i = 0; i < list.Positions.Length; i++)
+				{
+					TreeItem member = CreateItem(root);
+					member.SetText(
+						0,
+						$"Position {i + 1}: ({list.Positions[i].X}, {list.Positions[i].Y}, {list.Positions[i].Z})"
+					);
+				}
+				break;
+
+			case UVList list:
+				root.SetText(
+					0,
+					"UV List"
+				);
+
+				for (uint i = 0; i < list.UVs.Length; i++)
+				{
+					TreeItem member = CreateItem(root);
+					member.SetText(
+						0,
+						$"UV {i + 1}: ({list.UVs[i].X}, {list.UVs[i].Y})"
+					);
+				}
+				break;
+
+			case WeightList list:
+				root.SetText(
+					0,
+					"Position List"
+				);
+
+				for (uint i = 0; i < list.Weights.Length; i++)
+				{
+					TreeItem member = CreateItem(root);
+					member.SetText(
+						0,
+						$"Weight {i + 1}: ({list.Weights[i].X}, {list.Weights[i].Y}, {list.Weights[i].Z})"
+					);
+				}
+				break;
+
+			// Unknown chunks
 			case Unknown:
 				root.SetText(
 					0,
