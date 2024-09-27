@@ -58,19 +58,21 @@ namespace Pure3D.Chunks
         /// Returns the byte array of the first ImageData child
         /// </summary>
         /// <returns>Binary data of the Image</returns>
-        public byte[] LoadImageData()
+        public ImageData LoadImageData()
         {
-            if (Children.Count != 1) GD.PrintErr($"Image {Name}: invalid number of children!");
-            else if (Children[0] is not ImageData) GD.PrintErr($"Image {Name}: no ImageData child!");
+            if (Children.Count != 1)
+                GD.PrintErr($"Image {Name}: invalid number of children!");
+            else if (Children[0] is not ImageData)
+                GD.PrintErr($"Image {Name}: no ImageData child!");
             else
             {
                 ImageData child = (ImageData)Children[0];
 
-                if (child != null && Format == Formats.PNG) return child.Data;
+                if (child != null && Format == Formats.PNG) return child;
                 else GD.PrintErr($"Image {Name}: invalid ImageData child!");
             }
 
-            return new byte[] { };
+            return null;
         }
     }
 }

@@ -23,7 +23,7 @@ public partial class Viewer : Node
 
 	#region Private Variables
 	// Collection of each Pure3D Image and their associated texture
-	private readonly Dictionary<Pure3D.Chunks.Image, ImageTexture> _textures = new();
+	private readonly Dictionary<Pure3D.Chunks.ImageData, ImageTexture> _textures = new();
 	// Collection of each 3D item in the tree and their associated 3D scene
 	private readonly Dictionary<Chunk, Node3D> _3d_scenes = new();
 	// Node3D that is currently being viewed and can be exported
@@ -63,9 +63,7 @@ public partial class Viewer : Node
 				break;
 
 			case ImageData image:
-				// If the chunk is Image Data
-				// Load the Data via its parent
-				LoadImage((Pure3D.Chunks.Image)image.Parent);
+				LoadImageData(image);
 				break;
 
 			default:
@@ -82,7 +80,11 @@ public partial class Viewer : Node
 	}
 
 	#region 2D Chunk Loading
-	private void Set2DViewVisible(Pure3D.Chunks.Image image)
+	/// <summary>
+	/// Makes the 2D view visible to view specific ImageData
+	/// </summary>
+	/// <param name="image">ImageData chunk to be viewed</param>
+	private void ViewImage(ImageData image)
 	{
 		_3d_root.Visible = false;
 		_texture_view.Texture = _textures[image];
@@ -95,18 +97,27 @@ public partial class Viewer : Node
 	/// <param name="image">Pure3D Image chunk to be viewed</param>
 	private void LoadImage(Pure3D.Chunks.Image image)
 	{
-		if (!_textures.ContainsKey(image))
+		LoadImageData(image.LoadImageData());
+	}
+
+	/// <summary>
+	/// Views Pure3D ImageData in a Texture Rect
+	/// </summary>
+	/// <param name="data">Pure3D ImageData chunk to be viewed</param>
+	private void LoadImageData(ImageData data)
+	{
+		if (!_textures.ContainsKey(data))
 		{
-			// If the Image has not been loaded yet
-			// Load the Image from the chunk
-			Godot.Image newImage = new Godot.Image();
-			Error err = newImage.LoadPngFromBuffer(image.LoadImageData());
+			// If the Image Data has not been loaded yet
+			// Load the data from the chunk
+			Godot.Image newImage = new();
+			Error err = newImage.LoadPngFromBuffer(data.Data);
 
 			if (err == Error.Ok)
 			{
 				// If there are no problems loading the image
 				// Convert it into a ImageTexture and add it to the dictionary
-				_textures.Add(image, ImageTexture.CreateFromImage(newImage));
+				_textures.Add(data, ImageTexture.CreateFromImage(newImage));
 			}
 			else
 			{
@@ -117,8 +128,7 @@ public partial class Viewer : Node
 		}
 
 		// Display the associated ImageTexture
-		_texture_view.Texture = _textures[image];
-		Set2DViewVisible(image);
+		ViewImage(data);
 	}
 	#endregion
 
