@@ -303,7 +303,7 @@ public partial class Viewer : Node
 						if (colours != null)
 						{
 							uint colour = colours.Colours[i];
-							st.SetColor(new Color(colour));
+							st.SetColor(Util.GetColour(colour));
 						}
 
 						// Set the UV of the next vertex
@@ -327,7 +327,6 @@ public partial class Viewer : Node
 					if (indices != null)
 						foreach (uint index in indices.Indices)
 						{
-							st.SetSmoothGroup(index);
 							st.AddIndex((int)index);
 						}
 

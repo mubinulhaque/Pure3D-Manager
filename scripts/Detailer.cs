@@ -166,14 +166,15 @@ public partial class Detailer : Tree
 
 				for (uint i = 0; i < list.Colours.Length; i++)
 				{
-					Color colour = new(list.Colours[i]);
+					Color colour = Util.GetColour(list.Colours[i]);
 
 					TreeItem colourItem = CreateItem(root);
+					TreeItem colourValue = CreateItem(root);
 					colourItem.SetText(
 						0,
 						$"Colour {i + 1}: ({colour.R}, {colour.G}, {colour.B}, {colour.A})"
 					);
-					colourItem.SetCustomBgColor(0, colour);
+					colourValue.SetCustomBgColor(0, colour);
 				}
 				break;
 

@@ -1,5 +1,7 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Text;
+using Godot;
 
 namespace Pure3D
 {
@@ -76,6 +78,21 @@ namespace Pure3D
             matrix.M44 = reader.ReadSingle();
 
             return matrix;
+        }
+
+        /// <summary>
+        /// Displays a Pure3D colour properly in Godot
+        /// </summary>
+        /// <param name="p3dColour">Pure3D colour</param>
+        /// <returns>Godot <c>Color</c></returns>
+        public static Color GetColour(uint p3dColour)
+        {
+            // Pure3D colours are in the format BGRA
+            // Godot colours are in the format RGBA
+            byte[] values = BitConverter.GetBytes(p3dColour);
+
+            // So we correct it here
+            return Color.Color8(values[2], values[1], values[0], values[3]);
         }
     }
 }
