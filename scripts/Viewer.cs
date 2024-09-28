@@ -89,6 +89,7 @@ public partial class Viewer : Node
 		// Set all generated meshes to view vertex colours
 		meshMaterial = new()
 		{
+			CullMode = BaseMaterial3D.CullModeEnum.Disabled,
 			VertexColorUseAsAlbedo = true
 		};
 	}
