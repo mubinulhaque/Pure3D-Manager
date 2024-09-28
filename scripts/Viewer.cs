@@ -36,7 +36,23 @@ public partial class Viewer : Node
 	private GltfDocument _document = null;
 	// Stores glTF data
 	private GltfState _state = null;
+	private StandardMaterial3D meshMaterial;
 	#endregion
+
+	public override void _Ready()
+	{
+		base._Ready();
+
+		// Set the mesh to cull front faces and view vertex colours
+		// Godot uses clockwise winding order to determine front-faces of
+		// primitive triangles, whereas Pure3D uses anti-clockwise
+		// So, without this, Godot displays the mesh's back faces only
+		meshMaterial = new()
+		{
+			CullMode = BaseMaterial3D.CullModeEnum.Front,
+			VertexColorUseAsAlbedo = true
+		};
+	}
 
 	/// <summary>
 	/// Views a selected chunk in the appropriate viewer
@@ -133,6 +149,10 @@ public partial class Viewer : Node
 	#endregion
 
 	#region 3D Chunk Loading
+	/// <summary>
+	/// Makes the 3D view visible to view a specific 3D chunk
+	/// </summary>
+	/// <param name="chunk">3D chunk to view</param>
 	private void View3dScene(Chunk chunk)
 	{
 		_2d_root.Visible = false;
@@ -222,9 +242,12 @@ public partial class Viewer : Node
 			// If the Mesh has not been loaded yet
 			// Load the Mesh from the chunk
 			// Add a Node to the scene tree for the mesh to be under
-			Node3D parent = new();
-			parent.Name = "M_" + mesh.Name;
-			parent.Visible = false;
+			Node3D parent = new()
+			{
+				Name = "M_" + mesh.Name,
+				Visible = false
+			};
+
 			_3d_scenes.Add(mesh, parent);
 			_3d_root.AddChild(parent);
 
@@ -259,13 +282,7 @@ public partial class Viewer : Node
 							break;
 					}
 
-					// Set the mesh to cull front faces
-					// Godot uses clockwise winding order to determine front-faces of
-					// primitive triangles, whereas Pure3D uses anti-clockwise
-					// So, without this, Godot displays the mesh's back faces only
-					StandardMaterial3D mat = new();
-					mat.CullMode = BaseMaterial3D.CullModeEnum.Front;
-					st.SetMaterial(mat);
+					st.SetMaterial(meshMaterial);
 
 					// Get normals
 					var normals = (NormalList)prim.Children.Find(x => x is NormalList);
