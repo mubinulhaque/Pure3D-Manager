@@ -15,6 +15,7 @@ config/description="Recreation of the Lucas Pure3D editor"
 config/version="0.1.0-alpha"
 run/main_scene="res://scenes/viewer.tscn"
 config/features=PackedStringArray("4.3", "C#", "Forward Plus")
+run/low_processor_mode=true
 config/icon="res://icon.svg"
 
 [display]
