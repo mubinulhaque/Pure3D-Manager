@@ -4,6 +4,10 @@ using Pure3D.Chunks;
 
 public partial class Detailer : Tree
 {
+	/// <summary>
+	/// Displays the properties of a Pure3D chunk
+	/// </summary>
+	/// <param name="chunk">Pure3D chunk</param>
 	public void ViewChunk(Chunk chunk)
 	{
 		// Empty the Tree

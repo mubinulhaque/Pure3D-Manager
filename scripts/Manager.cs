@@ -9,17 +9,31 @@ using System.Collections.Generic;
 public partial class Manager : Control
 {
 	#region Export Variables
+	/// <summary>
+	/// Displays error messages
+	/// </summary>
 	[Export]
 	private Label _errorMessage;
+	/// <summary>
+	/// Displays the chunks of a P3D file in a suitable hierarchy
+	/// </summary>
 	[Export]
-	private Tree _chunk_tree; // Displays the chunks of a P3D file in a suitable hierarchy
+	private Tree _chunk_tree;
+	/// <summary>
+	/// Views assets
+	/// </summary>
 	[Export]
-	private Viewer _viewer; // Used for viewing assets
+	private Viewer _viewer;
+	/// <summary>
+	/// Views the details of a Chunk
+	/// </summary>
 	[Export]
-	public Detailer _details; // Used for viewing the details of a Chunk
+	public Detailer _details;
 	#endregion
 
-	// Collection of each item in the tree and its associated chunk
+	/// <summary>
+	/// Collection of each item in the tree and its associated chunk
+	/// </summary>
 	private readonly Dictionary<TreeItem, Chunk> _chunks = new Dictionary<TreeItem, Pure3D.Chunk>();
 
 	public override void _Ready()

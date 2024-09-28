@@ -9,41 +9,66 @@ using Pure3D.Chunks;
 public partial class Viewer : Node
 {
 	#region Export Variables
-	[Export]
-	private Container _2d_root; // Scene used to display 2D assets
-	[Export]
-	private TextureRect _texture_view; // Used for viewing textures
-	[Export]
-	private Container _3d_root; // Scene used to display 3D assets
-	[Export]
-	private SubViewport _3d_view; // Used for viewing 3D scenes
-	[Export]
-	private Tree _details;
+	/// <summary>
+	/// Displays 2D assets
+	/// </summary>
+	[Export] private Container _2d_root;
+	/// <summary>
+	/// Views textures
+	/// </summary>
+	[Export] private TextureRect _texture_view;
+	/// <summary>
+	/// Displays 3D assets
+	/// </summary>
+	[Export] private Container _3d_root;
+	/// <summary>
+	/// Views 3D scenes
+	/// </summary>
+	[Export] private SubViewport _3d_view;
 	#endregion
 
 	#region Private Variables
-	// Collection of each Pure3D Image and their associated texture
+	/// <summary>
+	/// Collection of each Pure3D Image and their associated texture
+	/// </summary>
 	private readonly Dictionary<Pure3D.Chunks.ImageData, ImageTexture> _textures = new();
-	// Collection of each 3D item in the tree and their associated 3D scene
+	/// <summary>
+	/// Collection of each 3D item in the tree and their associated 3D scene
+	/// </summary>
 	private readonly Dictionary<Chunk, Node3D> _3d_scenes = new();
-	// Node3D that is currently being viewed and can be exported
+	/// <summary>
+	/// Node3D that is currently being viewed and can be exported
+	/// </summary>
 	private Node3D _currentNode3D = null;
-	// Formats and file extensions that a glTF file can be exported to
+	/// <summary>
+	/// Formats and file extensions that a glTF file can be exported to
+	/// </summary>
 	private string[] _gltfFilters = { "*.gltf;glTF text file", "*.glb;glTF binary file" };
 	// Formats and file extensions that a texture can be exported to
 	private string[] _texFilters = { "*.png;PNG texture file" };
-	// Converts a 3D scene into glTF data
+	/// <summary>
+	/// Converts a 3D scene into glTF data
+	/// </summary>
 	private GltfDocument _document = null;
-	// Stores glTF data
+	/// <summary>
+	/// Stores glTF data
+	/// </summary>
 	private GltfState _state = null;
+	/// <summary>
+	/// Material used for generated Pure3D meshes
+	/// </summary>
 	private StandardMaterial3D meshMaterial;
+	/// <summary>
+	/// Distance from the 3D camera to the origin
+	/// </summary>
+	private float zoomLevel = 0f;
 	#endregion
 
 	public override void _Ready()
 	{
 		base._Ready();
 
-		// Set the mesh to view vertex colours
+		// Set all generated meshes to view vertex colours
 		meshMaterial = new()
 		{
 			VertexColorUseAsAlbedo = true
