@@ -43,13 +43,9 @@ public partial class Viewer : Node
 	{
 		base._Ready();
 
-		// Set the mesh to cull front faces and view vertex colours
-		// Godot uses clockwise winding order to determine front-faces of
-		// primitive triangles, whereas Pure3D uses anti-clockwise
-		// So, without this, Godot displays the mesh's back faces only
+		// Set the mesh to view vertex colours
 		meshMaterial = new()
 		{
-			CullMode = BaseMaterial3D.CullModeEnum.Front,
 			VertexColorUseAsAlbedo = true
 		};
 	}
@@ -296,7 +292,7 @@ public partial class Viewer : Node
 						if (normals != null)
 						{
 							Pure3D.Vector3 normal = normals.Normals[i];
-							st.SetNormal(new Godot.Vector3(-normal.X, -normal.Y, -normal.Z));
+							st.SetNormal(new Godot.Vector3(normal.X, normal.Y, normal.Z));
 						}
 
 						// Set the colour of the next vertex
@@ -321,14 +317,15 @@ public partial class Viewer : Node
 					// Add tangents to the Mesh
 					if (normals != null && uvs != null) st.GenerateTangents();
 
-					// Add indices
+					// Add indices backwards
+					// Godot uses clockwise winding order to determine front-faces of
+					// primitive triangles, whereas Pure3D uses anti-clockwise
+					// So, without this, Godot displays the mesh's back faces only
 					var indices = (IndexList)prim.Children.Find(x => x is IndexList);
 
 					if (indices != null)
-						foreach (uint index in indices.Indices)
-						{
-							st.AddIndex((int)index);
-						}
+						for (int i = indices.Indices.Length - 1; i >= 0; i--)
+							st.AddIndex((int)indices.Indices[i]);
 
 					// Finish generating the new Mesh and add it to the scene
 					newMesh = st.Commit();
