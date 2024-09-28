@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Windows.Markup;
 using Godot;
 using Pure3D;
 using Pure3D.Chunks;
@@ -25,6 +26,19 @@ public partial class Viewer : Node
 	/// Views 3D scenes
 	/// </summary>
 	[Export] private SubViewport _3d_view;
+	/// <summary>
+	/// Camera for 3D scenes
+	/// </summary>
+	[Export] public Camera3D cam;
+	/// <summary>
+	/// Text box defining the 
+	/// distance of the camera from the origin
+	/// </summary>
+	[Export] public SpinBox zoomEdit;
+	/// <summary>
+	/// Displays details of Chunks
+	/// </summary>
+	[Export] private Tree _details;
 	#endregion
 
 	#region Private Variables
@@ -67,6 +81,10 @@ public partial class Viewer : Node
 	public override void _Ready()
 	{
 		base._Ready();
+
+		// Set the current zoom level properly
+		zoomLevel = cam.Position.Z;
+		zoomEdit.Value = zoomLevel;
 
 		// Set all generated meshes to view vertex colours
 		meshMaterial = new()
@@ -114,6 +132,19 @@ public partial class Viewer : Node
 
 		// Make the current Node3D visible
 		if (_currentNode3D != null) _currentNode3D.Visible = true;
+	}
+
+	/// <summary>
+	/// Changes the distance of the camera from the origin
+	/// </summary>
+	/// <param name="value">New zoom level</param>
+	public void ChangeZoom(float value)
+	{
+		cam.Position = new Godot.Vector3(
+			cam.Position.X,
+			cam.Position.Y,
+			value
+		);
 	}
 
 	#region 2D Chunk Loading

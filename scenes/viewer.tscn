@@ -61,7 +61,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/separation = 5
 
-[node name="ViewContainer" type="VBoxContainer" parent="RightSide" node_paths=PackedStringArray("_2d_root", "_texture_view", "_3d_root", "_3d_view", "cam", "_details")]
+[node name="ViewContainer" type="VBoxContainer" parent="RightSide" node_paths=PackedStringArray("_2d_root", "_texture_view", "_3d_root", "_3d_view", "cam", "zoomEdit", "_details")]
 layout_mode = 2
 size_flags_vertical = 3
 script = ExtResource("2_vppfs")
@@ -70,6 +70,7 @@ _texture_view = NodePath("View2DContainer/View2D")
 _3d_root = NodePath("View3DContainer")
 _3d_view = NodePath("View3DContainer/ViewportContainer/View3D")
 cam = NodePath("View3DContainer/ViewportContainer/View3D/Origin/Camera3D")
+zoomEdit = NodePath("View3DContainer/ZoomButtons/ZoomEdit")
 _details = NodePath("../DetailsTree")
 
 [node name="View2DContainer" type="VBoxContainer" parent="RightSide/ViewContainer"]
@@ -99,7 +100,7 @@ stretch = true
 [node name="View3D" type="SubViewport" parent="RightSide/ViewContainer/View3DContainer/ViewportContainer"]
 handle_input_locally = false
 gui_disable_input = true
-size = Vector2i(2, 2)
+size = Vector2i(354, 286)
 render_target_update_mode = 0
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="RightSide/ViewContainer/View3DContainer/ViewportContainer/View3D"]
@@ -118,20 +119,16 @@ current = true
 [node name="ZoomButtons" type="HBoxContainer" parent="RightSide/ViewContainer/View3DContainer"]
 layout_mode = 2
 
-[node name="MinusButton" type="Button" parent="RightSide/ViewContainer/View3DContainer/ZoomButtons"]
+[node name="ZoomLabel" type="Label" parent="RightSide/ViewContainer/View3DContainer/ZoomButtons"]
+layout_mode = 2
+text = "Zoom"
+
+[node name="ZoomEdit" type="SpinBox" parent="RightSide/ViewContainer/View3DContainer/ZoomButtons"]
 layout_mode = 2
 size_flags_horizontal = 3
-text = "-"
-
-[node name="CurrentZoom" type="LineEdit" parent="RightSide/ViewContainer/View3DContainer/ZoomButtons"]
-layout_mode = 2
-text = "2.0"
+allow_greater = true
+allow_lesser = true
 alignment = 1
-
-[node name="PlusButton" type="Button" parent="RightSide/ViewContainer/View3DContainer/ZoomButtons"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "+"
 
 [node name="ExportButton" type="Button" parent="RightSide/ViewContainer/View3DContainer"]
 layout_mode = 2
@@ -147,4 +144,5 @@ script = ExtResource("3_1b7rh")
 [connection signal="toggled" from="LeftSide/ShortNamesButton" to="." method="ToggleShortNames"]
 [connection signal="item_selected" from="LeftSide/ChunkTree" to="." method="OnItemSelected"]
 [connection signal="pressed" from="RightSide/ViewContainer/View2DContainer/ExportButton" to="RightSide/ViewContainer" method="Export2Png"]
+[connection signal="value_changed" from="RightSide/ViewContainer/View3DContainer/ZoomButtons/ZoomEdit" to="RightSide/ViewContainer" method="ChangeZoom"]
 [connection signal="pressed" from="RightSide/ViewContainer/View3DContainer/ExportButton" to="RightSide/ViewContainer" method="Export2Gltf"]
