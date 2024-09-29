@@ -54,7 +54,7 @@ namespace Pure3D.Chunks
             Colours = 32U,
             Matrices = 128U,
             Weights = 256U,
-            Unknown = 8192U,
+            Positions = 8192U,
         }
 
         public override string ToShortString()

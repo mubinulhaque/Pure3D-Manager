@@ -317,6 +317,118 @@ public partial class Detailer : Tree
 				}
 				break;
 
+			case PrimitiveGroup primGroup:
+				root.SetText(
+					0,
+					"Primitive Group"
+				);
+
+				TreeItem primVerts = CreateItem(root);
+				primVerts.SetText(
+					0,
+					$"{primGroup.NumVertices} Vertices"
+				);
+
+				TreeItem primIndices = CreateItem(root);
+				primIndices.SetText(
+					0,
+					$"{primGroup.NumIndices} Indices"
+				);
+
+				TreeItem primMats = CreateItem(root);
+				primMats.SetText(
+					0,
+					$"{primGroup.NumMatrices} Palette Matrices"
+				);
+
+				TreeItem primContains = CreateItem(root);
+				primContains.SetText(
+					0,
+					"Contains:"
+				);
+
+				if (primGroup.VertexType.HasFlag(PrimitiveGroup.VertexTypes.UVs))
+				{
+					TreeItem primFlag = CreateItem(primContains);
+					primFlag.SetText(
+						0,
+						"UVs"
+					);
+				}
+
+				if (primGroup.VertexType.HasFlag(PrimitiveGroup.VertexTypes.UVs2))
+				{
+					TreeItem primFlag = CreateItem(primContains);
+					primFlag.SetText(
+						0,
+						"UV2s"
+					);
+				}
+
+				if (primGroup.VertexType.HasFlag(PrimitiveGroup.VertexTypes.UVs3))
+				{
+					TreeItem primFlag = CreateItem(primContains);
+					primFlag.SetText(
+						0,
+						"UV3s"
+					);
+				}
+
+				if (primGroup.VertexType.HasFlag(PrimitiveGroup.VertexTypes.UVs4))
+				{
+					TreeItem primFlag = CreateItem(primContains);
+					primFlag.SetText(
+						0,
+						"UV4s"
+					);
+				}
+
+				if (primGroup.VertexType.HasFlag(PrimitiveGroup.VertexTypes.Normals))
+				{
+					TreeItem primFlag = CreateItem(primContains);
+					primFlag.SetText(
+						0,
+						"Normals"
+					);
+				}
+
+				if (primGroup.VertexType.HasFlag(PrimitiveGroup.VertexTypes.Colours))
+				{
+					TreeItem primFlag = CreateItem(primContains);
+					primFlag.SetText(
+						0,
+						"Colours"
+					);
+				}
+
+				if (primGroup.VertexType.HasFlag(PrimitiveGroup.VertexTypes.Matrices))
+				{
+					TreeItem primFlag = CreateItem(primContains);
+					primFlag.SetText(
+						0,
+						"Matrices"
+					);
+				}
+
+				if (primGroup.VertexType.HasFlag(PrimitiveGroup.VertexTypes.Weights))
+				{
+					TreeItem primFlag = CreateItem(primContains);
+					primFlag.SetText(
+						0,
+						"Weights"
+					);
+				}
+
+				if (primGroup.VertexType.HasFlag(PrimitiveGroup.VertexTypes.Positions))
+				{
+					TreeItem primFlag = CreateItem(primContains);
+					primFlag.SetText(
+						0,
+						"Positions"
+					);
+				}
+				break;
+
 			case UVList list:
 				root.SetText(
 					0,
