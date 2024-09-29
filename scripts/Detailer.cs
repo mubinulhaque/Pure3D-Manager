@@ -191,7 +191,7 @@ public partial class Detailer : Tree
 				TreeItem cdelCount = CreateItem(root);
 				cdelCount.SetText(
 					0,
-					$"{list.NumElements} Elements"
+					$"{list.NumElements} Effects"
 				);
 				break;
 
@@ -204,7 +204,7 @@ public partial class Detailer : Tree
 				TreeItem cdplCount = CreateItem(root);
 				cdplCount.SetText(
 					0,
-					$"{list.NumElements} Elements"
+					$"{list.NumElements} Props"
 				);
 				break;
 
@@ -217,7 +217,7 @@ public partial class Detailer : Tree
 				TreeItem cdslCount = CreateItem(root);
 				cdslCount.SetText(
 					0,
-					$"{list.NumElements} Elements"
+					$"{list.NumElements} Skins"
 				);
 				break;
 
@@ -336,7 +336,7 @@ public partial class Detailer : Tree
 			case WeightList list:
 				root.SetText(
 					0,
-					"Position List"
+					"Weight List"
 				);
 
 				for (uint i = 0; i < list.Weights.Length; i++)
