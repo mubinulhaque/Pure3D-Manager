@@ -71,11 +71,15 @@ public partial class Viewer : Node
 	/// <summary>
 	/// Material used for generated Pure3D meshes
 	/// </summary>
-	private StandardMaterial3D meshMaterial;
+	private StandardMaterial3D _meshMaterial;
 	/// <summary>
 	/// Distance from the 3D camera to the origin
 	/// </summary>
-	private float zoomLevel = 0f;
+	private float _zoomLevel = 0f;
+	/// <summary>
+	/// Distance from the 3D camera to the origin
+	/// </summary>
+	private AnimationLibrary _library;
 	#endregion
 
 	public override void _Ready()
@@ -83,15 +87,18 @@ public partial class Viewer : Node
 		base._Ready();
 
 		// Set the current zoom level properly
-		zoomLevel = cam.Position.Z;
-		zoomEdit.Value = zoomLevel;
+		_zoomLevel = cam.Position.Z;
+		zoomEdit.Value = _zoomLevel;
 
 		// Set all generated meshes to view vertex colours
-		meshMaterial = new()
+		_meshMaterial = new()
 		{
 			CullMode = BaseMaterial3D.CullModeEnum.Disabled,
 			VertexColorUseAsAlbedo = true
 		};
+
+		// Instantiate the Animation Library
+		_library = new();
 	}
 
 	/// <summary>
@@ -120,6 +127,10 @@ public partial class Viewer : Node
 
 			case ImageData image:
 				LoadImageData(image);
+				break;
+
+			case Pure3D.Chunks.Animation anim:
+				LoadAnimation(anim);
 				break;
 
 			default:
@@ -335,7 +346,7 @@ public partial class Viewer : Node
 							break;
 					}
 
-					st.SetMaterial(meshMaterial);
+					st.SetMaterial(_meshMaterial);
 
 					// Get normals
 					var normals = (NormalList)prim.Children.Find(x => x is NormalList);
@@ -396,6 +407,55 @@ public partial class Viewer : Node
 
 		// View the Mesh
 		View3dScene(mesh);
+	}
+
+	/// <summary>
+	/// Loads a Pure3D Animation as a Godot Animation
+	/// </summary>
+	/// <param name="anim">Pure3D Animation to be loaded</param>
+	private void LoadAnimation(Pure3D.Chunks.Animation anim)
+	{
+		// Create a new Godot Animation
+		Godot.Animation newAnim = new();
+
+		// Set the frame rate of the Animation, if not already set
+		GD.Print($"Loading animation {anim.Name}...");
+		if (!Mathf.IsEqualApprox(newAnim.Step, anim.FrameRate))
+			newAnim.Step = 1 / anim.FrameRate;
+
+		// Set the length of the Animation
+		newAnim.Length = anim.NumberOfFrames / anim.FrameRate;
+
+		// Add tracks to the Animation
+		var list = (AnimationGroupList)anim.Children.Find(x => x is AnimationGroupList);
+
+		if (list != null)
+			foreach (Chunk chunk in list.Children)
+			{
+				switch (chunk)
+				{
+					case CompressedQuaternionChannel cqc:
+						break;
+
+					case EntityChannel ec:
+						break;
+
+					case QuaternionChannel qc:
+						break;
+
+					case Vector1Channel v1c:
+						break;
+
+					case Vector2Channel v2c:
+						break;
+
+					case Vector3Channel v3c:
+						break;
+				}
+			}
+
+		// Add the Animation to the Library
+		_library.AddAnimation(anim.Name, newAnim);
 	}
 	#endregion
 
