@@ -20,71 +20,7 @@ public partial class Detailer : Tree
 		// Load the chunk's details based on its type
 		switch (chunk)
 		{
-			// 3D chunks
-			case Skeleton skel:
-				root.SetText(
-					0,
-					$"{skel.Name} (Skeleton)"
-				);
-
-				TreeItem skelVers = CreateItem(root);
-				skelVers.SetText(
-					0,
-					$"Version: {skel.Version}"
-				);
-
-				TreeItem skelJoints = CreateItem(root);
-				skelJoints.SetText(
-					0,
-					$"{skel.GetNumJoints()} Joints"
-				);
-				break;
-
-			case Pure3D.Chunks.Skin skin:
-				root.SetText(
-					0,
-					$"{skin.Name} (Skin)"
-				);
-
-				TreeItem skinSkel = CreateItem(root);
-				skinSkel.SetText(
-					0,
-					$"Associated Skeleton: {skin.SkeletonName}"
-				);
-
-				TreeItem skinVers = CreateItem(root);
-				skinVers.SetText(
-					0,
-					$"Version: {skin.Version}"
-				);
-
-				TreeItem skinPrims = CreateItem(root);
-				skinPrims.SetText(
-					0,
-					$"{skin.NumPrimGroups} Primitive Groups"
-				);
-				break;
-
-			case Pure3D.Chunks.Mesh mesh:
-				root.SetText(
-					0,
-					$"{mesh.Name} (Mesh)"
-				);
-
-				TreeItem meshVers = CreateItem(root);
-				meshVers.SetText(
-					0,
-					$"Version: {mesh.Version}"
-				);
-
-				TreeItem meshPrims = CreateItem(root);
-				meshPrims.SetText(
-					0,
-					$"{mesh.NumPrimGroups} Primitive Groups"
-				);
-				break;
-
-			// 2D chunks
+			#region 2D Chunks
 			case Pure3D.Chunks.Image img:
 				root.SetText(
 					0,
@@ -134,34 +70,9 @@ public partial class Detailer : Tree
 					$"{imgData.Data.Length} Bytes Long"
 				);
 				break;
+			#endregion
 
-			// Miscellaneous Chunks
-			case Root rootChunk:
-				root.SetText(
-					0,
-					"Root Chunk"
-				);
-				break;
-
-			case AnimationGroupList list:
-				root.SetText(
-					0,
-					"Animation Group List"
-				);
-
-				TreeItem aglVers = CreateItem(root);
-				aglVers.SetText(
-					0,
-					$"Version: {list.Version}"
-				);
-
-				TreeItem aglGroups = CreateItem(root);
-				aglGroups.SetText(
-					0,
-					$"{list.Version} Groups"
-				);
-				break;
-
+			#region 3D Chunks
 			case ColourList list:
 				root.SetText(
 					0,
@@ -269,6 +180,53 @@ public partial class Detailer : Tree
 				}
 				break;
 
+			// Normally, everything is in alphabetical order
+			// But Skin inherits from Mesh,
+			// So it has to come first
+			case Pure3D.Chunks.Skin skin:
+				root.SetText(
+					0,
+					$"{skin.Name} (Skin)"
+				);
+
+				TreeItem skinSkel = CreateItem(root);
+				skinSkel.SetText(
+					0,
+					$"Associated Skeleton: {skin.SkeletonName}"
+				);
+
+				TreeItem skinVers = CreateItem(root);
+				skinVers.SetText(
+					0,
+					$"Version: {skin.Version}"
+				);
+
+				TreeItem skinPrims = CreateItem(root);
+				skinPrims.SetText(
+					0,
+					$"{skin.NumPrimGroups} Primitive Groups"
+				);
+				break;
+
+			case Pure3D.Chunks.Mesh mesh:
+				root.SetText(
+					0,
+					$"{mesh.Name} (Mesh)"
+				);
+
+				TreeItem meshVers = CreateItem(root);
+				meshVers.SetText(
+					0,
+					$"Version: {mesh.Version}"
+				);
+
+				TreeItem meshPrims = CreateItem(root);
+				meshPrims.SetText(
+					0,
+					$"{mesh.NumPrimGroups} Primitive Groups"
+				);
+				break;
+
 			case NormalList list:
 				root.SetText(
 					0,
@@ -301,20 +259,23 @@ public partial class Detailer : Tree
 				}
 				break;
 
-			case PositionList list:
+			case Skeleton skel:
 				root.SetText(
 					0,
-					"Position List"
+					$"{skel.Name} (Skeleton)"
 				);
 
-				for (uint i = 0; i < list.Positions.Length; i++)
-				{
-					TreeItem member = CreateItem(root);
-					member.SetText(
-						0,
-						$"Position {i + 1}: ({list.Positions[i].X}, {list.Positions[i].Y}, {list.Positions[i].Z})"
-					);
-				}
+				TreeItem skelVers = CreateItem(root);
+				skelVers.SetText(
+					0,
+					$"Version: {skel.Version}"
+				);
+
+				TreeItem skelJoints = CreateItem(root);
+				skelJoints.SetText(
+					0,
+					$"{skel.GetNumJoints()} Joints"
+				);
 				break;
 
 			case PrimitiveGroup primGroup:
@@ -460,8 +421,420 @@ public partial class Detailer : Tree
 					);
 				}
 				break;
+			#endregion
 
-			// Unknown chunks
+			#region Animation Chunks
+			case Pure3D.Chunks.Animation anim:
+				root.SetText(
+					0,
+					"Animation"
+				);
+
+				TreeItem animName = CreateItem(root);
+				animName.SetText(
+					0,
+					$"Name: {anim.Name}"
+				);
+
+				TreeItem animVers = CreateItem(root);
+				animVers.SetText(
+					0,
+					$"Version: {anim.Version}"
+				);
+
+				TreeItem animFrames = CreateItem(root);
+				animFrames.SetText(
+					0,
+					$"{anim.NumberOfFrames} Frames"
+				);
+
+				TreeItem animFrameRate = CreateItem(root);
+				animFrameRate.SetText(
+					0,
+					$"Frame Rate: {anim.FrameRate}"
+				);
+
+				TreeItem animLooping = CreateItem(root);
+				animLooping.SetText(
+					0,
+					$"Looping: {anim.Looping}"
+				);
+				break;
+
+			case AnimationGroup animGroup:
+				root.SetText(
+					0,
+					"Animation Group"
+				);
+
+				TreeItem animGroupName = CreateItem(root);
+				animGroupName.SetText(
+					0,
+					$"Name: {animGroup.Name}"
+				);
+
+				TreeItem animGroupVers = CreateItem(root);
+				animGroupVers.SetText(
+					0,
+					$"Version: {animGroup.Version}"
+				);
+
+				TreeItem animGroupId = CreateItem(root);
+				animGroupId.SetText(
+					0,
+					$"ID: {animGroup.GroupId}"
+				);
+
+				TreeItem animGroupChannels = CreateItem(root);
+				animGroupChannels.SetText(
+					0,
+					$"{animGroup.NumberOfChannels} Channels"
+				);
+				break;
+
+			case AnimationGroupList list:
+				root.SetText(
+					0,
+					"Animation Group List"
+				);
+
+				TreeItem aglVers = CreateItem(root);
+				aglVers.SetText(
+					0,
+					$"Version: {list.Version}"
+				);
+
+				TreeItem aglGroups = CreateItem(root);
+				aglGroups.SetText(
+					0,
+					$"{list.NumberOfGroups} Groups"
+				);
+				break;
+
+			case AnimationSize animSize:
+				root.SetText(
+					0,
+					"Animation Size"
+				);
+
+				TreeItem aglSizeVers = CreateItem(root);
+				aglSizeVers.SetText(
+					0,
+					$"Version: {animSize.Version}"
+				);
+
+				TreeItem animSizeGC = CreateItem(root);
+				animSizeGC.SetText(
+					0,
+					$"GameCube: {animSize.GameCube}"
+				);
+
+				TreeItem animSizePC = CreateItem(root);
+				animSizePC.SetText(
+					0,
+					$"PC: {animSize.PC}"
+				);
+
+				TreeItem animSizePS2 = CreateItem(root);
+				animSizePS2.SetText(
+					0,
+					$"PS2: {animSize.PS2}"
+				);
+
+				TreeItem animSizeXbox = CreateItem(root);
+				animSizeXbox.SetText(
+					0,
+					$"Xbox: {animSize.Xbox}"
+				);
+				break;
+
+			case ChannelInterpolationMode mode:
+				root.SetText(
+					0,
+					"Channel Interpolation Mode"
+				);
+
+				TreeItem channelVers = CreateItem(root);
+				channelVers.SetText(
+					0,
+					$"Version: {mode.Version}"
+				);
+
+				TreeItem channelMode = CreateItem(root);
+				channelMode.SetText(
+					0,
+					$"Mode: {mode.Mode}"
+				);
+				break;
+
+			case CompressedQuaternionChannel cqc:
+				root.SetText(
+					0,
+					"Compressed Quaternion Channel"
+				);
+
+				TreeItem cqcVers = CreateItem(root);
+				cqcVers.SetText(
+					0,
+					$"Version: {cqc.Version}"
+				);
+
+				TreeItem cqcFrames = CreateItem(root);
+				cqcFrames.SetText(
+					0,
+					$"{cqc.NumberOfFrames} Frames"
+				);
+
+				for (uint i = 0; i < cqc.Frames.Length; i++)
+				{
+					TreeItem member = CreateItem(root);
+					Pure3D.Quaternion value = cqc.Values[i];
+					member.SetText(
+						0,
+						$"Frame {cqc.Frames[i] + 1}: ({value.X}, {value.Y}, {value.Z}, {value.W})"
+					);
+				}
+				break;
+
+			case EntityChannel ec:
+				root.SetText(
+					0,
+					"Entity Channel"
+				);
+
+				TreeItem ecVers = CreateItem(root);
+				ecVers.SetText(
+					0,
+					$"Version: {ec.Version}"
+				);
+
+				TreeItem ecFrames = CreateItem(root);
+				ecFrames.SetText(
+					0,
+					$"{ec.NumberOfFrames} Frames"
+				);
+
+				for (uint i = 0; i < ec.Frames.Length; i++)
+				{
+					TreeItem member = CreateItem(root);
+					member.SetText(
+						0,
+						$"Frame {ec.Frames[i] + 1}: {ec.Values[i]}"
+					);
+				}
+				break;
+
+			case ParticleAnimation pAnim:
+				root.SetText(
+					0,
+					"Entity Channel"
+				);
+
+				TreeItem pAnimType = CreateItem(root);
+				pAnimType.SetText(
+					0,
+					$"Type: {pAnim.Type}"
+				);
+
+				for (uint i = 0; i < pAnim.Data.Length; i++)
+				{
+					TreeItem member = CreateItem(root);
+					member.SetText(
+						0,
+						$"Byte {i + 1}: {pAnim.Data[i]}"
+					);
+				}
+				break;
+
+			case QuaternionChannel qc:
+				root.SetText(
+					0,
+					"Quaternion Channel"
+				);
+
+				TreeItem qcVers = CreateItem(root);
+				qcVers.SetText(
+					0,
+					$"Version: {qc.Version}"
+				);
+
+				TreeItem qcParam = CreateItem(root);
+				qcParam.SetText(
+					0,
+					$"Parameter: {qc.Parameter}"
+				);
+
+				TreeItem qcFrames = CreateItem(root);
+				qcFrames.SetText(
+					0,
+					$"{qc.NumberOfFrames} Frames"
+				);
+
+				for (uint i = 0; i < qc.Frames.Length; i++)
+				{
+					TreeItem member = CreateItem(root);
+					member.SetText(
+						0,
+						$"Frame {qc.Frames[i] + 1}: {qc.Values[i]}"
+					);
+				}
+				break;
+
+			case Vector1Channel v1c:
+				root.SetText(
+					0,
+					"Vector 1 Channel"
+				);
+
+				TreeItem v1cVers = CreateItem(root);
+				v1cVers.SetText(
+					0,
+					$"Version: {v1c.Version}"
+				);
+
+				TreeItem v1cParam = CreateItem(root);
+				v1cParam.SetText(
+					0,
+					$"Parameter: {v1c.Parameter}"
+				);
+
+				TreeItem v1cMapping = CreateItem(root);
+				v1cMapping.SetText(
+					0,
+					$"Mapping: {v1c.Mapping}"
+				);
+
+				TreeItem v1cFrames = CreateItem(root);
+				v1cFrames.SetText(
+					0,
+					$"{v1c.NumberOfFrames} Frames"
+				);
+
+				TreeItem v1cConstants = CreateItem(root);
+				v1cConstants.SetText(
+					0,
+					$"Constants: ({v1c.Constants.X}, {v1c.Constants.Y}, {v1c.Constants.Z})"
+				);
+
+				for (uint i = 0; i < v1c.Frames.Length; i++)
+				{
+					TreeItem member = CreateItem(root);
+					member.SetText(
+						0,
+						$"Frame {v1c.Frames[i] + 1}: {v1c.Values[i]}"
+					);
+				}
+				break;
+
+			case Vector2Channel v2c:
+				root.SetText(
+					0,
+					"Vector 2 Channel"
+				);
+
+				TreeItem v2cVers = CreateItem(root);
+				v2cVers.SetText(
+					0,
+					$"Version: {v2c.Version}"
+				);
+
+				TreeItem v2cParam = CreateItem(root);
+				v2cParam.SetText(
+					0,
+					$"Parameter: {v2c.Parameter}"
+				);
+
+				TreeItem v2cMapping = CreateItem(root);
+				v2cMapping.SetText(
+					0,
+					$"Mapping: {v2c.Mapping}"
+				);
+
+				TreeItem v2cFrames = CreateItem(root);
+				v2cFrames.SetText(
+					0,
+					$"{v2c.NumberOfFrames} Frames"
+				);
+
+				TreeItem v2cConstants = CreateItem(root);
+				v2cConstants.SetText(
+					0,
+					$"Constants: ({v2c.Constants.X}, {v2c.Constants.Y}, {v2c.Constants.Z})"
+				);
+
+				for (uint i = 0; i < v2c.Frames.Length; i++)
+				{
+					TreeItem member = CreateItem(root);
+					Pure3D.Vector2 value = v2c.Values[i];
+					member.SetText(
+						0,
+						$"Frame {v2c.Frames[i] + 1}: ({value.X}, {value.Y})"
+					);
+				}
+				break;
+
+			case Vector3Channel v3c:
+				root.SetText(
+					0,
+					"Vector 3 Channel"
+				);
+
+				TreeItem v3cVers = CreateItem(root);
+				v3cVers.SetText(
+					0,
+					$"Version: {v3c.Version}"
+				);
+
+				TreeItem v3cParam = CreateItem(root);
+				v3cParam.SetText(
+					0,
+					$"Parameter: {v3c.Parameter}"
+				);
+
+				TreeItem v3cFrames = CreateItem(root);
+				v3cFrames.SetText(
+					0,
+					$"{v3c.NumberOfFrames} Frames"
+				);
+
+				for (uint i = 0; i < v3c.Frames.Length; i++)
+				{
+					TreeItem member = CreateItem(root);
+					Pure3D.Vector3 value = v3c.Values[i];
+					member.SetText(
+						0,
+						$"Frame {v3c.Frames[i] + 1}: ({value.X}, {value.Y}, {value.Z})"
+					);
+				}
+				break;
+			#endregion
+
+			#region Misc Chunks
+			case Root rootChunk:
+				root.SetText(
+					0,
+					"Root Chunk"
+				);
+				break;
+
+			case PositionList list:
+				root.SetText(
+					0,
+					"Position List"
+				);
+
+				for (uint i = 0; i < list.Positions.Length; i++)
+				{
+					TreeItem member = CreateItem(root);
+					member.SetText(
+						0,
+						$"Position {i + 1}: ({list.Positions[i].X}, {list.Positions[i].Y}, {list.Positions[i].Z})"
+					);
+				}
+				break;
+			#endregion
+
+			#region Unknown Chunks
 			case Unknown:
 				root.SetText(
 					0,
@@ -495,6 +868,7 @@ public partial class Detailer : Tree
 					"Properties not yet viewable..."
 				);
 				break;
+			#endregion
 
 			default:
 				// If the chunk is not viewable

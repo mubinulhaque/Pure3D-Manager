@@ -18,8 +18,6 @@ namespace Pure3D.Chunks
 
         public override void ReadHeader(Stream stream, long length)
         {
-            var streamPosition = stream.Position;
-
             BinaryReader reader = new BinaryReader(stream);
             Version = reader.ReadUInt32();
             Parameter = Util.ZeroTerminate(Encoding.ASCII.GetString(reader.ReadBytes(4)));
