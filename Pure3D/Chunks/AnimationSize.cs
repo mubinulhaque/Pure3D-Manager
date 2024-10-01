@@ -2,6 +2,9 @@ using System.IO;
 
 namespace Pure3D.Chunks
 {
+    /// <summary>
+    /// Size of an animation for different platforms
+    /// </summary>
     [ChunkType(1183748)]
     public class AnimationSize : Chunk
     {

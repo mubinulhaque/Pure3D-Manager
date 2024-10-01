@@ -3,6 +3,9 @@ using System.Text;
 
 namespace Pure3D.Chunks
 {
+    /// <summary>
+    /// Animation for the rotation of a <c>SkeletonJoint</c>.
+    /// </summary>
     [ChunkType(1184017)]
     public class CompressedQuaternionChannel : Chunk
     {
@@ -18,8 +21,6 @@ namespace Pure3D.Chunks
 
         public override void ReadHeader(Stream stream, long length)
         {
-            var streamPosition = stream.Position;
-
             BinaryReader reader = new BinaryReader(stream);
             Version = reader.ReadUInt32();
             Parameter = Util.ZeroTerminate(Encoding.ASCII.GetString(reader.ReadBytes(4)));

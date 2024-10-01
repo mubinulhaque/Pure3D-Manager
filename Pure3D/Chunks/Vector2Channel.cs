@@ -3,6 +3,9 @@ using System.Text;
 
 namespace Pure3D.Chunks
 {
+    /// <summary>
+    /// Animation for a 2D vector of a <c>SkeletonJoint</c>.
+    /// </summary>
     [ChunkType(1184003)]
     public class Vector2Channel : Chunk
     {

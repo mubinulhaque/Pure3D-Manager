@@ -3,6 +3,10 @@ using System.Text;
 
 namespace Pure3D.Chunks
 {
+    /// <summary>
+    /// Parent of an <c>AnimationGroupList</c>
+    /// and an <c>AnimationSize</c>.
+    /// </summary>
     [ChunkType(1183744)]
     public class Animation : VersionNamed
     {

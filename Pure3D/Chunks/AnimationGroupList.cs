@@ -2,6 +2,10 @@ using System.IO;
 
 namespace Pure3D.Chunks
 {
+    /// <summary>
+    /// Parent of <c>AnimationGroup</c>s that
+    /// define the animation of a <c>Skeleton</c>
+    /// </summary>
     [ChunkType(1183746)]
     public class AnimationGroupList : Chunk
     {

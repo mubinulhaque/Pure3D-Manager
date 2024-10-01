@@ -3,6 +3,9 @@ using System.Text;
 
 namespace Pure3D.Chunks
 {
+    /// <summary>
+    /// Animation for the rotation of a <c>SkeletonJoint</c>.
+    /// </summary>
     [ChunkType(1184005)]
     public class QuaternionChannel : Chunk
     {

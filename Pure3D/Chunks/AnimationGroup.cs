@@ -2,6 +2,9 @@ using System.IO;
 
 namespace Pure3D.Chunks
 {
+    /// <summary>
+    /// Animation of a <c>SkeletonJoint</c>.
+    /// </summary>
     [ChunkType(1183745)]
     public class AnimationGroup : VersionNamed
     {

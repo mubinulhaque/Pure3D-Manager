@@ -3,6 +3,9 @@ using System.Text;
 
 namespace Pure3D.Chunks
 {
+    /// <summary>
+    /// Animation for a float value of a <c>SkeletonJoint</c>.
+    /// </summary>
     [ChunkType(1184002)]
     public class Vector1Channel : Chunk
     {
