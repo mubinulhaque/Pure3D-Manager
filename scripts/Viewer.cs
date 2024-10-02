@@ -493,30 +493,96 @@ public partial class Viewer : Node
 									break;
 
 								case Vector1Channel v1c:
+									if (v1c.Parameter == "TRAN")
+									{
+										// Add a new position track for the bone to the animation
+										int v1cTrack = newAnim.AddTrack(Godot.Animation.TrackType.Position3D);
+										newAnim.TrackSetPath(v1cTrack, $":{ag.Name}");
+
+										// Add a new position frame
+										for (int i = 0; i < v1c.NumberOfFrames; i++)
+										{
+											Godot.Vector3 pos = Godot.Vector3.Zero;
+
+											pos.X = v1c.Constants.X;
+											pos.Y = v1c.Constants.Y;
+											pos.Z = v1c.Constants.Z;
+
+											pos[v1c.Mapping] = v1c.Values[i];
+
+											newAnim.PositionTrackInsertKey(
+												v1cTrack,
+												v1c.Frames[i] * newAnim.Step,
+												pos
+											);
+										}
+									}
+									else
+									{
+										GD.PushError($"{anim.Name}'s Vector 1 Channel is not for translation!");
+									}
 									break;
 
 								case Vector2Channel v2c:
+									if (v2c.Parameter == "TRAN")
+									{
+										// Add a new position track for the bone to the animation
+										int v2cTrack = newAnim.AddTrack(Godot.Animation.TrackType.Position3D);
+										newAnim.TrackSetPath(v2cTrack, $":{ag.Name}");
+
+										// Add a new position frame
+										for (int i = 0; i < v2c.NumberOfFrames; i++)
+										{
+											Godot.Vector3 pos = Godot.Vector3.Zero;
+
+											pos.X = v2c.Constants.X;
+											pos.Y = v2c.Constants.Y;
+											pos.Z = v2c.Constants.Z;
+
+											int[,] indices = { { 1, 2 }, { 0, 2 }, { 0, 1 } };
+
+											pos[indices[v2c.Mapping, 0]] = v2c.Values[i].X;
+											pos[indices[v2c.Mapping, 1]] = v2c.Values[i].Y;
+
+											newAnim.PositionTrackInsertKey(
+												v2cTrack,
+												v2c.Frames[i] * newAnim.Step,
+												pos
+											);
+										}
+									}
+									else
+									{
+										GD.PushError($"{anim.Name}'s Vector 2 Channel is not for translation!");
+									}
 									break;
 
 								case Vector3Channel v3c:
-									// Add a new position track for the bone to the animation
-									int v3cTrack = newAnim.AddTrack(Godot.Animation.TrackType.Position3D);
-									newAnim.TrackSetPath(v3cTrack, $":{ag.Name}");
-
-									// Add a new position frame
-									for (int i = 0; i < v3c.NumberOfFrames; i++)
+									if (v3c.Parameter == "TRAN")
 									{
-										Godot.Vector3 pos = Godot.Vector3.Zero;
+										// Add a new position track for the bone to the animation
+										int v3cTrack = newAnim.AddTrack(Godot.Animation.TrackType.Position3D);
+										newAnim.TrackSetPath(v3cTrack, $":{ag.Name}");
 
-										pos.X = v3c.Values[i].X;
-										pos.Y = v3c.Values[i].Y;
-										pos.Z = v3c.Values[i].Z;
+										// Add a new position frame
+										for (int i = 0; i < v3c.NumberOfFrames; i++)
+										{
+											Godot.Vector3 pos = Godot.Vector3.Zero;
 
-										newAnim.PositionTrackInsertKey(
-											v3cTrack,
-											v3c.Frames[i] * newAnim.Step,
-											pos
-										);
+											pos.X = v3c.Values[i].X;
+											pos.Y = v3c.Values[i].Y;
+											pos.Z = v3c.Values[i].Z;
+
+											newAnim.PositionTrackInsertKey(
+												v3cTrack,
+												v3c.Frames[i] * newAnim.Step,
+												pos
+											);
+										}
+									}
+									else
+									{
+										GD.PushError($"{anim.Name}'s Vector 3 Channel is not for translation!");
 									}
 									break;
 							}

@@ -95,7 +95,6 @@ layout_mode = 2
 size_flags_vertical = 3
 
 [node name="Animator" type="AnimationPlayer" parent="RightSide/ViewContainer/View3DContainer"]
-root_node = NodePath("../ViewportContainer/View3D")
 playback_default_blend_time = 0.1
 
 [node name="ViewportContainer" type="SubViewportContainer" parent="RightSide/ViewContainer/View3DContainer"]
