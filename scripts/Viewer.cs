@@ -39,6 +39,10 @@ public partial class Viewer : Node
 	/// Displays details of Chunks
 	/// </summary>
 	[Export] private Tree _details;
+	/// <summary>
+	/// Plays skeletal animations
+	/// </summary>
+	[Export] private AnimationPlayer _animator;
 	#endregion
 
 	#region Private Variables
@@ -99,6 +103,7 @@ public partial class Viewer : Node
 
 		// Instantiate the Animation Library
 		_library = new();
+		_animator.AddAnimationLibrary("anims", _library);
 	}
 
 	/// <summary>
@@ -418,44 +423,124 @@ public partial class Viewer : Node
 		// Create a new Godot Animation
 		Godot.Animation newAnim = new();
 
-		// Set the frame rate of the Animation, if not already set
+		// Set the frame rate of the Godot Animation, if not already set
 		GD.Print($"Loading animation {anim.Name}...");
 		if (!Mathf.IsEqualApprox(newAnim.Step, anim.FrameRate))
 			newAnim.Step = 1 / anim.FrameRate;
 
-		// Set the length of the Animation
+		// Set the length of the Godot Animation
 		newAnim.Length = anim.NumberOfFrames / anim.FrameRate;
 
-		// Add tracks to the Animation
+		// Iterate through each group in the Animation's Group List
+		// Iterate through each group's Animation Channels
+		// Add tracks to the Godot Animation
 		var list = (AnimationGroupList)anim.Children.Find(x => x is AnimationGroupList);
 
 		if (list != null)
-			foreach (Chunk chunk in list.Children)
-			{
-				switch (chunk)
-				{
-					case CompressedQuaternionChannel cqc:
-						break;
+			foreach (Chunk group in list.Children)
+				if (group is AnimationGroup ag)
+					foreach (Chunk channel in group.Children)
+						switch (channel)
+						{
+							case CompressedQuaternionChannel cqc:
+								if (cqc.Parameter == "ROT")
+								{
+									AddRotationFrames(
+										newAnim,
+										ag.Name,
+										cqc.Frames,
+										cqc.Values
+									);
+								}
+								else
+								{
+									GD.PushError($"{anim.Name}'s Compressed Quaternion Channel is not for rotation!");
+								}
+								break;
 
-					case EntityChannel ec:
-						break;
+							case QuaternionChannel qc:
+								if (qc.Parameter == "ROT")
+								{
+									AddRotationFrames(
+										newAnim,
+										ag.Name,
+										qc.Frames,
+										qc.Values
+									);
+								}
+								else
+								{
+									GD.PushError($"{anim.Name}'s Quaternion Channel is not for rotation!");
+								}
+								break;
 
-					case QuaternionChannel qc:
-						break;
+							case Vector1Channel v1c:
+								break;
 
-					case Vector1Channel v1c:
-						break;
+							case Vector2Channel v2c:
+								break;
 
-					case Vector2Channel v2c:
-						break;
+							case Vector3Channel v3c:
+								// Add a new position track for the bone to the animation
+								int v3cTrack = newAnim.AddTrack(Godot.Animation.TrackType.Position3D);
+								newAnim.TrackSetPath(v3cTrack, $":{ag.Name}:position");
 
-					case Vector3Channel v3c:
-						break;
-				}
-			}
+								// Add a new position frame
+								for (int i = 0; i < v3c.NumberOfFrames; i++)
+								{
+									Godot.Vector3 pos = Godot.Vector3.Zero;
+
+									pos.X = v3c.Values[i].X;
+									pos.Y = v3c.Values[i].Y;
+									pos.Z = v3c.Values[i].Z;
+
+									newAnim.PositionTrackInsertKey(
+										v3cTrack,
+										v3c.Frames[i] / newAnim.Length,
+										pos
+									);
+								}
+								break;
+						}
 
 		// Add the Animation to the Library
 		_library.AddAnimation(anim.Name, newAnim);
+	}
+
+	/// <summary>
+	/// Adds rotation frames from any Quaternion Channel's values
+	/// </summary>
+	/// <param name="anim">Godot Animation to add frames to</param>
+	/// <param name="bone">Name of the bone to animate</param>
+	/// <param name="times">Frames to add keys to</param>
+	/// <param name="values">Array of rotations</param>
+	private static void AddRotationFrames(
+		Godot.Animation anim,
+		string bone,
+		ushort[] times,
+		Pure3D.Quaternion[] values
+	)
+	{
+		// Add a new rotation track for the bone to the animation
+		int track = anim.AddTrack(Godot.Animation.TrackType.Rotation3D);
+		anim.TrackSetPath(track, $":{bone}:rotation");
+
+		// Add the rotation frames
+		for (int i = 0; i < times.Length; i++)
+		{
+			Godot.Quaternion quat = Godot.Quaternion.Identity;
+
+			quat.W = values[i].W;
+			quat.X = values[i].X;
+			quat.Y = values[i].Y;
+			quat.Z = values[i].Z;
+
+			anim.RotationTrackInsertKey(
+				track,
+				times[i] / anim.Length,
+				quat
+			);
+		}
 	}
 	#endregion
 

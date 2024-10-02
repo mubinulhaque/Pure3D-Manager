@@ -61,7 +61,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/separation = 5
 
-[node name="ViewContainer" type="VBoxContainer" parent="RightSide" node_paths=PackedStringArray("_2d_root", "_texture_view", "_3d_root", "_3d_view", "cam", "zoomEdit", "_details")]
+[node name="ViewContainer" type="VBoxContainer" parent="RightSide" node_paths=PackedStringArray("_2d_root", "_texture_view", "_3d_root", "_3d_view", "cam", "zoomEdit", "_details", "_animator")]
 layout_mode = 2
 size_flags_vertical = 3
 script = ExtResource("2_vppfs")
@@ -72,6 +72,7 @@ _3d_view = NodePath("View3DContainer/ViewportContainer/View3D")
 cam = NodePath("View3DContainer/ViewportContainer/View3D/Origin/Camera3D")
 zoomEdit = NodePath("View3DContainer/ZoomButtons/ZoomEdit")
 _details = NodePath("../DetailsTree")
+_animator = NodePath("View3DContainer/ViewportContainer/View3D/Animator")
 
 [node name="View2DContainer" type="VBoxContainer" parent="RightSide/ViewContainer"]
 visible = false
@@ -115,6 +116,8 @@ transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 
 [node name="Camera3D" type="Camera3D" parent="RightSide/ViewContainer/View3DContainer/ViewportContainer/View3D/Origin"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 2)
 current = true
+
+[node name="Animator" type="AnimationPlayer" parent="RightSide/ViewContainer/View3DContainer/ViewportContainer/View3D"]
 
 [node name="ZoomButtons" type="HBoxContainer" parent="RightSide/ViewContainer/View3DContainer"]
 layout_mode = 2
