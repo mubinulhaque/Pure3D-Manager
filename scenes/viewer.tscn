@@ -61,7 +61,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/separation = 5
 
-[node name="ViewContainer" type="VBoxContainer" parent="RightSide" node_paths=PackedStringArray("_2d_root", "_texture_view", "_3d_root", "_3d_view", "cam", "zoomEdit", "_details", "_animator")]
+[node name="ViewContainer" type="VBoxContainer" parent="RightSide" node_paths=PackedStringArray("_2d_root", "_texture_view", "_3d_root", "_3d_view", "cam", "zoomEdit", "_details", "_animator", "_playButton")]
 layout_mode = 2
 size_flags_vertical = 3
 script = ExtResource("2_vppfs")
@@ -73,6 +73,7 @@ cam = NodePath("View3DContainer/ViewportContainer/View3D/Origin/Camera3D")
 zoomEdit = NodePath("View3DContainer/ZoomButtons/ZoomEdit")
 _details = NodePath("../DetailsTree")
 _animator = NodePath("View3DContainer/ViewportContainer/View3D/Animator")
+_playButton = NodePath("View3DContainer/AnimateButton")
 
 [node name="View2DContainer" type="VBoxContainer" parent="RightSide/ViewContainer"]
 visible = false
@@ -101,7 +102,7 @@ stretch = true
 [node name="View3D" type="SubViewport" parent="RightSide/ViewContainer/View3DContainer/ViewportContainer"]
 handle_input_locally = false
 gui_disable_input = true
-size = Vector2i(2, 2)
+size = Vector2i(354, 286)
 render_target_update_mode = 0
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="RightSide/ViewContainer/View3DContainer/ViewportContainer/View3D"]
@@ -133,6 +134,11 @@ step = 0.1
 allow_greater = true
 allow_lesser = true
 alignment = 1
+
+[node name="AnimateButton" type="Button" parent="RightSide/ViewContainer/View3DContainer"]
+visible = false
+layout_mode = 2
+text = "Play Animation"
 
 [node name="ExportButton" type="Button" parent="RightSide/ViewContainer/View3DContainer"]
 layout_mode = 2

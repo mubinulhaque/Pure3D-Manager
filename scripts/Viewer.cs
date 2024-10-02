@@ -43,6 +43,10 @@ public partial class Viewer : Node
 	/// Plays skeletal animations
 	/// </summary>
 	[Export] private AnimationPlayer _animator;
+	/// <summary>
+	/// Plays the currently selected skeletal animation
+	/// </summary>
+	[Export] private Button _playButton;
 	#endregion
 
 	#region Private Variables
@@ -62,7 +66,9 @@ public partial class Viewer : Node
 	/// Formats and file extensions that a glTF file can be exported to
 	/// </summary>
 	private string[] _gltfFilters = { "*.gltf;glTF text file", "*.glb;glTF binary file" };
-	// Formats and file extensions that a texture can be exported to
+	/// <summary>
+	/// Formats and file extensions that a texture can be exported to
+	/// </summary>
 	private string[] _texFilters = { "*.png;PNG texture file" };
 	/// <summary>
 	/// Converts a 3D scene into glTF data
@@ -112,8 +118,9 @@ public partial class Viewer : Node
 	/// <param name="chunk">Pure3D chunk to be viewed</param>
 	public void ViewChunk(Chunk chunk)
 	{
-		// Make the current Node3D invisible
+		// Make the current Node3D and "Play Animation" button invisible
 		if (_currentNode3D != null) _currentNode3D.Visible = false;
+		if (_playButton != null) _playButton.Visible = false;
 
 		// Load the chunk based on its type
 		switch (chunk)
@@ -240,16 +247,21 @@ public partial class Viewer : Node
 			// If the Skeleton has not been loaded yet
 			// Load the Skeleton from the chunk
 			// Add a parent Node and make it invisible
-			Node3D parent = new();
-			parent.Name = "Skel_" + bones.Name;
-			parent.Visible = false;
+			Node3D parent = new()
+			{
+				Name = "Skel_" + bones.Name,
+				Visible = false
+			};
 			_3d_scenes.Add(bones, parent);
 			_3d_root.AddChild(parent);
 
 			// Add a new Skeleton3D
-			Skeleton3D skeleton = new();
-			skeleton.Name = bones.Name + "_skeleton";
+			Skeleton3D skeleton = new()
+			{
+				Name = bones.Name + "_skeleton"
+			};
 			parent.AddChild(skeleton);
+			_animator.RootNode = skeleton.GetPath();
 
 			// Define a placeholder mesh
 			SphereMesh sphere = new();
@@ -420,91 +432,107 @@ public partial class Viewer : Node
 	/// <param name="anim">Pure3D Animation to be loaded</param>
 	private void LoadAnimation(Pure3D.Chunks.Animation anim)
 	{
-		// Create a new Godot Animation
-		Godot.Animation newAnim = new();
+		if (!_library.HasAnimation(anim.Name))
+		{
+			// If the Godot Animation for this has not been created yet
+			// Create a new Godot Animation
+			Godot.Animation newAnim = new();
 
-		// Set the frame rate of the Godot Animation, if not already set
-		GD.Print($"Loading animation {anim.Name}...");
-		if (!Mathf.IsEqualApprox(newAnim.Step, anim.FrameRate))
-			newAnim.Step = 1 / anim.FrameRate;
+			// Set the frame rate of the Godot Animation, if not already set
+			GD.Print($"Creating animation {anim.Name}...");
+			if (!Mathf.IsEqualApprox(newAnim.Step, anim.FrameRate))
+				newAnim.Step = 1 / anim.FrameRate;
 
-		// Set the length of the Godot Animation
-		newAnim.Length = anim.NumberOfFrames / anim.FrameRate;
+			// Set the length of the Godot Animation
+			newAnim.Length = anim.NumberOfFrames / anim.FrameRate;
 
-		// Iterate through each group in the Animation's Group List
-		// Iterate through each group's Animation Channels
-		// Add tracks to the Godot Animation
-		var list = (AnimationGroupList)anim.Children.Find(x => x is AnimationGroupList);
+			// Iterate through each group in the Animation's Group List
+			// Iterate through each group's Animation Channels
+			// Add tracks to the Godot Animation
+			var list = (AnimationGroupList)anim.Children.Find(x => x is AnimationGroupList);
 
-		if (list != null)
-			foreach (Chunk group in list.Children)
-				if (group is AnimationGroup ag)
-					foreach (Chunk channel in group.Children)
-						switch (channel)
-						{
-							case CompressedQuaternionChannel cqc:
-								if (cqc.Parameter == "ROT")
-								{
-									AddRotationFrames(
-										newAnim,
-										ag.Name,
-										cqc.Frames,
-										cqc.Values
-									);
-								}
-								else
-								{
-									GD.PushError($"{anim.Name}'s Compressed Quaternion Channel is not for rotation!");
-								}
-								break;
+			if (list != null)
+				foreach (Chunk group in list.Children)
+					if (group is AnimationGroup ag)
+						foreach (Chunk channel in group.Children)
+							switch (channel)
+							{
+								case CompressedQuaternionChannel cqc:
+									if (cqc.Parameter == "ROT")
+									{
+										AddRotationFrames(
+											newAnim,
+											ag.Name,
+											cqc.Frames,
+											cqc.Values
+										);
+									}
+									else
+									{
+										GD.PushError($"{anim.Name}'s Compressed Quaternion Channel is not for rotation!");
+									}
+									break;
 
-							case QuaternionChannel qc:
-								if (qc.Parameter == "ROT")
-								{
-									AddRotationFrames(
-										newAnim,
-										ag.Name,
-										qc.Frames,
-										qc.Values
-									);
-								}
-								else
-								{
-									GD.PushError($"{anim.Name}'s Quaternion Channel is not for rotation!");
-								}
-								break;
+								case QuaternionChannel qc:
+									if (qc.Parameter == "ROT")
+									{
+										AddRotationFrames(
+											newAnim,
+											ag.Name,
+											qc.Frames,
+											qc.Values
+										);
+									}
+									else
+									{
+										GD.PushError($"{anim.Name}'s Quaternion Channel is not for rotation!");
+									}
+									break;
 
-							case Vector1Channel v1c:
-								break;
+								case Vector1Channel v1c:
+									break;
 
-							case Vector2Channel v2c:
-								break;
+								case Vector2Channel v2c:
+									break;
 
-							case Vector3Channel v3c:
-								// Add a new position track for the bone to the animation
-								int v3cTrack = newAnim.AddTrack(Godot.Animation.TrackType.Position3D);
-								newAnim.TrackSetPath(v3cTrack, $":{ag.Name}:position");
+								case Vector3Channel v3c:
+									// Add a new position track for the bone to the animation
+									int v3cTrack = newAnim.AddTrack(Godot.Animation.TrackType.Position3D);
+									newAnim.TrackSetPath(v3cTrack, $":{ag.Name}:position");
 
-								// Add a new position frame
-								for (int i = 0; i < v3c.NumberOfFrames; i++)
-								{
-									Godot.Vector3 pos = Godot.Vector3.Zero;
+									// Add a new position frame
+									for (int i = 0; i < v3c.NumberOfFrames; i++)
+									{
+										Godot.Vector3 pos = Godot.Vector3.Zero;
 
-									pos.X = v3c.Values[i].X;
-									pos.Y = v3c.Values[i].Y;
-									pos.Z = v3c.Values[i].Z;
+										pos.X = v3c.Values[i].X;
+										pos.Y = v3c.Values[i].Y;
+										pos.Z = v3c.Values[i].Z;
 
-									newAnim.PositionTrackInsertKey(
-										v3cTrack,
-										v3c.Frames[i] / newAnim.Length,
-										pos
-									);
-								}
-								break;
-						}
+										newAnim.PositionTrackInsertKey(
+											v3cTrack,
+											v3c.Frames[i] / newAnim.Length,
+											pos
+										);
+									}
+									break;
+							}
 
-		// Add the Animation to the Library
-		_library.AddAnimation(anim.Name, newAnim);
+			// Add the Animation to the Library
+			_library.AddAnimation(anim.Name, newAnim);
+		}
+
+		// Allow the user to play the current animation
+		// By making a valid Skeleton3D visible
+		Node maybeSkel = GetNode(_animator.RootNode);
+
+		if (maybeSkel is Skeleton3D skel)
+		{
+			_playButton.Visible = true;
+			_2d_root.Visible = false;
+			_currentNode3D = (Node3D)skel.GetParent();
+			_3d_root.Visible = true;
+		}
 	}
 
 	/// <summary>
