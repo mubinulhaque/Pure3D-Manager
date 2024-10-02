@@ -35,7 +35,7 @@ custom_minimum_size = Vector2(0, 36)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 0
-text = "homer_a.p3d"
+text = "homer_m.p3d"
 placeholder_text = "Enter model's filename"
 
 [node name="ErrorMessage" type="Label" parent="LeftSide"]
@@ -72,7 +72,7 @@ _3d_view = NodePath("View3DContainer/ViewportContainer/View3D")
 cam = NodePath("View3DContainer/ViewportContainer/View3D/Origin/Camera3D")
 zoomEdit = NodePath("View3DContainer/ZoomButtons/ZoomEdit")
 _details = NodePath("../DetailsTree")
-_animator = NodePath("View3DContainer/ViewportContainer/View3D/Animator")
+_animator = NodePath("View3DContainer/Animator")
 _playButton = NodePath("View3DContainer/AnimateButton")
 
 [node name="View2DContainer" type="VBoxContainer" parent="RightSide/ViewContainer"]
@@ -94,6 +94,9 @@ visible = false
 layout_mode = 2
 size_flags_vertical = 3
 
+[node name="Animator" type="AnimationPlayer" parent="RightSide/ViewContainer/View3DContainer"]
+root_node = NodePath("../ViewportContainer/View3D")
+
 [node name="ViewportContainer" type="SubViewportContainer" parent="RightSide/ViewContainer/View3DContainer"]
 layout_mode = 2
 size_flags_vertical = 3
@@ -102,7 +105,7 @@ stretch = true
 [node name="View3D" type="SubViewport" parent="RightSide/ViewContainer/View3DContainer/ViewportContainer"]
 handle_input_locally = false
 gui_disable_input = true
-size = Vector2i(354, 286)
+size = Vector2i(2, 2)
 render_target_update_mode = 0
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="RightSide/ViewContainer/View3DContainer/ViewportContainer/View3D"]
@@ -117,8 +120,6 @@ transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 
 [node name="Camera3D" type="Camera3D" parent="RightSide/ViewContainer/View3DContainer/ViewportContainer/View3D/Origin"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 2)
 current = true
-
-[node name="Animator" type="AnimationPlayer" parent="RightSide/ViewContainer/View3DContainer/ViewportContainer/View3D"]
 
 [node name="ZoomButtons" type="HBoxContainer" parent="RightSide/ViewContainer/View3DContainer"]
 layout_mode = 2
@@ -155,4 +156,5 @@ script = ExtResource("3_1b7rh")
 [connection signal="item_selected" from="LeftSide/ChunkTree" to="." method="OnItemSelected"]
 [connection signal="pressed" from="RightSide/ViewContainer/View2DContainer/ExportButton" to="RightSide/ViewContainer" method="Export2Png"]
 [connection signal="value_changed" from="RightSide/ViewContainer/View3DContainer/ZoomButtons/ZoomEdit" to="RightSide/ViewContainer" method="ChangeZoom"]
+[connection signal="pressed" from="RightSide/ViewContainer/View3DContainer/AnimateButton" to="RightSide/ViewContainer" method="PlayCurrentAnimation"]
 [connection signal="pressed" from="RightSide/ViewContainer/View3DContainer/ExportButton" to="RightSide/ViewContainer" method="Export2Gltf"]

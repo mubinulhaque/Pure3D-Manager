@@ -437,14 +437,17 @@ public partial class Viewer : Node
 			// If the Godot Animation for this has not been created yet
 			// Create a new Godot Animation
 			Godot.Animation newAnim = new();
+			GD.Print($"Creating animation {anim.Name}...");
 
 			// Set the frame rate of the Godot Animation, if not already set
-			GD.Print($"Creating animation {anim.Name}...");
-			if (!Mathf.IsEqualApprox(newAnim.Step, anim.FrameRate))
-				newAnim.Step = 1 / anim.FrameRate;
+			if (!Mathf.IsEqualApprox(newAnim.Step, 1f / anim.FrameRate))
+				newAnim.Step = 1f / anim.FrameRate;
 
 			// Set the length of the Godot Animation
 			newAnim.Length = anim.NumberOfFrames / anim.FrameRate;
+
+			// Set the Godot Animation to be looping, if needed
+			newAnim.LoopMode = anim.Looping == 1 ? Godot.Animation.LoopModeEnum.Linear : Godot.Animation.LoopModeEnum.None;
 
 			// Iterate through each group in the Animation's Group List
 			// Iterate through each group's Animation Channels
@@ -498,7 +501,7 @@ public partial class Viewer : Node
 								case Vector3Channel v3c:
 									// Add a new position track for the bone to the animation
 									int v3cTrack = newAnim.AddTrack(Godot.Animation.TrackType.Position3D);
-									newAnim.TrackSetPath(v3cTrack, $":{ag.Name}:position");
+									newAnim.TrackSetPath(v3cTrack, $":{ag.Name}");
 
 									// Add a new position frame
 									for (int i = 0; i < v3c.NumberOfFrames; i++)
@@ -511,7 +514,7 @@ public partial class Viewer : Node
 
 										newAnim.PositionTrackInsertKey(
 											v3cTrack,
-											v3c.Frames[i] / newAnim.Length,
+											v3c.Frames[i] * newAnim.Step,
 											pos
 										);
 									}
@@ -523,7 +526,9 @@ public partial class Viewer : Node
 		}
 
 		// Allow the user to play the current animation
-		// By making a valid Skeleton3D visible
+		// by making a valid Skeleton3D visible
+		// and assigning the current animation to the Animation Player
+		_animator.AssignedAnimation = $"anims/{anim.Name}";
 		Node maybeSkel = GetNode(_animator.RootNode);
 
 		if (maybeSkel is Skeleton3D skel)
@@ -551,7 +556,7 @@ public partial class Viewer : Node
 	{
 		// Add a new rotation track for the bone to the animation
 		int track = anim.AddTrack(Godot.Animation.TrackType.Rotation3D);
-		anim.TrackSetPath(track, $":{bone}:rotation");
+		anim.TrackSetPath(track, $":{bone}");
 
 		// Add the rotation frames
 		for (int i = 0; i < times.Length; i++)
@@ -565,10 +570,17 @@ public partial class Viewer : Node
 
 			anim.RotationTrackInsertKey(
 				track,
-				times[i] / anim.Length,
+				times[i] * anim.Step,
 				quat
 			);
 		}
+	}
+
+	public void PlayCurrentAnimation()
+	{
+		if (_animator != null)
+			if (GetNode(_animator.RootNode) is Skeleton3D skel)
+				_animator.Play();
 	}
 	#endregion
 
