@@ -482,7 +482,7 @@ public partial class Detailer : Tree
 				TreeItem animGroupId = CreateItem(root);
 				animGroupId.SetText(
 					0,
-					$"ID: {animGroup.GroupId}"
+					$"Group: {animGroup.GroupId}"
 				);
 
 				TreeItem animGroupChannels = CreateItem(root);
@@ -579,6 +579,12 @@ public partial class Detailer : Tree
 					$"Version: {cqc.Version}"
 				);
 
+				TreeItem cqcParam = CreateItem(root);
+				cqcParam.SetText(
+					0,
+					$"Parameter: {cqc.Parameter}"
+				);
+
 				TreeItem cqcFrames = CreateItem(root);
 				cqcFrames.SetText(
 					0,
@@ -606,6 +612,12 @@ public partial class Detailer : Tree
 				ecVers.SetText(
 					0,
 					$"Version: {ec.Version}"
+				);
+
+				TreeItem ecParam = CreateItem(root);
+				ecParam.SetText(
+					0,
+					$"Parameter: {ec.Param}"
 				);
 
 				TreeItem ecFrames = CreateItem(root);
