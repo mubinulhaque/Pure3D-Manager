@@ -240,7 +240,7 @@ public partial class Viewer : Node
 	/// Loads a Pure3D Skeleton as a Skeleton3D
 	/// </summary>
 	/// <param name="bones">Pure3D Skeleton to be loaded</param>
-	private void LoadSkeleton(Pure3D.Chunks.Skeleton bones)
+	private void LoadSkeleton(Skeleton bones)
 	{
 		if (!_3d_scenes.ContainsKey(bones))
 		{
@@ -366,49 +366,52 @@ public partial class Viewer : Node
 					st.SetMaterial(_meshMaterial);
 
 					// Get normals
-					var normals = (NormalList)prim.Children.Find(x => x is NormalList);
-					var colours = (ColourList)prim.Children.Find(x => x is ColourList);
-					var uvs = (UVList)prim.Children.Find(x => x is UVList);
-					var verts = (PositionList)prim.Children.Find(x => x is PositionList);
+					var normalList = prim.Children.Find(x => x is NormalList);
+					var colourList = prim.Children.Find(x => x is ColourList);
+					var uvList = prim.Children.Find(x => x is UVList);
+					var vertList = prim.Children.Find(x => x is PositionList);
 
 					for (uint i = 0; i < prim.NumVertices; i++)
 					{
 						// Set the normal of the next vertex
-						if (normals != null)
+						if (normalList is NormalList normals)
 						{
 							Pure3D.Vector3 normal = normals.Normals[i];
 							st.SetNormal(new Godot.Vector3(normal.X, normal.Y, normal.Z));
 						}
 
 						// Set the colour of the next vertex
-						if (colours != null)
+						if (colourList is ColourList colours)
 						{
 							uint colour = colours.Colours[i];
 							st.SetColor(Util.GetColour(colour));
 						}
 
 						// Set the UV of the next vertex
-						if (uvs != null)
+						if (uvList is UVList uvs)
 						{
 							Pure3D.Vector2 uv = uvs.UVs[i];
 							st.SetUV(new Godot.Vector2(uv.X, uv.Y));
 						}
 
 						// Add the next vertex
-						Pure3D.Vector3 vert = verts.Positions[i];
-						st.AddVertex(new Godot.Vector3(vert.X, vert.Y, vert.Z));
+						if (vertList is PositionList verts)
+						{
+							Pure3D.Vector3 vert = verts.Positions[i];
+							st.AddVertex(new Godot.Vector3(vert.X, vert.Y, vert.Z));
+						}
 					}
 
 					// Add tangents to the Mesh
-					if (normals != null && uvs != null) st.GenerateTangents();
+					if (normalList is NormalList && uvList is UVList) st.GenerateTangents();
 
 					// Add indices backwards
 					// Godot uses clockwise winding order to determine front-faces of
 					// primitive triangles, whereas Pure3D uses anti-clockwise
 					// So, without this, Godot displays the mesh's back faces only
-					var indices = (IndexList)prim.Children.Find(x => x is IndexList);
+					var indexList = prim.Children.Find(x => x is IndexList);
 
-					if (indices != null)
+					if (indexList is IndexList indices)
 						for (int i = indices.Indices.Length - 1; i >= 0; i--)
 							st.AddIndex((int)indices.Indices[i]);
 
