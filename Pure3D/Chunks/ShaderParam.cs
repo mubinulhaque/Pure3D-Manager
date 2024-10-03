@@ -104,10 +104,7 @@ namespace Pure3D.Chunks
     [ChunkType(69637)]
     public class ShaderColourParam : ShaderParam
     {
-        public byte Red;
-        public byte Green;
-        public byte Blue;
-        public byte Alpha;
+        public uint Colour;
 
         public ShaderColourParam(File file, uint type) : base(file, type)
         {
@@ -117,16 +114,14 @@ namespace Pure3D.Chunks
         {
             base.ReadHeader(stream, length);
             BinaryReader reader = new BinaryReader(stream);
-            Red = reader.ReadByte();
-            Green = reader.ReadByte();
-            Blue = reader.ReadByte();
-            Alpha = reader.ReadByte();
+            Colour = reader.ReadUInt32();
         }
 
         public override string ToString()
         {
-            // Returns the name of the parameter and the colour assigned to it in RGB format (0-255)
-            return $"{Param} Shader Colour Parameter: ({Red}, {Green}, {Blue}, {Alpha})";
+            Godot.Color col = Util.GetColour(Colour);
+            // Returns the name of the parameter and the colour assigned to it in RGBA format (0-255)
+            return $"{Param} Shader Colour Parameter: ({col.R}, {col.G}, {col.B}, {col.A})";
         }
 
         public override string ToShortString()

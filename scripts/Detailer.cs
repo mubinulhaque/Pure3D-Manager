@@ -883,16 +883,17 @@ public partial class Detailer : Tree
 					$"Parameter: {shaderColour.Param}"
 				);
 
+				Color scColour = Util.GetColour(shaderColour.Colour);
 				TreeItem scValue = CreateItem(root);
 				scValue.SetText(
 					0,
-					$"Colour: ({shaderColour.Red}, {shaderColour.Blue}, {shaderColour.Green}, {shaderColour.Alpha})"
+					$"Colour: ({scColour.R}, {scColour.G}, {scColour.B}, {scColour.A})"
 				);
 
-				TreeItem scColour = CreateItem(root);
-				scColour.SetCustomBgColor(
+				TreeItem scColourItem = CreateItem(root);
+				scColourItem.SetCustomBgColor(
 					0,
-					Color.Color8(shaderColour.Red, shaderColour.Blue, shaderColour.Green, shaderColour.Alpha)
+					scColour
 				);
 				break;
 
