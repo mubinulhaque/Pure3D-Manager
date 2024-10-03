@@ -365,11 +365,11 @@ public partial class Viewer : Node
 
 					st.SetMaterial(_meshMaterial);
 
-					// Get normals
-					var normalList = prim.Children.Find(x => x is NormalList);
-					var colourList = prim.Children.Find(x => x is ColourList);
-					var uvList = prim.Children.Find(x => x is UVList);
-					var vertList = prim.Children.Find(x => x is PositionList);
+					// Get List chunks
+					Chunk normalList = prim.Children.Find(x => x is NormalList);
+					Chunk colourList = prim.Children.Find(x => x is ColourList);
+					Chunk uvList = prim.Children.Find(x => x is UVList);
+					Chunk vertList = prim.Children.Find(x => x is PositionList);
 
 					for (uint i = 0; i < prim.NumVertices; i++)
 					{
