@@ -65,7 +65,7 @@ public partial class Viewer : Node
 	/// <summary>
 	/// Formats and file extensions that a glTF file can be exported to
 	/// </summary>
-	private string[] _gltfFilters = { "*.gltf;glTF text file", "*.glb;glTF binary file" };
+	private string[] _gltfFilters = { "*.glb;glTF binary file", "*.gltf;glTF text file" };
 	/// <summary>
 	/// Formats and file extensions that a texture can be exported to
 	/// </summary>
@@ -715,7 +715,7 @@ public partial class Viewer : Node
 		DisplayServer.FileDialogShow(
 			"Save as glTF file",
 			DirAccess.GetDriveName(0),
-			"new_model.gltf",
+			"new_model.glb",
 			true,
 			DisplayServer.FileDialogMode.SaveFile,
 			_gltfFilters,
@@ -744,13 +744,13 @@ public partial class Viewer : Node
 				// Add the correct extension
 				if (selected_filter_index == 0)
 				{
-					// If the user selected .gltf
-					path += ".gltf";
+					// If the user selected .glb
+					path += ".glb";
 				}
 				else
 				{
-					// If the user selected .glb
-					path += ".glb";
+					// If the user selected .gltf
+					path += ".glt";
 				}
 			}
 
