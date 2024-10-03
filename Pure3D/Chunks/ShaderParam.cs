@@ -45,7 +45,7 @@ namespace Pure3D.Chunks
 
         public override string ToShortString()
         {
-            return "Shader Tex Parameter";
+            return "Shader Texture Parameter";
         }
     }
 
@@ -104,10 +104,10 @@ namespace Pure3D.Chunks
     [ChunkType(69637)]
     public class ShaderColourParam : ShaderParam
     {
-        public ushort Red;
-        public ushort Green;
-        public ushort Blue;
-        public ushort Alpha;
+        public byte Red;
+        public byte Green;
+        public byte Blue;
+        public byte Alpha;
 
         public ShaderColourParam(File file, uint type) : base(file, type)
         {
@@ -121,18 +121,6 @@ namespace Pure3D.Chunks
             Green = reader.ReadByte();
             Blue = reader.ReadByte();
             Alpha = reader.ReadByte();
-        }
-
-        public int getRedComponent() {
-            return 0;
-        }
-
-        public int getGreenComponent() {
-            return 0;
-        }
-
-        public int getBlueComponent() {
-            return 0;
         }
 
         public override string ToString()

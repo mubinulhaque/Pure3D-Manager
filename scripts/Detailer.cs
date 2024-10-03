@@ -492,7 +492,7 @@ public partial class Detailer : Tree
 				);
 				break;
 
-			case AnimationGroupList list:
+			case AnimationGroupList agl:
 				root.SetText(
 					0,
 					"Animation Group List"
@@ -501,13 +501,13 @@ public partial class Detailer : Tree
 				TreeItem aglVers = CreateItem(root);
 				aglVers.SetText(
 					0,
-					$"Version: {list.Version}"
+					$"Version: {agl.Version}"
 				);
 
 				TreeItem aglGroups = CreateItem(root);
 				aglGroups.SetText(
 					0,
-					$"{list.NumberOfGroups} Groups"
+					$"{agl.NumberOfGroups} Groups"
 				);
 				break;
 
@@ -818,6 +818,152 @@ public partial class Detailer : Tree
 						$"Frame {v3c.Frames[i] + 1}: ({value.X}, {value.Y}, {value.Z})"
 					);
 				}
+				break;
+			#endregion
+
+			#region Shader Chunks
+			case Pure3D.Chunks.Shader shader:
+				root.SetText(
+					0,
+					"Shader"
+				);
+
+				TreeItem sName = CreateItem(root);
+				sName.SetText(
+					0,
+					$"Name: {shader.Name}"
+				);
+
+				TreeItem pddiName = CreateItem(root);
+				pddiName.SetText(
+					0,
+					$"Shader Name: {shader.PddiShaderName}"
+				);
+
+				TreeItem sVers = CreateItem(root);
+				sVers.SetText(
+					0,
+					$"Version: {shader.Version}"
+				);
+
+				TreeItem sTrans = CreateItem(root);
+				sTrans.SetText(
+					0,
+					$"Translucency: {shader.HasTranslucency}"
+				);
+
+				TreeItem sMask = CreateItem(root);
+				sMask.SetText(
+					0,
+					$"Vertex Mask: {shader.VertexMask}"
+				);
+
+				TreeItem sNeeds = CreateItem(root);
+				sNeeds.SetText(
+					0,
+					$"Vertex Needs: {shader.VertexNeeds}"
+				);
+
+				TreeItem sParams = CreateItem(root);
+				sParams.SetText(
+					0,
+					$"{shader.GetNumParams()} Parameters"
+				);
+				break;
+
+			case ShaderColourParam shaderColour:
+				root.SetText(
+					0,
+					"Shader Colour Parameter"
+				);
+
+				TreeItem scParam = CreateItem(root);
+				scParam.SetText(
+					0,
+					$"Parameter: {shaderColour.Param}"
+				);
+
+				TreeItem scValue = CreateItem(root);
+				scValue.SetText(
+					0,
+					$"Colour: ({shaderColour.Red}, {shaderColour.Blue}, {shaderColour.Green}, {shaderColour.Alpha})"
+				);
+
+				TreeItem scColour = CreateItem(root);
+				scColour.SetCustomBgColor(
+					0,
+					Color.Color8(shaderColour.Red, shaderColour.Blue, shaderColour.Green, shaderColour.Alpha)
+				);
+				break;
+
+			case ShaderFloatParam shaderFloat:
+				root.SetText(
+					0,
+					"Shader Float Parameter"
+				);
+
+				TreeItem sfParam = CreateItem(root);
+				sfParam.SetText(
+					0,
+					$"Parameter: {shaderFloat.Param}"
+				);
+
+				TreeItem sfValue = CreateItem(root);
+				sfValue.SetText(
+					0,
+					$"Value: {shaderFloat.Value}"
+				);
+				break;
+
+			case ShaderIntParam shaderInt:
+				root.SetText(
+					0,
+					"Shader Integer Parameter"
+				);
+
+				TreeItem siParam = CreateItem(root);
+				siParam.SetText(
+					0,
+					$"Parameter: {shaderInt.Param}"
+				);
+
+				TreeItem siValue = CreateItem(root);
+				siValue.SetText(
+					0,
+					$"Value: {shaderInt.Value}"
+				);
+				break;
+
+			case ShaderTextureParam shaderTex:
+				root.SetText(
+					0,
+					"Shader Texture Parameter"
+				);
+
+				TreeItem stParam = CreateItem(root);
+				stParam.SetText(
+					0,
+					$"Parameter: {shaderTex.Param}"
+				);
+
+				TreeItem stValue = CreateItem(root);
+				stValue.SetText(
+					0,
+					$"Value: {shaderTex.Value}"
+				);
+				break;
+
+			case VertexShader vShader:
+				root.SetText(
+					0,
+					"Vertex Shader"
+				);
+
+				TreeItem vsName = CreateItem(root);
+				vsName.SetText(
+					0,
+					$"Shader Name: {vShader.VertexShaderName}"
+				);
 				break;
 			#endregion
 

@@ -1,5 +1,4 @@
 ﻿using System.IO;
-using System.Text;
 
 namespace Pure3D.Chunks
 {
@@ -38,6 +37,11 @@ namespace Pure3D.Chunks
         public override string ToShortString()
         {
             return "Shader";
+        }
+
+        public uint GetNumParams()
+        {
+            return NumParams;
         }
     }
 }
