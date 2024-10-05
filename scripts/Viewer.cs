@@ -389,10 +389,10 @@ public partial class Viewer : Node
 						{
 							byte[] bones = matrices.Matrices[i];
 							st.SetBones(new int[] {
-								(int)palette.Matrices[bones[0]],
-								(int)palette.Matrices[bones[1]],
+								(int)palette.Matrices[bones[3]],
 								(int)palette.Matrices[bones[2]],
-								(int)palette.Matrices[bones[3]]
+								(int)palette.Matrices[bones[1]],
+								(int)palette.Matrices[bones[0]]
 							});
 						}
 
@@ -448,6 +448,11 @@ public partial class Viewer : Node
 					newInstance.Name = prim.ShaderName + "_" + chunk.GetHashCode();
 					newInstance.Mesh = newMesh;
 					parent.AddChild(newInstance);
+
+					// Bind the Mesh to a Skeleton3D, if needed
+					if (GetNode(_animator.RootNode) is Skeleton3D skel
+						&& mesh is Pure3D.Chunks.Skin)
+						newInstance.Skeleton = skel.GetPath();
 				}
 			}
 		}
