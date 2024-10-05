@@ -31,6 +31,10 @@ public partial class Manager : Control
 	public Detailer _details;
 	#endregion
 
+	#region Private Variables
+	private bool _useShortNames = true;
+	#endregion
+
 	/// <summary>
 	/// Collection of each item in the tree and its associated chunk
 	/// </summary>
@@ -84,7 +88,7 @@ public partial class Manager : Control
 	{
 		// Add a TreeItem and set its text to the chunk's string
 		TreeItem item = _chunk_tree.CreateItem(parent);
-		item.SetText(0, chunk.ToShortString());
+		item.SetText(0, _useShortNames ? chunk.ToShortString() : chunk.ToString());
 		item.SetTooltipText(0, chunk.ToString());
 
 		// Add the chunk to the dictionary
@@ -106,6 +110,7 @@ public partial class Manager : Control
 	private void ToggleShortNames(bool toggled)
 	{
 		TreeItem root = _chunk_tree.GetRoot();
+		_useShortNames = toggled;
 
 		if (root != null)
 		{
