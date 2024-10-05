@@ -38,7 +38,7 @@ public partial class Manager : Control
 	/// <summary>
 	/// Collection of each item in the tree and its associated chunk
 	/// </summary>
-	private readonly Dictionary<TreeItem, Chunk> _chunks = new Dictionary<TreeItem, Pure3D.Chunk>();
+	private readonly Dictionary<TreeItem, Chunk> _chunks = new Dictionary<TreeItem, Chunk>();
 
 	public override void _Ready()
 	{
@@ -106,7 +106,7 @@ public partial class Manager : Control
 	/// <summary>
 	/// Go through each TreeItem and toggle whether only the chunk's name is displayed
 	/// </summary>
-	/// <param name="toggled">Wheter to display the chunk's properties</param>
+	/// <param name="toggled">Whether to display the chunk's properties</param>
 	private void ToggleShortNames(bool toggled)
 	{
 		TreeItem root = _chunk_tree.GetRoot();
