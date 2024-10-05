@@ -366,20 +366,16 @@ public partial class Viewer : Node
 					st.SetMaterial(_meshMaterial);
 
 					// Get List chunks
-					Chunk normalList = prim.Children.Find(x => x is NormalList);
 					Chunk colourList = prim.Children.Find(x => x is ColourList);
+					Chunk matrixList = prim.Children.Find(x => x is MatrixList);
+					Chunk matrixPalette = prim.Children.Find(x => x is MatrixPalette);
+					Chunk normalList = prim.Children.Find(x => x is NormalList);
 					Chunk uvList = prim.Children.Find(x => x is UVList);
 					Chunk vertList = prim.Children.Find(x => x is PositionList);
+					Chunk weightList = prim.Children.Find(x => x is WeightList);
 
 					for (uint i = 0; i < prim.NumVertices; i++)
 					{
-						// Set the normal of the next vertex
-						if (normalList is NormalList normals)
-						{
-							Pure3D.Vector3 normal = normals.Normals[i];
-							st.SetNormal(new Godot.Vector3(normal.X, normal.Y, normal.Z));
-						}
-
 						// Set the colour of the next vertex
 						if (colourList is ColourList colours)
 						{
@@ -387,11 +383,42 @@ public partial class Viewer : Node
 							st.SetColor(Util.GetColour(colour));
 						}
 
+						// Set the bones of the next vertex
+						if (matrixList is MatrixList matrices
+							&& matrixPalette is MatrixPalette palette)
+						{
+							byte[] bones = matrices.Matrices[i];
+							st.SetBones(new int[] {
+								(int)palette.Matrices[bones[0]],
+								(int)palette.Matrices[bones[1]],
+								(int)palette.Matrices[bones[2]],
+								(int)palette.Matrices[bones[3]]
+							});
+						}
+
+						// Set the normal of the next vertex
+						if (normalList is NormalList normals)
+						{
+							Pure3D.Vector3 normal = normals.Normals[i];
+							st.SetNormal(new Godot.Vector3(normal.X, normal.Y, normal.Z));
+						}
+
 						// Set the UV of the next vertex
 						if (uvList is UVList uvs)
 						{
 							Pure3D.Vector2 uv = uvs.UVs[i];
 							st.SetUV(new Godot.Vector2(uv.X, uv.Y));
+						}
+
+						// Set the bone weights of the next vertex
+						if (weightList is WeightList weights)
+						{
+							Pure3D.Vector3 weight = weights.Weights[i];
+							st.SetWeights(new float[] { weight.X, weight.Y, weight.Z, 0 });
+						}
+						else if (matrixList is MatrixList)
+						{
+							st.SetWeights(new float[4]);
 						}
 
 						// Add the next vertex
