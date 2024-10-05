@@ -418,7 +418,7 @@ public partial class Viewer : Node
 						}
 						else if (matrixList is MatrixList)
 						{
-							st.SetWeights(new float[4]);
+							st.SetWeights(new float[4] { 1, 0, 0, 0 });
 						}
 
 						// Add the next vertex
