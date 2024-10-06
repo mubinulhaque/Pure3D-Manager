@@ -443,6 +443,28 @@ public partial class Detailer : Tree
 				);
 				break;
 
+			case StaticPhysicsObject spo:
+				root.SetText(
+					0,
+					$"{spo.Name} (Static Physics Object)"
+				);
+
+				TreeItem spoData = CreateItem(root);
+				spoData.SetText(
+					0,
+					$"Data:"
+				);
+
+				for (uint i = 0; i < spo.Data.Length; i++)
+				{
+					TreeItem member = CreateItem(spoData);
+					member.SetText(
+						0,
+						$"Byte {i + 1}: ({spo.Data[i]})"
+					);
+				}
+				break;
+
 			case UVList list:
 				root.SetText(
 					0,
