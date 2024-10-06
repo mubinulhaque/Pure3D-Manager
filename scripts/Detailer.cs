@@ -1044,6 +1044,19 @@ public partial class Detailer : Tree
 					);
 				}
 				break;
+
+			case RenderStatus rs:
+				root.SetText(
+					0,
+					$"Render Status"
+				);
+
+				TreeItem rsCastShadow = CreateItem(root);
+				rsCastShadow.SetText(
+					0,
+					$"Casts Shadow: {rs.CastShadow}"
+				);
+				break;
 			#endregion
 
 			#region Unknown Chunks
