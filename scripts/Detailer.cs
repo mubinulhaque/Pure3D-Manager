@@ -293,25 +293,6 @@ public partial class Detailer : Tree
 				}
 				break;
 
-			case Skeleton skel:
-				root.SetText(
-					0,
-					$"{skel.Name} (Skeleton)"
-				);
-
-				TreeItem skelVers = CreateItem(root);
-				skelVers.SetText(
-					0,
-					$"Version: {skel.Version}"
-				);
-
-				TreeItem skelJoints = CreateItem(root);
-				skelJoints.SetText(
-					0,
-					$"{skel.GetNumJoints()} Joints"
-				);
-				break;
-
 			case PrimitiveGroup primGroup:
 				root.SetText(
 					0,
@@ -422,6 +403,44 @@ public partial class Detailer : Tree
 						"Positions"
 					);
 				}
+				break;
+
+			case Skeleton skel:
+				root.SetText(
+					0,
+					$"{skel.Name} (Skeleton)"
+				);
+
+				TreeItem skelVers = CreateItem(root);
+				skelVers.SetText(
+					0,
+					$"Version: {skel.Version}"
+				);
+
+				TreeItem skelJoints = CreateItem(root);
+				skelJoints.SetText(
+					0,
+					$"{skel.GetNumJoints()} Joints"
+				);
+				break;
+
+			case StaticEntity se:
+				root.SetText(
+					0,
+					$"{se.Name} (Static Entity)"
+				);
+
+				TreeItem seVers = CreateItem(root);
+				seVers.SetText(
+					0,
+					$"Version: {se.Version}"
+				);
+
+				TreeItem seOrder = CreateItem(root);
+				seOrder.SetText(
+					0,
+					$"Render Order: {se.RenderOrder}"
+				);
 				break;
 
 			case UVList list:
