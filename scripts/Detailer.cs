@@ -148,6 +148,25 @@ public partial class Detailer : Tree
 				}
 				break;
 
+			case InstaStaticPhysicsObject ispo:
+				root.SetText(
+					0,
+					$"{ispo.Name} (Instanced Static Physics Object)"
+				);
+
+				TreeItem ispoVers = CreateItem(root);
+				ispoVers.SetText(
+					0,
+					$"Version: {ispo.Version}"
+				);
+
+				TreeItem ispoOrder = CreateItem(root);
+				ispoOrder.SetText(
+					0,
+					$"Render Order: {ispo.RenderOrder}"
+				);
+				break;
+
 			case Intersect intersect:
 				root.SetText(
 					0,
