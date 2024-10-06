@@ -132,6 +132,25 @@ public partial class Detailer : Tree
 				);
 				break;
 
+			case Entity entity:
+				root.SetText(
+					0,
+					$"{entity.Name} ({entity.GetChunkName()})"
+				);
+
+				TreeItem entityVers = CreateItem(root);
+				entityVers.SetText(
+					0,
+					$"Version: {entity.Version}"
+				);
+
+				TreeItem entityOrder = CreateItem(root);
+				entityOrder.SetText(
+					0,
+					$"Render Order: {entity.RenderOrder}"
+				);
+				break;
+
 			case IndexList list:
 				root.SetText(
 					0,
