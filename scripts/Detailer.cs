@@ -148,6 +148,40 @@ public partial class Detailer : Tree
 				}
 				break;
 
+			case Intersect intersect:
+				root.SetText(
+					0,
+					"Intersect"
+				);
+
+				for (uint i = 0; i < intersect.Indices.Length; i++)
+				{
+					TreeItem member = CreateItem(root);
+					member.SetText(
+						0,
+						$"Index {i + 1}: {intersect.Indices[i]}"
+					);
+				}
+
+				for (uint i = 0; i < intersect.Positions.Length; i++)
+				{
+					TreeItem member = CreateItem(root);
+					member.SetText(
+						0,
+						$"Position {i + 1}: {intersect.Positions[i]}"
+					);
+				}
+
+				for (uint i = 0; i < intersect.Normals.Length; i++)
+				{
+					TreeItem member = CreateItem(root);
+					member.SetText(
+						0,
+						$"Normal {i + 1}: {intersect.Normals[i]}"
+					);
+				}
+				break;
+
 			case MatrixList list:
 				root.SetText(
 					0,
