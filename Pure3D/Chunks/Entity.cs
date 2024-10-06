@@ -47,4 +47,30 @@ namespace Pure3D.Chunks
             return "Dynamic Physics Object";
         }
     }
+
+    [ChunkType(66060298)]
+    public class InstaStaticPhysicsObject : Entity
+    {
+        public InstaStaticPhysicsObject(File file, uint type) : base(file, type)
+        {
+        }
+
+        public override string GetChunkName()
+        {
+            return "Instanced Static Physics Object";
+        }
+    }
+
+    [ChunkType(66060288)]
+    public class StaticEntity : Entity
+    {
+        public StaticEntity(File file, uint type) : base(file, type)
+        {
+        }
+
+        public override string GetChunkName()
+        {
+            return "Static Entity";
+        }
+    }
 }

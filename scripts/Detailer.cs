@@ -167,25 +167,6 @@ public partial class Detailer : Tree
 				}
 				break;
 
-			case InstaStaticPhysicsObject ispo:
-				root.SetText(
-					0,
-					$"{ispo.Name} (Instanced Static Physics Object)"
-				);
-
-				TreeItem ispoVers = CreateItem(root);
-				ispoVers.SetText(
-					0,
-					$"Version: {ispo.Version}"
-				);
-
-				TreeItem ispoOrder = CreateItem(root);
-				ispoOrder.SetText(
-					0,
-					$"Render Order: {ispo.RenderOrder}"
-				);
-				break;
-
 			case Intersect intersect:
 				root.SetText(
 					0,
@@ -444,41 +425,6 @@ public partial class Detailer : Tree
 				break;
 
 			case Skeleton skel:
-				root.SetText(
-					0,
-					$"{skel.Name} (Skeleton)"
-				);
-
-				TreeItem skelVers = CreateItem(root);
-				skelVers.SetText(
-					0,
-					$"Version: {skel.Version}"
-				);
-
-				TreeItem skelJoints = CreateItem(root);
-				skelJoints.SetText(
-					0,
-					$"{skel.GetNumJoints()} Joints"
-				);
-				break;
-
-			case StaticEntity se:
-				root.SetText(
-					0,
-					$"{se.Name} (Static Entity)"
-				);
-
-				TreeItem seVers = CreateItem(root);
-				seVers.SetText(
-					0,
-					$"Version: {se.Version}"
-				);
-
-				TreeItem seOrder = CreateItem(root);
-				seOrder.SetText(
-					0,
-					$"Render Order: {se.RenderOrder}"
-				);
 				break;
 
 			case StaticPhysicsObject spo:
