@@ -73,6 +73,44 @@ public partial class Detailer : Tree
 			#endregion
 
 			#region 3D Chunks
+			case BoundingBox bBox:
+				root.SetText(
+					0,
+					$"Bounding Box"
+				);
+
+				TreeItem bbLow = CreateItem(root);
+				bbLow.SetText(
+					0,
+					$"Lower Corner: {bBox.Low}"
+				);
+
+				TreeItem bbHigh = CreateItem(root);
+				bbHigh.SetText(
+					0,
+					$"Upper Corner: {bBox.High}"
+				);
+				break;
+
+			case BoundingSphere bSphere:
+				root.SetText(
+					0,
+					$"Bounding Sphere"
+				);
+
+				TreeItem bSphereCentre = CreateItem(root);
+				bSphereCentre.SetText(
+					0,
+					$"Centre: {bSphere.Centre}"
+				);
+
+				TreeItem bSphereRadius = CreateItem(root);
+				bSphereRadius.SetText(
+					0,
+					$"Radius: {bSphere.Radius}"
+				);
+				break;
+
 			case ColourList list:
 				root.SetText(
 					0,
