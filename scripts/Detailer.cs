@@ -111,6 +111,25 @@ public partial class Detailer : Tree
 				);
 				break;
 
+			case BreakableObject breakable:
+				root.SetText(
+					0,
+					$"Breakable Object"
+				);
+
+				TreeItem breakableIndex = CreateItem(root);
+				breakableIndex.SetText(
+					0,
+					$"Index: {breakable.Index}"
+				);
+
+				TreeItem breakableCount = CreateItem(root);
+				breakableCount.SetText(
+					0,
+					$"Count: {breakable.Count}"
+				);
+				break;
+
 			case ColourList list:
 				root.SetText(
 					0,
