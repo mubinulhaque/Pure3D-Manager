@@ -590,6 +590,37 @@ public partial class Detailer : Tree
 			#endregion
 
 			#region Animation Chunks
+			case AnimatedObjectAnimation aoa:
+				root.SetText(
+					0,
+					"Animated Object Animation"
+				);
+
+				TreeItem aoaName = CreateItem(root);
+				aoaName.SetText(
+					0,
+					$"Name: {aoa.Name}"
+				);
+
+				TreeItem aoaVers = CreateItem(root);
+				aoaVers.SetText(
+					0,
+					$"Version: {aoa.Version}"
+				);
+
+				TreeItem aoaFrameRate = CreateItem(root);
+				aoaFrameRate.SetText(
+					0,
+					$"Frame Rate: {aoa.FrameRate}"
+				);
+
+				TreeItem aoaFrameControllers = CreateItem(root);
+				aoaFrameControllers.SetText(
+					0,
+					$"{aoa.NumberOfFrameControllers} Frame Controllers"
+				);
+				break;
+
 			case AnimatedObjectFactory aof:
 				root.SetText(
 					0,
