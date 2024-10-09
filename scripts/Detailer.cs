@@ -369,6 +369,31 @@ public partial class Detailer : Tree
 				}
 				break;
 
+			case ParticleSystem2 pSystem2:
+				root.SetText(
+					0,
+					"Particle System 2"
+				);
+
+				TreeItem pSystem2Name = CreateItem(root);
+				pSystem2Name.SetText(
+					0,
+					$"Name: {pSystem2.Name}"
+				);
+
+				TreeItem pSystem2Vers = CreateItem(root);
+				pSystem2Vers.SetText(
+					0,
+					$"Version: {pSystem2.Version}"
+				);
+
+				TreeItem pSystem2Factory = CreateItem(root);
+				pSystem2Factory.SetText(
+					0,
+					$"Factory: {pSystem2.Factory}"
+				);
+				break;
+
 			case PrimitiveGroup primGroup:
 				root.SetText(
 					0,
