@@ -1160,6 +1160,25 @@ public partial class Detailer : Tree
 				);
 				break;
 
+			case GameAttributeParam aParam:
+				root.SetText(
+					0,
+					$"Game Attribute Parameter"
+				);
+
+				TreeItem aParamName = CreateItem(root);
+				aParamName.SetText(
+					0,
+					$"Parameter: {aParam.Parameter}"
+				);
+
+				TreeItem aParamValue = CreateItem(root);
+				aParamValue.SetText(
+					0,
+					$"Value: {aParam.Value}"
+				);
+				break;
+
 			case PositionList list:
 				root.SetText(
 					0,
