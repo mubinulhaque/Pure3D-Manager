@@ -590,6 +590,37 @@ public partial class Detailer : Tree
 			#endregion
 
 			#region Animation Chunks
+			case AnimatedObject animObj:
+				root.SetText(
+					0,
+					"Animated Object"
+				);
+
+				TreeItem animObjName = CreateItem(root);
+				animObjName.SetText(
+					0,
+					$"Name: {animObj.Name}"
+				);
+
+				TreeItem animObjVers = CreateItem(root);
+				animObjVers.SetText(
+					0,
+					$"Version: {animObj.Version}"
+				);
+
+				TreeItem animObjFactory = CreateItem(root);
+				animObjFactory.SetText(
+					0,
+					$"Associated Factory: {animObj.Factory}"
+				);
+
+				TreeItem animObjStart = CreateItem(root);
+				animObjStart.SetText(
+					0,
+					$"Starting Animation: {animObj.StartAnimation}"
+				);
+				break;
+
 			case AnimatedObjectAnimation aoa:
 				root.SetText(
 					0,
