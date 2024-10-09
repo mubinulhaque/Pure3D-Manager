@@ -714,6 +714,19 @@ public partial class Detailer : Tree
 				);
 				break;
 
+			case BaseAnimation baseAnim:
+				root.SetText(
+					0,
+					baseAnim.ToShortString()
+				);
+
+				TreeItem baseAnimVers = CreateItem(root);
+				baseAnimVers.SetText(
+					0,
+					$"Version: {baseAnim.Version}"
+				);
+				break;
+
 			case ChannelInterpolationMode mode:
 				root.SetText(
 					0,
@@ -764,22 +777,6 @@ public partial class Detailer : Tree
 				}
 				break;
 
-			case EmitterAnimation eAnim:
-				root.SetText(
-					0,
-					"Emitter Animation"
-				);
-
-				for (uint i = 0; i < eAnim.Data.Length; i++)
-				{
-					TreeItem member = CreateItem(root);
-					member.SetText(
-						0,
-						$"Byte {i + 1}: {eAnim.Data[i]}"
-					);
-				}
-				break;
-
 			case EntityChannel ec:
 				TreeItem ecFrames = ViewAnimationChannelChunk(root, ec);
 
@@ -815,22 +812,6 @@ public partial class Detailer : Tree
 					member.SetText(
 						0,
 						$"Frame {ic.Frames[i] + 1}: {ic.Values[i]}"
-					);
-				}
-				break;
-
-			case ParticleAnimation pAnim:
-				root.SetText(
-					0,
-					"Particle Animation"
-				);
-
-				for (uint i = 0; i < pAnim.Data.Length; i++)
-				{
-					TreeItem member = CreateItem(root);
-					member.SetText(
-						0,
-						$"Byte {i + 1}: {pAnim.Data[i]}"
 					);
 				}
 				break;
