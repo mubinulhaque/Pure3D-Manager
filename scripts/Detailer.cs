@@ -590,6 +590,37 @@ public partial class Detailer : Tree
 			#endregion
 
 			#region Animation Chunks
+			case AnimatedObjectFactory aof:
+				root.SetText(
+					0,
+					"Animated Object Factory"
+				);
+
+				TreeItem aofName = CreateItem(root);
+				aofName.SetText(
+					0,
+					$"Name: {aof.Name}"
+				);
+
+				TreeItem aofVers = CreateItem(root);
+				aofVers.SetText(
+					0,
+					$"Version: {aof.Version}"
+				);
+
+				TreeItem aofUnknown = CreateItem(root);
+				aofUnknown.SetText(
+					0,
+					$"Group: {aof.Unknown}"
+				);
+
+				TreeItem aofAnims = CreateItem(root);
+				aofAnims.SetText(
+					0,
+					$"{aof.NumberOfAnimations} Animations"
+				);
+				break;
+
 			case Pure3D.Chunks.Animation anim:
 				root.SetText(
 					0,
