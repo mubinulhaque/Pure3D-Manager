@@ -11,6 +11,13 @@ namespace Pure3D.Chunks
         {
         }
 
+        public override void ReadHeader(Stream stream, long length)
+        {
+            BinaryReader reader = new(stream);
+            Parameter = Util.ReadString(reader);
+            Value = reader.ReadUInt32();
+        }
+
         public override string ToString()
         {
             return $"Game Attribute Parameter ({Parameter}: {Value})";
@@ -27,13 +34,6 @@ namespace Pure3D.Chunks
     {
         public GameAttributeIntParam(File file, uint type) : base(file, type)
         {
-        }
-
-        public override void ReadHeader(Stream stream, long length)
-        {
-            BinaryReader reader = new(stream);
-            Parameter = Util.ReadString(reader);
-            Value = reader.ReadUInt32();
         }
 
         public override string ToShortString()
