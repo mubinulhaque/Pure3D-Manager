@@ -73,6 +73,31 @@ public partial class Detailer : Tree
 			#endregion
 
 			#region 3D Chunks
+			case AnimDynaPhys adp:
+				root.SetText(
+					0,
+					"Animated Dynamic Physics Object"
+				);
+
+				TreeItem adpName = CreateItem(root);
+				adpName.SetText(
+					0,
+					$"Name: {adp.Name}"
+				);
+
+				TreeItem adpVers = CreateItem(root);
+				adpVers.SetText(
+					0,
+					$"Version: {adp.Version}"
+				);
+
+				TreeItem adpRenderOrder = CreateItem(root);
+				adpRenderOrder.SetText(
+					0,
+					$"Render Order: {adp.RenderOrder}"
+				);
+				break;
+
 			case BoundingBox bBox:
 				root.SetText(
 					0,
