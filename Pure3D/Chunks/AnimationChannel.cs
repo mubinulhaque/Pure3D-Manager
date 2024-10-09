@@ -106,6 +106,33 @@ namespace Pure3D.Chunks
         }
     }
 
+    [ChunkType(1184000)]
+    public class Float1Channel : AnimationChannel
+    {
+        public float[] Values;
+
+        public Float1Channel(File file, uint type) : base(file, type)
+        {
+        }
+
+        public override void ReadHeader(Stream stream, long length)
+        {
+            base.ReadHeader(stream, length);
+            BinaryReader reader = new(stream);
+
+            Values = new float[NumberOfFrames];
+            for (int i = 0; i < NumberOfFrames; i++)
+            {
+                Values[i] = reader.ReadSingle();
+            }
+        }
+
+        public override string ToShortString()
+        {
+            return "Float 1 Channel";
+        }
+    }
+
     /// <summary>
     /// Animation for the rotation of a <c>SkeletonJoint</c>.
     /// </summary>
