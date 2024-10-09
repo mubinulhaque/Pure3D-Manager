@@ -60,4 +60,17 @@ namespace Pure3D.Chunks
             return "Particle Animation";
         }
     }
+
+    [ChunkType(88074)]
+    public class GeneratorAnimation : BaseAnimation
+    {
+        public GeneratorAnimation(File file, uint type) : base(file, type)
+        {
+        }
+
+        public override string ToShortString()
+        {
+            return "Generator Animation";
+        }
+    }
 }
