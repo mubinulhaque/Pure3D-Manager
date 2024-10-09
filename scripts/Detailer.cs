@@ -747,6 +747,22 @@ public partial class Detailer : Tree
 				}
 				break;
 
+			case EmitterAnimation eAnim:
+				root.SetText(
+					0,
+					"Emitter Animation"
+				);
+
+				for (uint i = 0; i < eAnim.Data.Length; i++)
+				{
+					TreeItem member = CreateItem(root);
+					member.SetText(
+						0,
+						$"Byte {i + 1}: {eAnim.Data[i]}"
+					);
+				}
+				break;
+
 			case EntityChannel ec:
 				TreeItem ecFrames = ViewAnimationChannelChunk(root, ec);
 
@@ -777,12 +793,6 @@ public partial class Detailer : Tree
 				root.SetText(
 					0,
 					"Particle Animation"
-				);
-
-				TreeItem pAnimType = CreateItem(root);
-				pAnimType.SetText(
-					0,
-					$"Type: {pAnim.Type}"
 				);
 
 				for (uint i = 0; i < pAnim.Data.Length; i++)
@@ -1156,6 +1166,12 @@ public partial class Detailer : Tree
 		}
 	}
 
+	/// <summary>
+	/// Reads the properties of all base Animation Channels
+	/// </summary>
+	/// <param name="root">Root chunk of the Pure3D file</param>
+	/// <param name="channel">Chunk to view the properties of</param>
+	/// <returns>TreeItem to add frames underneath</returns>
 	public TreeItem ViewAnimationChannelChunk(TreeItem root, AnimationChannel channel)
 	{
 		root.SetText(

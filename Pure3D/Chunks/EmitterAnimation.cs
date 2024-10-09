@@ -2,12 +2,12 @@ using System.IO;
 
 namespace Pure3D.Chunks
 {
-    [ChunkType(88072)]
-    public class ParticleAnimation : Chunk
+    [ChunkType(88073)]
+    public class EmitterAnimation : Chunk
     {
         public byte[] Data;
 
-        public ParticleAnimation(File file, uint type) : base(file, type)
+        public EmitterAnimation(File file, uint type) : base(file, type)
         {
         }
 
@@ -18,12 +18,12 @@ namespace Pure3D.Chunks
 
         public override string ToString()
         {
-            return $"Particle Animation (TypeID: {Type}) (Len: {Data.Length})";
+            return $"Emitter Animation (TypeID: {Type}) (Len: {Data.Length})";
         }
 
         public override string ToShortString()
         {
-            return "Particle Animation";
+            return "Emitter Animation";
         }
     }
 }
