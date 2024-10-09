@@ -789,6 +789,19 @@ public partial class Detailer : Tree
 				}
 				break;
 
+			case IntegerChannel ic:
+				TreeItem icFrames = ViewAnimationChannelChunk(root, ic);
+
+				for (uint i = 0; i < ic.Frames.Length; i++)
+				{
+					TreeItem member = CreateItem(icFrames);
+					member.SetText(
+						0,
+						$"Frame {ic.Frames[i] + 1}: {ic.Values[i]}"
+					);
+				}
+				break;
+
 			case ParticleAnimation pAnim:
 				root.SetText(
 					0,
