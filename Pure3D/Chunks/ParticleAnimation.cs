@@ -20,12 +20,12 @@ namespace Pure3D.Chunks
 
         public override string ToString()
         {
-            return $"Particle List (TypeID: {unknownType}) (Len: {Data.Length})";
+            return $"Particle Animation (TypeID: {unknownType}) (Len: {Data.Length})";
         }
 
         public override string ToShortString()
         {
-            return "Particle List";
+            return "Particle Animation";
         }
     }
 }
