@@ -1,5 +1,4 @@
 using System.IO;
-using Godot;
 
 namespace Pure3D.Chunks
 {

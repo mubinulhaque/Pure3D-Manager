@@ -1135,10 +1135,28 @@ public partial class Detailer : Tree
 			#endregion
 
 			#region Misc Chunks
-			case Root rootChunk:
+			case GameAttribute attribute:
 				root.SetText(
 					0,
-					"Root Chunk"
+					$"Game Attribute"
+				);
+
+				TreeItem attributeName = CreateItem(root);
+				attributeName.SetText(
+					0,
+					$"Name: {attribute.Name}"
+				);
+
+				TreeItem attributeVers = CreateItem(root);
+				attributeVers.SetText(
+					0,
+					$"Version: {attribute.Version}"
+				);
+
+				TreeItem attributeParams = CreateItem(root);
+				attributeParams.SetText(
+					0,
+					$"{attribute.NumberOfParameters} Parameters"
 				);
 				break;
 
@@ -1168,6 +1186,13 @@ public partial class Detailer : Tree
 				rsCastShadow.SetText(
 					0,
 					$"Casts Shadow: {rs.CastShadow}"
+				);
+				break;
+
+			case Root rootChunk:
+				root.SetText(
+					0,
+					"Root Chunk"
 				);
 				break;
 			#endregion
