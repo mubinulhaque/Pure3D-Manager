@@ -734,32 +734,11 @@ public partial class Detailer : Tree
 				break;
 
 			case CompressedQuaternionChannel cqc:
-				root.SetText(
-					0,
-					"Compressed Quaternion Channel"
-				);
-
-				TreeItem cqcVers = CreateItem(root);
-				cqcVers.SetText(
-					0,
-					$"Version: {cqc.Version}"
-				);
-
-				TreeItem cqcParam = CreateItem(root);
-				cqcParam.SetText(
-					0,
-					$"Parameter: {cqc.Parameter}"
-				);
-
-				TreeItem cqcFrames = CreateItem(root);
-				cqcFrames.SetText(
-					0,
-					$"{cqc.NumberOfFrames} Frames"
-				);
+				TreeItem cqcFrames = ViewAnimationChannelChunk(root, cqc);
 
 				for (uint i = 0; i < cqc.Frames.Length; i++)
 				{
-					TreeItem member = CreateItem(root);
+					TreeItem member = CreateItem(cqcFrames);
 					Pure3D.Quaternion value = cqc.Values[i];
 					member.SetText(
 						0,
@@ -769,32 +748,11 @@ public partial class Detailer : Tree
 				break;
 
 			case EntityChannel ec:
-				root.SetText(
-					0,
-					"Entity Channel"
-				);
-
-				TreeItem ecVers = CreateItem(root);
-				ecVers.SetText(
-					0,
-					$"Version: {ec.Version}"
-				);
-
-				TreeItem ecParam = CreateItem(root);
-				ecParam.SetText(
-					0,
-					$"Parameter: {ec.Param}"
-				);
-
-				TreeItem ecFrames = CreateItem(root);
-				ecFrames.SetText(
-					0,
-					$"{ec.NumberOfFrames} Frames"
-				);
+				TreeItem ecFrames = ViewAnimationChannelChunk(root, ec);
 
 				for (uint i = 0; i < ec.Frames.Length; i++)
 				{
-					TreeItem member = CreateItem(root);
+					TreeItem member = CreateItem(ecFrames);
 					member.SetText(
 						0,
 						$"Frame {ec.Frames[i] + 1}: {ec.Values[i]}"
@@ -805,7 +763,7 @@ public partial class Detailer : Tree
 			case ParticleAnimation pAnim:
 				root.SetText(
 					0,
-					"Entity Channel"
+					"Particle Animation"
 				);
 
 				TreeItem pAnimType = CreateItem(root);
@@ -825,32 +783,11 @@ public partial class Detailer : Tree
 				break;
 
 			case QuaternionChannel qc:
-				root.SetText(
-					0,
-					"Quaternion Channel"
-				);
-
-				TreeItem qcVers = CreateItem(root);
-				qcVers.SetText(
-					0,
-					$"Version: {qc.Version}"
-				);
-
-				TreeItem qcParam = CreateItem(root);
-				qcParam.SetText(
-					0,
-					$"Parameter: {qc.Parameter}"
-				);
-
-				TreeItem qcFrames = CreateItem(root);
-				qcFrames.SetText(
-					0,
-					$"{qc.NumberOfFrames} Frames"
-				);
+				TreeItem qcFrames = ViewAnimationChannelChunk(root, qc);
 
 				for (uint i = 0; i < qc.Frames.Length; i++)
 				{
-					TreeItem member = CreateItem(root);
+					TreeItem member = CreateItem(qcFrames);
 					member.SetText(
 						0,
 						$"Frame {qc.Frames[i] + 1}: {qc.Values[i]}"
@@ -859,36 +796,15 @@ public partial class Detailer : Tree
 				break;
 
 			case Vector1Channel v1c:
-				root.SetText(
-					0,
-					"Vector 1 Channel"
-				);
+				TreeItem v1cFrames = ViewAnimationChannelChunk(root, v1c);
 
-				TreeItem v1cVers = CreateItem(root);
-				v1cVers.SetText(
-					0,
-					$"Version: {v1c.Version}"
-				);
-
-				TreeItem v1cParam = CreateItem(root);
-				v1cParam.SetText(
-					0,
-					$"Parameter: {v1c.Parameter}"
-				);
-
-				TreeItem v1cMapping = CreateItem(root);
+				TreeItem v1cMapping = CreateItem(v1cFrames);
 				v1cMapping.SetText(
 					0,
 					$"Mapping: {v1c.Mapping}"
 				);
 
-				TreeItem v1cFrames = CreateItem(root);
-				v1cFrames.SetText(
-					0,
-					$"{v1c.NumberOfFrames} Frames"
-				);
-
-				TreeItem v1cConstants = CreateItem(root);
+				TreeItem v1cConstants = CreateItem(v1cFrames);
 				v1cConstants.SetText(
 					0,
 					$"Constants: ({v1c.Constants.X}, {v1c.Constants.Y}, {v1c.Constants.Z})"
@@ -896,7 +812,7 @@ public partial class Detailer : Tree
 
 				for (uint i = 0; i < v1c.Frames.Length; i++)
 				{
-					TreeItem member = CreateItem(root);
+					TreeItem member = CreateItem(v1cFrames);
 					member.SetText(
 						0,
 						$"Frame {v1c.Frames[i] + 1}: {v1c.Values[i]}"
@@ -905,36 +821,15 @@ public partial class Detailer : Tree
 				break;
 
 			case Vector2Channel v2c:
-				root.SetText(
-					0,
-					"Vector 2 Channel"
-				);
+				TreeItem v2cFrames = ViewAnimationChannelChunk(root, v2c);
 
-				TreeItem v2cVers = CreateItem(root);
-				v2cVers.SetText(
-					0,
-					$"Version: {v2c.Version}"
-				);
-
-				TreeItem v2cParam = CreateItem(root);
-				v2cParam.SetText(
-					0,
-					$"Parameter: {v2c.Parameter}"
-				);
-
-				TreeItem v2cMapping = CreateItem(root);
+				TreeItem v2cMapping = CreateItem(v2cFrames);
 				v2cMapping.SetText(
 					0,
 					$"Mapping: {v2c.Mapping}"
 				);
 
-				TreeItem v2cFrames = CreateItem(root);
-				v2cFrames.SetText(
-					0,
-					$"{v2c.NumberOfFrames} Frames"
-				);
-
-				TreeItem v2cConstants = CreateItem(root);
+				TreeItem v2cConstants = CreateItem(v2cFrames);
 				v2cConstants.SetText(
 					0,
 					$"Constants: ({v2c.Constants.X}, {v2c.Constants.Y}, {v2c.Constants.Z})"
@@ -942,7 +837,7 @@ public partial class Detailer : Tree
 
 				for (uint i = 0; i < v2c.Frames.Length; i++)
 				{
-					TreeItem member = CreateItem(root);
+					TreeItem member = CreateItem(v2cFrames);
 					Pure3D.Vector2 value = v2c.Values[i];
 					member.SetText(
 						0,
@@ -952,32 +847,11 @@ public partial class Detailer : Tree
 				break;
 
 			case Vector3Channel v3c:
-				root.SetText(
-					0,
-					"Vector 3 Channel"
-				);
-
-				TreeItem v3cVers = CreateItem(root);
-				v3cVers.SetText(
-					0,
-					$"Version: {v3c.Version}"
-				);
-
-				TreeItem v3cParam = CreateItem(root);
-				v3cParam.SetText(
-					0,
-					$"Parameter: {v3c.Parameter}"
-				);
-
-				TreeItem v3cFrames = CreateItem(root);
-				v3cFrames.SetText(
-					0,
-					$"{v3c.NumberOfFrames} Frames"
-				);
+				TreeItem v3cFrames = ViewAnimationChannelChunk(root, v3c);
 
 				for (uint i = 0; i < v3c.Frames.Length; i++)
 				{
-					TreeItem member = CreateItem(root);
+					TreeItem member = CreateItem(v3cFrames);
 					Pure3D.Vector3 value = v3c.Values[i];
 					member.SetText(
 						0,
@@ -1267,5 +1141,33 @@ public partial class Detailer : Tree
 				);
 				break;
 		}
+	}
+
+	public TreeItem ViewAnimationChannelChunk(TreeItem root, AnimationChannel channel)
+	{
+		root.SetText(
+			0,
+			channel.ToShortString()
+		);
+
+		TreeItem channelVers = CreateItem(root);
+		channelVers.SetText(
+			0,
+			$"Version: {channel.Version}"
+		);
+
+		TreeItem channelParam = CreateItem(root);
+		channelParam.SetText(
+			0,
+			$"Parameter: {channel.Parameter}"
+		);
+
+		TreeItem channelFrames = CreateItem(root);
+		channelFrames.SetText(
+			0,
+			$"{channel.NumberOfFrames} Frames"
+		);
+
+		return channelFrames;
 	}
 }
