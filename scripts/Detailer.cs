@@ -733,6 +733,23 @@ public partial class Detailer : Tree
 				);
 				break;
 
+			case ColourChannel cc:
+				TreeItem ccFrames = ViewAnimationChannelChunk(root, cc);
+
+				for (uint i = 0; i < cc.Values.Length; i++)
+				{
+					Color colour = cc.Values[i];
+
+					TreeItem colourItem = CreateItem(ccFrames);
+					TreeItem colourValue = CreateItem(ccFrames);
+					colourItem.SetText(
+						0,
+						$"Colour {i + 1}: ({colour.R}, {colour.G}, {colour.B}, {colour.A})"
+					);
+					colourValue.SetCustomBgColor(0, colour);
+				}
+				break;
+
 			case CompressedQuaternionChannel cqc:
 				TreeItem cqcFrames = ViewAnimationChannelChunk(root, cqc);
 

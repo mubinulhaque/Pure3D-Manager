@@ -1,5 +1,6 @@
 using System.IO;
 using System.Text;
+using Godot;
 
 namespace Pure3D.Chunks
 {
@@ -39,6 +40,33 @@ namespace Pure3D.Chunks
         public override string ToShortString()
         {
             return "Animation Channel";
+        }
+    }
+
+    [ChunkType(1184009)]
+    public class ColourChannel : AnimationChannel
+    {
+        public Color[] Values;
+
+        public ColourChannel(File file, uint type) : base(file, type)
+        {
+        }
+
+        public override void ReadHeader(Stream stream, long length)
+        {
+            base.ReadHeader(stream, length);
+            BinaryReader reader = new(stream);
+
+            Values = new Color[NumberOfFrames];
+            for (int i = 0; i < NumberOfFrames; i++)
+            {
+                Values[i] = Util.GetColour(reader.ReadUInt32());
+            }
+        }
+
+        public override string ToShortString()
+        {
+            return "Colour Channel";
         }
     }
 
