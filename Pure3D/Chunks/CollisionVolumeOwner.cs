@@ -47,7 +47,7 @@ namespace Pure3D.Chunks
 
         public override string ToShortString()
         {
-            return $"Collision Volume Owner Name";
+            return "Collision Volume Owner Name";
         }
     }
 }

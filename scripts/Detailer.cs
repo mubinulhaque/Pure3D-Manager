@@ -192,6 +192,31 @@ public partial class Detailer : Tree
 				);
 				break;
 
+			case CollisionVolume colVol:
+				root.SetText(
+					0,
+					$"Collision Volume"
+				);
+
+				TreeItem colVolSubVolumes = CreateItem(root);
+				colVolSubVolumes.SetText(
+					0,
+					$"{colVol.NumberOfSubVolumes} Sub Volumes"
+				);
+
+				TreeItem colVolOwnerIndex = CreateItem(root);
+				colVolOwnerIndex.SetText(
+					0,
+					$"Owner Index: {colVol.OwnerIndex}"
+				);
+
+				TreeItem colVolObject = CreateItem(root);
+				colVolObject.SetText(
+					0,
+					$"Object Reference Index: {colVol.ObjectReferenceIndex}"
+				);
+				break;
+
 			case CollisionVolumeOwner colVolOwner:
 				root.SetText(
 					0,
