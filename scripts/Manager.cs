@@ -1,5 +1,6 @@
 using Godot;
 using Pure3D;
+using Pure3D.Chunks;
 using System;
 using System.Collections.Generic;
 
@@ -33,6 +34,7 @@ public partial class Manager : Control
 
 	#region Private Variables
 	private bool _useShortNames = true;
+	private readonly List<uint> _unknownChunkIds = new List<uint>();
 	#endregion
 
 	/// <summary>
@@ -93,6 +95,13 @@ public partial class Manager : Control
 
 		// Add the chunk to the dictionary
 		_chunks.Add(item, chunk);
+
+		// Push a warning if the chunk is unknown
+		if (chunk is Unknown && !_unknownChunkIds.Contains(chunk.Type))
+		{
+			_unknownChunkIds.Add(chunk.Type);
+			GD.PushWarning($"Unknown {chunk.ToShortString()} found!");
+		}
 
 		// Recursively load the children of each chunk
 		foreach (var child in chunk.Children) LoadChunk(child, item);
