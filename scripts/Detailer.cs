@@ -201,6 +201,25 @@ public partial class Detailer : Tree
 				);
 				break;
 
+			case CompositeDrawableProp cdp:
+				root.SetText(
+					0,
+					cdp.ToShortString()
+				);
+
+				TreeItem cdpTranslucent = CreateItem(root);
+				cdpTranslucent.SetText(
+					0,
+					$"Translucent: {cdp.IsTranslucent}"
+				);
+
+				TreeItem cdpJoint = CreateItem(root);
+				cdpJoint.SetText(
+					0,
+					$"Skeleton Joint Index: {cdp.SkeletonJointID}"
+				);
+				break;
+
 			case CompositeDrawableSkinList list:
 				root.SetText(
 					0,
