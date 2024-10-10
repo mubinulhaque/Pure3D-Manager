@@ -640,6 +640,31 @@ public partial class Detailer : Tree
 				);
 				break;
 
+			case AnimatedObjectWrapper animObjWrapper:
+				root.SetText(
+					0,
+					"Animated Object Wrapper"
+				);
+
+				TreeItem animObjWrapperName = CreateItem(root);
+				animObjWrapperName.SetText(
+					0,
+					$"Name: {animObjWrapper.Name}"
+				);
+
+				TreeItem animObjWrapperVers = CreateItem(root);
+				animObjWrapperVers.SetText(
+					0,
+					$"Version: {animObjWrapper.Version}"
+				);
+
+				TreeItem animObjWrapperAlpha = CreateItem(root);
+				animObjWrapperAlpha.SetText(
+					0,
+					$"Alpha: {animObjWrapper.HasAlpha}"
+				);
+				break;
+
 			case AnimatedObjectAnimation aoa:
 				root.SetText(
 					0,
