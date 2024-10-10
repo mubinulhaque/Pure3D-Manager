@@ -3,12 +3,12 @@ using System.IO;
 namespace Pure3D.Chunks
 {
     [ChunkType(66060302)]
-    public class AnimDynaPhys : Named
+    public class AnimatedDynamicPhysicsObject : Named
     {
         public uint Version;
         public uint RenderOrder;
 
-        public AnimDynaPhys(File file, uint type) : base(file, type)
+        public AnimatedDynamicPhysicsObject(File file, uint type) : base(file, type)
         {
         }
 
