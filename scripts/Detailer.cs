@@ -155,6 +155,23 @@ public partial class Detailer : Tree
 				);
 				break;
 
+			case CollisionAABB colAABB:
+				root.SetText(
+					0,
+					colAABB.ToShortString()
+				);
+
+				TreeItem colAABBNothing = CreateItem(root);
+				colAABBNothing.SetText(
+					0,
+					$"Nothing: {colAABB.Nothing}"
+				);
+				colAABBNothing.SetTooltipText(
+					0,
+					"No, really, this does nothing"
+				);
+				break;
+
 			case CollisionObject collisionObject:
 				root.SetText(
 					0,
