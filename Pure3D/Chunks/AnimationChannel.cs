@@ -43,6 +43,44 @@ namespace Pure3D.Chunks
         }
     }
 
+    [ChunkType(1184008)]
+    public class BooleanChannel : AnimationChannel
+    {
+        public uint Start;
+        public ushort[] Values;
+
+        public BooleanChannel(File file, uint type) : base(file, type)
+        {
+        }
+
+        public override void ReadHeader(Stream stream, long length)
+        {
+            BinaryReader reader = new(stream);
+            Version = reader.ReadUInt32();
+            Parameter = Util.ZeroTerminate(Encoding.ASCII.GetString(reader.ReadBytes(4)));
+            NumberOfFrames = reader.ReadUInt16();
+
+            Start = reader.ReadUInt16();
+
+            Frames = new ushort[NumberOfFrames];
+            for (int i = 0; i < NumberOfFrames; i++)
+            {
+                Frames[i] = reader.ReadUInt16();
+            }
+
+            Values = new ushort[NumberOfFrames];
+            for (int i = 0; i < NumberOfFrames; i++)
+            {
+                Values[i] = reader.ReadUInt16();
+            }
+        }
+
+        public override string ToShortString()
+        {
+            return "Boolean Channel";
+        }
+    }
+
     [ChunkType(1184009)]
     public class ColourChannel : AnimationChannel
     {

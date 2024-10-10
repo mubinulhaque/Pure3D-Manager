@@ -820,6 +820,25 @@ public partial class Detailer : Tree
 				);
 				break;
 
+			case BooleanChannel bc:
+				TreeItem bcFrames = ViewAnimationChannelChunk(root, bc);
+
+				TreeItem bcStart = CreateItem(bcFrames);
+				bcStart.SetText(
+					0,
+					$"Start State: {bc.Start}"
+				);
+
+				for (uint i = 0; i < bc.Frames.Length; i++)
+				{
+					TreeItem member = CreateItem(bcFrames);
+					member.SetText(
+						0,
+						$"Frame {bc.Frames[i]}: {bc.Values[i]}"
+					);
+				}
+				break;
+
 			case ChannelInterpolationMode mode:
 				root.SetText(
 					0,
