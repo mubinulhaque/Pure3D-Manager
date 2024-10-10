@@ -1180,6 +1180,43 @@ public partial class Detailer : Tree
 				);
 				break;
 
+			case MultiController mController:
+				root.SetText(
+					0,
+					$"Multi Controller"
+				);
+
+				TreeItem mControllerName = CreateItem(root);
+				mControllerName.SetText(
+					0,
+					$"Name: {mController.Name}"
+				);
+
+				TreeItem mControllerVers = CreateItem(root);
+				mControllerVers.SetText(
+					0,
+					$"Version: {mController.Version}"
+				);
+
+				TreeItem mControllerTracks = CreateItem(root);
+				mControllerTracks.SetText(
+					0,
+					$"{mController.NumberOfTracks} Tracks"
+				);
+
+				TreeItem mControllerLength = CreateItem(root);
+				mControllerLength.SetText(
+					0,
+					$"Length: {mController.Length}"
+				);
+
+				TreeItem mControllerFrameRate = CreateItem(root);
+				mControllerFrameRate.SetText(
+					0,
+					$"Frame Rate: {mController.FrameRate}"
+				);
+				break;
+
 			case PositionList list:
 				root.SetText(
 					0,
