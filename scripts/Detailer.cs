@@ -1217,6 +1217,40 @@ public partial class Detailer : Tree
 				);
 				break;
 
+			case MultiControllerTrackList mctl:
+				root.SetText(
+					0,
+					$"Multi Controller Tracks"
+				);
+
+				TreeItem mcTracksCount = CreateItem(root);
+				mcTracksCount.SetText(
+					0,
+					$"{mctl.NumberOfTracks} Tracks"
+				);
+
+				for (uint i = 0; i < mctl.NumberOfTracks; i++)
+				{
+					TreeItem mcTracksIndex = CreateItem(mcTracksCount);
+					mcTracksIndex.SetText(
+						0,
+						$"Track {i + 1}: {mctl.Names[i]}"
+					);
+
+					TreeItem mcTracksTime = CreateItem(mcTracksIndex);
+					mcTracksTime.SetText(
+						0,
+						$"Time: {mctl.Starts[i]} - {mctl.Ends[i]}"
+					);
+
+					TreeItem mcTracksScale = CreateItem(mcTracksIndex);
+					mcTracksScale.SetText(
+						0,
+						$"Scale: {mctl.Scales[i]}"
+					);
+				}
+				break;
+
 			case PositionList list:
 				root.SetText(
 					0,
