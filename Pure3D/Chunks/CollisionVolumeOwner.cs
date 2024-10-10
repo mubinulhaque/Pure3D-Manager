@@ -27,4 +27,27 @@ namespace Pure3D.Chunks
             return "Collision Volume Owner";
         }
     }
+
+    [ChunkType(117506082)]
+    public class CollisionVolumeOwnerName : Named
+    {
+        public CollisionVolumeOwnerName(File file, uint type) : base(file, type)
+        {
+        }
+
+        public override void ReadHeader(Stream stream, long length)
+        {
+            base.ReadHeader(stream, length);
+        }
+
+        public override string ToString()
+        {
+            return $"Collision Volume Owner Name: {Name}";
+        }
+
+        public override string ToShortString()
+        {
+            return $"Collision Volume Owner Name";
+        }
+    }
 }

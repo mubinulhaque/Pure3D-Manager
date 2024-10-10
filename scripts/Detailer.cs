@@ -205,6 +205,19 @@ public partial class Detailer : Tree
 				);
 				break;
 
+			case CollisionVolumeOwnerName colVolOwnerName:
+				root.SetText(
+					0,
+					$"Collision Volume Owner Name"
+				);
+
+				TreeItem colVolOwnerNameName = CreateItem(root);
+				colVolOwnerNameName.SetText(
+					0,
+					$"Name: {colVolOwnerName.Name}"
+				);
+				break;
+
 			case ColourList list:
 				root.SetText(
 					0,
