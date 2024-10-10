@@ -155,6 +155,43 @@ public partial class Detailer : Tree
 				);
 				break;
 
+			case CollisionObject collisionObject:
+				root.SetText(
+					0,
+					$"Collision Object"
+				);
+
+				TreeItem collisionObjectName = CreateItem(root);
+				collisionObjectName.SetText(
+					0,
+					$"Name: {collisionObject.Name}"
+				);
+
+				TreeItem collisionObjectVers = CreateItem(root);
+				collisionObjectVers.SetText(
+					0,
+					$"Version: {collisionObject.Version}"
+				);
+
+				TreeItem collisionObjectOwners = CreateItem(root);
+				collisionObjectOwners.SetText(
+					0,
+					$"{collisionObject.NumberOfOwners} Owners"
+				);
+
+				TreeItem collisionObjectMat = CreateItem(root);
+				collisionObjectMat.SetText(
+					0,
+					$"Material: {collisionObject.Material}"
+				);
+
+				TreeItem collisionObjectSubObjects = CreateItem(root);
+				collisionObjectSubObjects.SetText(
+					0,
+					$"{collisionObject.NumberOfOwners} Sub Objects"
+				);
+				break;
+
 			case ColourList list:
 				root.SetText(
 					0,
