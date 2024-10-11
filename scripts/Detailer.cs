@@ -798,6 +798,61 @@ public partial class Detailer : Tree
 				);
 				break;
 
+			case StatePropStateData spsd:
+				root.SetText(
+					0,
+					spsd.ToShortString()
+				);
+
+				TreeItem spsdName = CreateItem(root);
+				spsdName.SetText(
+					0,
+					$"Name: {spsd.Name}"
+				);
+
+				TreeItem spsdTrans = CreateItem(root);
+				spsdTrans.SetText(
+					0,
+					$"Automatic Transition: {spsd.AutoTransition}"
+				);
+
+				TreeItem spsdState = CreateItem(root);
+				spsdState.SetText(
+					0,
+					$"Out State: {spsd.OutState}"
+				);
+
+				TreeItem spsdDrawables = CreateItem(root);
+				spsdDrawables.SetText(
+					0,
+					$"{spsd.NumberOfDrawables} Drawables"
+				);
+
+				TreeItem spsdControllers = CreateItem(root);
+				spsdControllers.SetText(
+					0,
+					$"{spsd.NumberOfFrameControllers} Frame Controllers"
+				);
+
+				TreeItem spsdEvents = CreateItem(root);
+				spsdEvents.SetText(
+					0,
+					$"{spsd.NumberOfEvents} Events"
+				);
+
+				TreeItem spsdCallbacks = CreateItem(root);
+				spsdCallbacks.SetText(
+					0,
+					$"{spsd.NumberOfCallbacks} Callbacks"
+				);
+
+				TreeItem spsdFrame = CreateItem(root);
+				spsdFrame.SetText(
+					0,
+					$"Out Frame: {spsd.OutFrame}"
+				);
+				break;
+
 			case StaticPhysicsObject spo:
 				root.SetText(
 					0,
