@@ -94,5 +94,15 @@ namespace Pure3D
             // So we correct it here
             return Color.Color8(values[2], values[1], values[0], values[3]);
         }
+
+        /// <summary>
+        /// Prints a Pure3D Vector3 in a readable format
+        /// </summary>
+        /// <param name="vector">Pure3D Vector3</param>
+        /// <returns>String form of Vector3</returns>
+        public static string PrintVector3(Pure3D.Vector3 vector)
+        {
+            return $"({vector.X}, {vector.Y}, {vector.Z})";
+        }
     }
 }

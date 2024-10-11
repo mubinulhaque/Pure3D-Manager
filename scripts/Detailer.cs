@@ -172,6 +172,19 @@ public partial class Detailer : Tree
 				);
 				break;
 
+			case CollisionOBB colOBB:
+				root.SetText(
+					0,
+					colOBB.ToShortString()
+				);
+
+				TreeItem colOBBExtents = CreateItem(root);
+				colOBBExtents.SetText(
+					0,
+					$"Half Extents: {Util.PrintVector3(colOBB.HalfExtents)}"
+				);
+				break;
+
 			case CollisionObject collisionObject:
 				root.SetText(
 					0,
