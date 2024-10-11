@@ -222,6 +222,19 @@ public partial class Detailer : Tree
 				);
 				break;
 
+			case CollisionVector colVector:
+				root.SetText(
+					0,
+					colVector.ToShortString()
+				);
+
+				TreeItem colVectorItem = CreateItem(root);
+				colVectorItem.SetText(
+					0,
+					$"Vector: {Util.PrintVector3(colVector.Vector)}"
+				);
+				break;
+
 			case CollisionVolume colVol:
 				root.SetText(
 					0,
