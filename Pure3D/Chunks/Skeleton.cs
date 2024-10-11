@@ -3,9 +3,8 @@
 namespace Pure3D.Chunks
 {
     [ChunkType(17664)]
-    public class Skeleton : Named
+    public class Skeleton : VersionNamed
     {
-        public uint Version;
         protected uint NumJoints;
 
         public Skeleton(File file, uint type) : base(file, type)
@@ -15,7 +14,7 @@ namespace Pure3D.Chunks
         public override void ReadHeader(Stream stream, long length)
         {
             BinaryReader reader = new BinaryReader(stream);
-            base.ReadHeader(stream, length);
+            Name = Util.ReadString(reader);
             Version = reader.ReadUInt32();
             NumJoints = reader.ReadUInt32();
         }

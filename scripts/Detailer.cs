@@ -743,6 +743,28 @@ public partial class Detailer : Tree
 				break;
 
 			case Skeleton skel:
+				root.SetText(
+					0,
+					"Skeleton"
+				);
+
+				TreeItem skelName = CreateItem(root);
+				skelName.SetText(
+					0,
+					$"Name: {skel.Name}"
+				);
+
+				TreeItem skelVers = CreateItem(root);
+				skelVers.SetText(
+					0,
+					$"Version: {skel.Version}"
+				);
+
+				TreeItem skelJoints = CreateItem(root);
+				skelJoints.SetText(
+					0,
+					$"{skel.GetNumJoints()} Joints"
+				);
 				break;
 
 			case StatePropData spd:
