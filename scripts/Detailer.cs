@@ -172,6 +172,67 @@ public partial class Detailer : Tree
 				);
 				break;
 
+			case CollisionAttribute colAttribute:
+				root.SetText(
+					0,
+					chunk.ToShortString()
+				);
+
+				TreeItem colAttributeStatic = CreateItem(root);
+				colAttributeStatic.SetText(
+					0,
+					$"Static: {colAttribute.IsStatic}"
+				);
+
+				TreeItem colAttributeArea = CreateItem(root);
+				colAttributeArea.SetText(
+					0,
+					$"Default Area: {colAttribute.DefaultArea}"
+				);
+
+				TreeItem colAttributeRoll = CreateItem(root);
+				colAttributeRoll.SetText(
+					0,
+					$"Can Roll: {colAttribute.CanRoll}"
+				);
+
+				TreeItem colAttributeSlide = CreateItem(root);
+				colAttributeSlide.SetText(
+					0,
+					$"Can Slide: {colAttribute.CanSlide}"
+				);
+
+				TreeItem colAttributeSpin = CreateItem(root);
+				colAttributeSpin.SetText(
+					0,
+					$"Can Spin: {colAttribute.CanSpin}"
+				);
+
+				TreeItem colAttributeBounce = CreateItem(root);
+				colAttributeBounce.SetText(
+					0,
+					$"Can Bounce: {colAttribute.CanBounce}"
+				);
+
+				TreeItem colAttribute1 = CreateItem(root);
+				colAttribute1.SetText(
+					0,
+					$"Extra Attribute 1: {colAttribute.ExtraAttribute1}"
+				);
+
+				TreeItem colAttribute2 = CreateItem(root);
+				colAttribute2.SetText(
+					0,
+					$"Extra Attribute 2: {colAttribute.ExtraAttribute2}"
+				);
+
+				TreeItem colAttribute3 = CreateItem(root);
+				colAttribute3.SetText(
+					0,
+					$"Extra Attribute 3: {colAttribute.ExtraAttribute3}"
+				);
+				break;
+
 			case CollisionOBB colOBB:
 				root.SetText(
 					0,
