@@ -745,6 +745,37 @@ public partial class Detailer : Tree
 			case Skeleton skel:
 				break;
 
+			case StatePropData spd:
+				root.SetText(
+					0,
+					spd.ToShortString()
+				);
+
+				TreeItem spdName = CreateItem(root);
+				spdName.SetText(
+					0,
+					$"Name: {spd.Name}"
+				);
+
+				TreeItem spdVers = CreateItem(root);
+				spdVers.SetText(
+					0,
+					$"Version: {spd.Version}"
+				);
+
+				TreeItem spdFactory = CreateItem(root);
+				spdFactory.SetText(
+					0,
+					$"Object Factory: {spd.ObjectFactory}"
+				);
+
+				TreeItem spdStates = CreateItem(root);
+				spdStates.SetText(
+					0,
+					$"{spd.NumberOfStates} States"
+				);
+				break;
+
 			case StaticPhysicsObject spo:
 				root.SetText(
 					0,
