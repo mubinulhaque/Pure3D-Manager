@@ -707,36 +707,7 @@ public partial class Detailer : Tree
 					$"{sgt.NumberOfChildren} Children"
 				);
 
-				TreeItem sgtTransform = CreateItem(root);
-				sgtTransform.SetText(
-					0,
-					"Transform:"
-				);
-
-				string[] sgtMatrix = Util.PrintMatrix(sgt.Transform);
-				TreeItem sgtTransform0 = CreateItem(sgtTransform);
-				sgtTransform0.SetText(
-					0,
-					sgtMatrix[0]
-				);
-
-				TreeItem sgtTransform1 = CreateItem(sgtTransform);
-				sgtTransform1.SetText(
-					0,
-					sgtMatrix[1]
-				);
-
-				TreeItem sgtTransform2 = CreateItem(sgtTransform);
-				sgtTransform2.SetText(
-					0,
-					sgtMatrix[2]
-				);
-
-				TreeItem sgtTransform3 = CreateItem(sgtTransform);
-				sgtTransform3.SetText(
-					0,
-					sgtMatrix[3]
-				);
+				ViewMatrix(root, "Transform:", sgt.Transform);
 				break;
 
 			case Skeleton skel:
@@ -881,6 +852,22 @@ public partial class Detailer : Tree
 
 			case StaticPhysicsObject:
 				// No code needed, since this is just VersionNamed
+				break;
+
+			case TriggerVolume trigger:
+				TreeItem triggerRect = CreateItem(root);
+				triggerRect.SetText(
+					0,
+					$"Is Rect: {trigger.IsRect}"
+				);
+
+				TreeItem triggerExtents = CreateItem(root);
+				triggerExtents.SetText(
+					0,
+					$"Half Extents: {Util.PrintVector3(trigger.HalfExtents)}"
+				);
+
+				ViewMatrix(root, "Shape:", trigger.Shape);
 				break;
 
 			case UVList list:
@@ -1488,5 +1475,40 @@ public partial class Detailer : Tree
 		);
 
 		return channelFrames;
+	}
+
+	public void ViewMatrix(TreeItem root, string flavourText, Pure3D.Matrix matrix)
+	{
+
+		TreeItem newItem = CreateItem(root);
+		newItem.SetText(
+			0,
+			flavourText
+		);
+
+		string[] matrixStrings = Util.PrintMatrix(matrix);
+		TreeItem sgtTransform0 = CreateItem(newItem);
+		sgtTransform0.SetText(
+			0,
+			matrixStrings[0]
+		);
+
+		TreeItem sgtTransform1 = CreateItem(newItem);
+		sgtTransform1.SetText(
+			0,
+			matrixStrings[1]
+		);
+
+		TreeItem sgtTransform2 = CreateItem(newItem);
+		sgtTransform2.SetText(
+			0,
+			matrixStrings[2]
+		);
+
+		TreeItem sgtTransform3 = CreateItem(newItem);
+		sgtTransform3.SetText(
+			0,
+			matrixStrings[3]
+		);
 	}
 }
