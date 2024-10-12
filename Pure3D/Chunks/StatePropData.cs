@@ -69,4 +69,31 @@ namespace Pure3D.Chunks
             return "State Prop State Data";
         }
     }
+
+    [ChunkType(134348802)]
+    public class StatePropVisibility : Named
+    {
+        public bool Visible;
+
+        public StatePropVisibility(File file, uint type) : base(file, type)
+        {
+        }
+
+        public override void ReadHeader(Stream stream, long length)
+        {
+            base.ReadHeader(stream, length);
+            BinaryReader reader = new(stream);
+            Visible = reader.ReadUInt32() == 1;
+        }
+
+        public override string ToString()
+        {
+            return $"{ToShortString()}: {Name} (Visible: {Visible})";
+        }
+
+        public override string ToShortString()
+        {
+            return "State Prop Visibility";
+        }
+    }
 }

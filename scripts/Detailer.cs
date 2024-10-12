@@ -853,6 +853,25 @@ public partial class Detailer : Tree
 				);
 				break;
 
+			case StatePropVisibility spv:
+				root.SetText(
+					0,
+					spv.ToShortString()
+				);
+
+				TreeItem spvName = CreateItem(root);
+				spvName.SetText(
+					0,
+					$"Name: {spv.Name}"
+				);
+
+				TreeItem spvVisible = CreateItem(root);
+				spvVisible.SetText(
+					0,
+					$"Visible: {spv.Visible}"
+				);
+				break;
+
 			case StaticPhysicsObject spo:
 				root.SetText(
 					0,
