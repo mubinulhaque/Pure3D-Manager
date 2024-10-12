@@ -502,6 +502,22 @@ public partial class Detailer : Tree
 				);
 				break;
 
+			case PositionList list:
+				root.SetText(
+					0,
+					"Position List"
+				);
+
+				for (uint i = 0; i < list.Positions.Length; i++)
+				{
+					TreeItem member = CreateItem(root);
+					member.SetText(
+						0,
+						$"Position {i + 1}: ({list.Positions[i].X}, {list.Positions[i].Y}, {list.Positions[i].Z})"
+					);
+				}
+				break;
+
 			case PrimitiveGroup primGroup:
 				root.SetText(
 					0,
@@ -633,6 +649,44 @@ public partial class Detailer : Tree
 				spdStates.SetText(
 					0,
 					$"{spd.NumberOfStates} States"
+				);
+				break;
+
+			case StatePropFrameController spfc:
+				TreeItem spfcCyclic = CreateItem(root);
+				spfcCyclic.SetText(
+					0,
+					$"Cyclic: {spfc.IsCyclic}"
+				);
+
+				TreeItem spfcCycles = CreateItem(root);
+				spfcCycles.SetText(
+					0,
+					$"{spfc.NumberOfCycles} Cycles"
+				);
+
+				TreeItem spfcHoldFrame = CreateItem(root);
+				spfcHoldFrame.SetText(
+					0,
+					$"Hold Frame: {spfc.HoldFrame}"
+				);
+
+				TreeItem spfcMinFrame = CreateItem(root);
+				spfcMinFrame.SetText(
+					0,
+					$"Minimum Frame: {spfc.MinFrame}"
+				);
+
+				TreeItem spfcMaxFrame = CreateItem(root);
+				spfcMaxFrame.SetText(
+					0,
+					$"Maximum Frame: {spfc.MaxFrame}"
+				);
+
+				TreeItem spfcSpeed = CreateItem(root);
+				spfcSpeed.SetText(
+					0,
+					$"Relative Speed: {spfc.RelativeSpeed}"
 				);
 				break;
 
@@ -1204,22 +1258,6 @@ public partial class Detailer : Tree
 					mcTracksScale.SetText(
 						0,
 						$"Scale: {mctl.Scales[i]}"
-					);
-				}
-				break;
-
-			case PositionList list:
-				root.SetText(
-					0,
-					"Position List"
-				);
-
-				for (uint i = 0; i < list.Positions.Length; i++)
-				{
-					TreeItem member = CreateItem(root);
-					member.SetText(
-						0,
-						$"Position {i + 1}: ({list.Positions[i].X}, {list.Positions[i].Y}, {list.Positions[i].Z})"
 					);
 				}
 				break;

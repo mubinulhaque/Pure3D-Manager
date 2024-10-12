@@ -96,4 +96,41 @@ namespace Pure3D.Chunks
             return "State Prop Visibility";
         }
     }
+
+    [ChunkType(134348803)]
+    public class StatePropFrameController : Named
+    {
+        public bool IsCyclic;
+        public uint NumberOfCycles;
+        public uint HoldFrame;
+        public float MinFrame;
+        public float MaxFrame;
+        public float RelativeSpeed;
+
+        public StatePropFrameController(File file, uint type) : base(file, type)
+        {
+        }
+
+        public override void ReadHeader(Stream stream, long length)
+        {
+            base.ReadHeader(stream, length);
+            BinaryReader reader = new(stream);
+            IsCyclic = reader.ReadUInt32() == 1;
+            NumberOfCycles = reader.ReadUInt32();
+            HoldFrame = reader.ReadUInt32();
+            MinFrame = reader.ReadSingle();
+            MaxFrame = reader.ReadSingle();
+            RelativeSpeed = reader.ReadSingle();
+        }
+
+        public override string ToString()
+        {
+            return $"{ToShortString()}: {Name} (Cyclic: {IsCyclic}, {NumberOfCycles} Cycles, Frame: {MinFrame} - {MaxFrame}, Relative Speed: {RelativeSpeed})";
+        }
+
+        public override string ToShortString()
+        {
+            return "State Prop Frame Controller";
+        }
+    }
 }
