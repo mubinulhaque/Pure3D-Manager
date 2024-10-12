@@ -638,17 +638,17 @@ public partial class Detailer : Tree
 				);
 				break;
 
-			case StatePropData spd:
-				TreeItem spdFactory = CreateItem(root);
-				spdFactory.SetText(
+			case StateProp sp:
+				TreeItem spFactory = CreateItem(root);
+				spFactory.SetText(
 					0,
-					$"Object Factory: {spd.ObjectFactory}"
+					$"Object Factory: {sp.ObjectFactory}"
 				);
 
 				TreeItem spdStates = CreateItem(root);
 				spdStates.SetText(
 					0,
-					$"{spd.NumberOfStates} States"
+					$"{sp.NumberOfStates} States"
 				);
 				break;
 

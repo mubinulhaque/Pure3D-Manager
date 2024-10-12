@@ -3,12 +3,12 @@ using System.IO;
 namespace Pure3D.Chunks
 {
     [ChunkType(134348800)]
-    public class StatePropData : VersionNamed
+    public class StateProp : VersionNamed
     {
         public string ObjectFactory;
         public uint NumberOfStates;
 
-        public StatePropData(File file, uint type) : base(file, type)
+        public StateProp(File file, uint type) : base(file, type)
         {
         }
 
@@ -27,7 +27,7 @@ namespace Pure3D.Chunks
 
         public override string ToShortString()
         {
-            return "State Prop Data";
+            return "State Prop";
         }
     }
 
