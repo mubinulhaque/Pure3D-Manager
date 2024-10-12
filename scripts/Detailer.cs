@@ -390,6 +390,11 @@ public partial class Detailer : Tree
 				}
 				break;
 
+			case InstanceList:
+				// No code needed
+				// Only a Name attribute
+				break;
+
 			case Intersect intersect:
 				for (uint i = 0; i < intersect.Indices.Length; i++)
 				{
