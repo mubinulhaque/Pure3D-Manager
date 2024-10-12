@@ -133,4 +133,33 @@ namespace Pure3D.Chunks
             return "State Prop Frame Controller";
         }
     }
+
+    [ChunkType(134348804)]
+    public class StatePropEvent : Named
+    {
+        public uint State;
+        public uint Event;
+
+        public StatePropEvent(File file, uint type) : base(file, type)
+        {
+        }
+
+        public override void ReadHeader(Stream stream, long length)
+        {
+            base.ReadHeader(stream, length);
+            BinaryReader reader = new(stream);
+            State = reader.ReadUInt32();
+            Event = reader.ReadUInt32();
+        }
+
+        public override string ToString()
+        {
+            return $"{ToShortString()}: {Name} (State: {State}, Event: {Event})";
+        }
+
+        public override string ToShortString()
+        {
+            return "State Prop Event";
+        }
+    }
 }

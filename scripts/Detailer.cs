@@ -652,6 +652,20 @@ public partial class Detailer : Tree
 				);
 				break;
 
+			case StatePropEvent spe:
+				TreeItem speState = CreateItem(root);
+				speState.SetText(
+					0,
+					$"State: {spe.State}"
+				);
+
+				TreeItem speEvent = CreateItem(root);
+				speEvent.SetText(
+					0,
+					$"Event: {spe.Event}"
+				);
+				break;
+
 			case StatePropFrameController spfc:
 				TreeItem spfcCyclic = CreateItem(root);
 				spfcCyclic.SetText(
