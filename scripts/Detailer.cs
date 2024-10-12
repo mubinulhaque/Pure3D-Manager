@@ -655,6 +655,9 @@ public partial class Detailer : Tree
 				}
 				break;
 
+			case Scenegraph:
+				break;
+
 			case Skeleton skel:
 				TreeItem skelJoints = CreateItem(root);
 				skelJoints.SetText(
