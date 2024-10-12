@@ -268,7 +268,7 @@ public partial class Detailer : Tree
 				);
 				break;
 
-			case CollisionVolumeOwnerName colVolOwnerName:
+			case CollisionVolumeOwnerName:
 				// No need for any code
 				// since this has only has a Name property
 				break;
@@ -652,6 +652,20 @@ public partial class Detailer : Tree
 				);
 				break;
 
+			case StatePropCallback spc:
+				TreeItem spcEvent = CreateItem(root);
+				spcEvent.SetText(
+					0,
+					$"Event: {spc.Event}"
+				);
+
+				TreeItem spcFrame = CreateItem(root);
+				spcFrame.SetText(
+					0,
+					$"Frame: {spc.Frame}"
+				);
+				break;
+
 			case StatePropEvent spe:
 				TreeItem speState = CreateItem(root);
 				speState.SetText(
@@ -756,7 +770,7 @@ public partial class Detailer : Tree
 				);
 				break;
 
-			case StaticPhysicsObject spo:
+			case StaticPhysicsObject:
 				// No code needed, since this is just VersionNamed
 				break;
 
