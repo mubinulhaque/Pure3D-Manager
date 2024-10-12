@@ -31,7 +31,6 @@ namespace Pure3D.Chunks
     [ChunkType(1179905)]
     public class ScenegraphRoot : Chunk
     {
-
         public ScenegraphRoot(File file, uint type) : base(file, type)
         {
         }
@@ -49,6 +48,33 @@ namespace Pure3D.Chunks
         public override string ToShortString()
         {
             return "Scenegraph Root";
+        }
+    }
+
+    [ChunkType(1179906)]
+    public class ScenegraphBranch : Named
+    {
+        public uint NumberOfChildren;
+
+        public ScenegraphBranch(File file, uint type) : base(file, type)
+        {
+        }
+
+        public override void ReadHeader(Stream stream, long length)
+        {
+            base.ReadHeader(stream, length);
+            BinaryReader reader = new(stream);
+            NumberOfChildren = reader.ReadUInt32();
+        }
+
+        public override string ToString()
+        {
+            return $"{ToShortString()}: {Name} ({NumberOfChildren} Children)";
+        }
+
+        public override string ToShortString()
+        {
+            return "Scenegraph Branch";
         }
     }
 }

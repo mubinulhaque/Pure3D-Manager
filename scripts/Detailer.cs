@@ -656,6 +656,7 @@ public partial class Detailer : Tree
 				break;
 
 			case Scenegraph:
+			case ScenegraphBranch:
 				break;
 
 			case ScenegraphRoot:
