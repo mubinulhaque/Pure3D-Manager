@@ -2,9 +2,8 @@ using System.IO;
 
 namespace Pure3D.Chunks
 {
-    public abstract class Entity : Named
+    public abstract class Entity : VersionNamed // I think it's VersionNamed, at least
     {
-        public uint Version; // I think it's Version, at least
         public uint RenderOrder;
 
         public Entity(File file, uint type) : base(file, type)
@@ -13,15 +12,15 @@ namespace Pure3D.Chunks
 
         public override void ReadHeader(Stream stream, long length)
         {
-            base.ReadHeader(stream, length);
             BinaryReader reader = new(stream);
+            Name = Util.ReadString(reader);
             Version = reader.ReadUInt32();
             RenderOrder = reader.ReadUInt32();
         }
 
         public override string ToString()
         {
-            return $"{ToShortString()}: {Name} (Version {Version}, Render Order: {RenderOrder})";
+            return $"{ToShortString()}: {Name} (Render Order: {RenderOrder}, Version {Version})";
         }
 
         public override string ToShortString()

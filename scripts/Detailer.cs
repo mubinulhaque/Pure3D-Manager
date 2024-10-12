@@ -20,17 +20,31 @@ public partial class Detailer : Tree
 		// Set the root chunk's text to the chunk's name
 		root.SetText(0, chunk.ToShortString());
 
+		// Add Name of chunk, where possible
+		if (chunk is Named named)
+		{
+			TreeItem unknownName = CreateItem(root);
+			unknownName.SetText(
+				0,
+				$"Name: {named.Name}"
+			);
+		}
+
+		// Add Version of chunk, where possible
+		if (chunk is VersionNamed vNamed)
+		{
+			TreeItem unknownName = CreateItem(root);
+			unknownName.SetText(
+				0,
+				$"Version: {vNamed.Version}"
+			);
+		}
+
 		// Load the chunk's details based on its type
 		switch (chunk)
 		{
 			#region 2D Chunks
 			case Pure3D.Chunks.Image img:
-				TreeItem imgName = CreateItem(root);
-				imgName.SetText(
-					0,
-					$"Name: {img.Name}"
-				);
-
 				TreeItem imgVers = CreateItem(root);
 				imgVers.SetText(
 					0,
@@ -73,18 +87,6 @@ public partial class Detailer : Tree
 
 			#region 3D Chunks
 			case AnimatedDynamicPhysicsObject adpo:
-				TreeItem adpoName = CreateItem(root);
-				adpoName.SetText(
-					0,
-					$"Name: {adpo.Name}"
-				);
-
-				TreeItem adpoVers = CreateItem(root);
-				adpoVers.SetText(
-					0,
-					$"Version: {adpo.Version}"
-				);
-
 				TreeItem adpoRenderOrder = CreateItem(root);
 				adpoRenderOrder.SetText(
 					0,
@@ -211,18 +213,6 @@ public partial class Detailer : Tree
 				break;
 
 			case CollisionObject collisionObject:
-				TreeItem collisionObjectName = CreateItem(root);
-				collisionObjectName.SetText(
-					0,
-					$"Name: {collisionObject.Name}"
-				);
-
-				TreeItem collisionObjectVers = CreateItem(root);
-				collisionObjectVers.SetText(
-					0,
-					$"Version: {collisionObject.Version}"
-				);
-
 				TreeItem collisionObjectOwners = CreateItem(root);
 				collisionObjectOwners.SetText(
 					0,
@@ -279,11 +269,8 @@ public partial class Detailer : Tree
 				break;
 
 			case CollisionVolumeOwnerName colVolOwnerName:
-				TreeItem colVolOwnerNameName = CreateItem(root);
-				colVolOwnerNameName.SetText(
-					0,
-					$"Name: {colVolOwnerName.Name}"
-				);
+				// No need for any code
+				// since this has only has a Name property
 				break;
 
 			case ColourList list:
@@ -360,18 +347,6 @@ public partial class Detailer : Tree
 				break;
 
 			case Entity entity:
-				TreeItem entityName = CreateItem(root);
-				entityName.SetText(
-					0,
-					$"Name: {entity.Name}"
-				);
-
-				TreeItem entityVers = CreateItem(root);
-				entityVers.SetText(
-					0,
-					$"Version: {entity.Version}"
-				);
-
 				TreeItem entityOrder = CreateItem(root);
 				entityOrder.SetText(
 					0,
@@ -460,12 +435,6 @@ public partial class Detailer : Tree
 			// But Skin inherits from Mesh,
 			// So it has to come first
 			case Pure3D.Chunks.Skin skin:
-				TreeItem skinName = CreateItem(root);
-				skinName.SetText(
-					0,
-					$"Name: {skin.Name}"
-				);
-
 				TreeItem skinSkel = CreateItem(root);
 				skinSkel.SetText(
 					0,
@@ -486,17 +455,6 @@ public partial class Detailer : Tree
 				break;
 
 			case Pure3D.Chunks.Mesh mesh:
-				root.SetText(
-					0,
-					$"{mesh.Name} (Mesh)"
-				);
-
-				TreeItem meshVers = CreateItem(root);
-				meshVers.SetText(
-					0,
-					$"Version: {mesh.Version}"
-				);
-
 				TreeItem meshPrims = CreateItem(root);
 				meshPrims.SetText(
 					0,
@@ -537,18 +495,6 @@ public partial class Detailer : Tree
 				break;
 
 			case ParticleSystem2 pSystem2:
-				TreeItem pSystem2Name = CreateItem(root);
-				pSystem2Name.SetText(
-					0,
-					$"Name: {pSystem2.Name}"
-				);
-
-				TreeItem pSystem2Vers = CreateItem(root);
-				pSystem2Vers.SetText(
-					0,
-					$"Version: {pSystem2.Version}"
-				);
-
 				TreeItem pSystem2Factory = CreateItem(root);
 				pSystem2Factory.SetText(
 					0,
@@ -669,18 +615,6 @@ public partial class Detailer : Tree
 				break;
 
 			case Skeleton skel:
-				TreeItem skelName = CreateItem(root);
-				skelName.SetText(
-					0,
-					$"Name: {skel.Name}"
-				);
-
-				TreeItem skelVers = CreateItem(root);
-				skelVers.SetText(
-					0,
-					$"Version: {skel.Version}"
-				);
-
 				TreeItem skelJoints = CreateItem(root);
 				skelJoints.SetText(
 					0,
@@ -689,18 +623,6 @@ public partial class Detailer : Tree
 				break;
 
 			case StatePropData spd:
-				TreeItem spdName = CreateItem(root);
-				spdName.SetText(
-					0,
-					$"Name: {spd.Name}"
-				);
-
-				TreeItem spdVers = CreateItem(root);
-				spdVers.SetText(
-					0,
-					$"Version: {spd.Version}"
-				);
-
 				TreeItem spdFactory = CreateItem(root);
 				spdFactory.SetText(
 					0,
@@ -715,12 +637,6 @@ public partial class Detailer : Tree
 				break;
 
 			case StatePropState sps:
-				TreeItem spsName = CreateItem(root);
-				spsName.SetText(
-					0,
-					$"Name: {sps.Name}"
-				);
-
 				TreeItem spsTrans = CreateItem(root);
 				spsTrans.SetText(
 					0,
@@ -765,12 +681,6 @@ public partial class Detailer : Tree
 				break;
 
 			case StatePropVisibility spv:
-				TreeItem spvName = CreateItem(root);
-				spvName.SetText(
-					0,
-					$"Name: {spv.Name}"
-				);
-
 				TreeItem spvVisible = CreateItem(root);
 				spvVisible.SetText(
 					0,
@@ -779,26 +689,7 @@ public partial class Detailer : Tree
 				break;
 
 			case StaticPhysicsObject spo:
-				TreeItem spoName = CreateItem(root);
-				spoName.SetText(
-					0,
-					$"Name: {spo.Name}"
-				);
-
-				TreeItem spoData = CreateItem(root);
-				spoData.SetText(
-					0,
-					$"{spo.Data} Bytes of Data"
-				);
-
-				for (uint i = 0; i < spo.Data.Length; i++)
-				{
-					TreeItem member = CreateItem(spoData);
-					member.SetText(
-						0,
-						$"Byte {i + 1}: ({spo.Data[i]})"
-					);
-				}
+				// No code needed, since this is just VersionNamed
 				break;
 
 			case UVList list:
@@ -836,18 +727,6 @@ public partial class Detailer : Tree
 
 			#region Animation Chunks
 			case AnimatedObject animObj:
-				TreeItem animObjName = CreateItem(root);
-				animObjName.SetText(
-					0,
-					$"Name: {animObj.Name}"
-				);
-
-				TreeItem animObjVers = CreateItem(root);
-				animObjVers.SetText(
-					0,
-					$"Version: {animObj.Version}"
-				);
-
 				TreeItem animObjFactory = CreateItem(root);
 				animObjFactory.SetText(
 					0,
@@ -862,18 +741,6 @@ public partial class Detailer : Tree
 				break;
 
 			case AnimatedObjectWrapper animObjWrapper:
-				TreeItem animObjWrapperName = CreateItem(root);
-				animObjWrapperName.SetText(
-					0,
-					$"Name: {animObjWrapper.Name}"
-				);
-
-				TreeItem animObjWrapperVers = CreateItem(root);
-				animObjWrapperVers.SetText(
-					0,
-					$"Version: {animObjWrapper.Version}"
-				);
-
 				TreeItem animObjWrapperAlpha = CreateItem(root);
 				animObjWrapperAlpha.SetText(
 					0,
@@ -882,18 +749,6 @@ public partial class Detailer : Tree
 				break;
 
 			case AnimatedObjectAnimation aoa:
-				TreeItem aoaName = CreateItem(root);
-				aoaName.SetText(
-					0,
-					$"Name: {aoa.Name}"
-				);
-
-				TreeItem aoaVers = CreateItem(root);
-				aoaVers.SetText(
-					0,
-					$"Version: {aoa.Version}"
-				);
-
 				TreeItem aoaFrameRate = CreateItem(root);
 				aoaFrameRate.SetText(
 					0,
@@ -908,22 +763,10 @@ public partial class Detailer : Tree
 				break;
 
 			case AnimatedObjectFactory aof:
-				TreeItem aofName = CreateItem(root);
-				aofName.SetText(
-					0,
-					$"Name: {aof.Name}"
-				);
-
-				TreeItem aofVers = CreateItem(root);
-				aofVers.SetText(
-					0,
-					$"Version: {aof.Version}"
-				);
-
 				TreeItem aofUnknown = CreateItem(root);
 				aofUnknown.SetText(
 					0,
-					$"Group: {aof.Unknown}"
+					$"Unknown: {aof.Unknown}"
 				);
 
 				TreeItem aofAnims = CreateItem(root);
@@ -934,18 +777,6 @@ public partial class Detailer : Tree
 				break;
 
 			case Pure3D.Chunks.Animation anim:
-				TreeItem animName = CreateItem(root);
-				animName.SetText(
-					0,
-					$"Name: {anim.Name}"
-				);
-
-				TreeItem animVers = CreateItem(root);
-				animVers.SetText(
-					0,
-					$"Version: {anim.Version}"
-				);
-
 				TreeItem animFrames = CreateItem(root);
 				animFrames.SetText(
 					0,
@@ -966,18 +797,6 @@ public partial class Detailer : Tree
 				break;
 
 			case AnimationGroup animGroup:
-				TreeItem animGroupName = CreateItem(root);
-				animGroupName.SetText(
-					0,
-					$"Name: {animGroup.Name}"
-				);
-
-				TreeItem animGroupVers = CreateItem(root);
-				animGroupVers.SetText(
-					0,
-					$"Version: {animGroup.Version}"
-				);
-
 				TreeItem animGroupId = CreateItem(root);
 				animGroupId.SetText(
 					0,
@@ -1221,24 +1040,6 @@ public partial class Detailer : Tree
 
 			#region Shader Chunks
 			case Pure3D.Chunks.Shader shader:
-				TreeItem sName = CreateItem(root);
-				sName.SetText(
-					0,
-					$"Name: {shader.Name}"
-				);
-
-				TreeItem pddiName = CreateItem(root);
-				pddiName.SetText(
-					0,
-					$"Shader Name: {shader.PddiShaderName}"
-				);
-
-				TreeItem sVers = CreateItem(root);
-				sVers.SetText(
-					0,
-					$"Version: {shader.Version}"
-				);
-
 				TreeItem sTrans = CreateItem(root);
 				sTrans.SetText(
 					0,
@@ -1338,18 +1139,6 @@ public partial class Detailer : Tree
 
 			#region Misc Chunks
 			case GameAttribute attribute:
-				TreeItem attributeName = CreateItem(root);
-				attributeName.SetText(
-					0,
-					$"Name: {attribute.Name}"
-				);
-
-				TreeItem attributeVers = CreateItem(root);
-				attributeVers.SetText(
-					0,
-					$"Version: {attribute.Version}"
-				);
-
 				TreeItem attributeParams = CreateItem(root);
 				attributeParams.SetText(
 					0,
@@ -1372,18 +1161,6 @@ public partial class Detailer : Tree
 				break;
 
 			case MultiController mController:
-				TreeItem mControllerName = CreateItem(root);
-				mControllerName.SetText(
-					0,
-					$"Name: {mController.Name}"
-				);
-
-				TreeItem mControllerVers = CreateItem(root);
-				mControllerVers.SetText(
-					0,
-					$"Version: {mController.Version}"
-				);
-
 				TreeItem mControllerTracks = CreateItem(root);
 				mControllerTracks.SetText(
 					0,
@@ -1500,24 +1277,6 @@ public partial class Detailer : Tree
 			default:
 				// If the chunk is not viewable
 				// Notify the user
-				if (chunk is Named named)
-				{
-					TreeItem unknownName = CreateItem(root);
-					unknownName.SetText(
-						0,
-						$"Name: {named.Name}"
-					);
-				}
-
-				if (chunk is VersionNamed vNamed)
-				{
-					TreeItem unknownName = CreateItem(root);
-					unknownName.SetText(
-						0,
-						$"Version: {vNamed.Name}"
-					);
-				}
-
 				TreeItem unnamedWarning = CreateItem(root);
 				unnamedWarning.SetText(
 					0,

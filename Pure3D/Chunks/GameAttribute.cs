@@ -3,9 +3,8 @@ using System.IO;
 namespace Pure3D.Chunks
 {
     [ChunkType(73728)]
-    public class GameAttribute : Named
+    public class GameAttribute : VersionNamed // I think it's VersionNamed, at least
     {
-        public uint Version; // I think it's Version, at least
         public uint NumberOfParameters;
 
         public GameAttribute(File file, uint type) : base(file, type)
@@ -14,8 +13,8 @@ namespace Pure3D.Chunks
 
         public override void ReadHeader(Stream stream, long length)
         {
-            base.ReadHeader(stream, length);
             BinaryReader reader = new(stream);
+            Name = Util.ReadString(reader);
             Version = reader.ReadUInt32();
             NumberOfParameters = reader.ReadUInt32();
         }

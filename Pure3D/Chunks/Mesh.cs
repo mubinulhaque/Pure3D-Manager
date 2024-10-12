@@ -3,9 +3,8 @@
 namespace Pure3D.Chunks
 {
     [ChunkType(65536)]
-    public class Mesh : Named
+    public class Mesh : VersionNamed
     {
-        public uint Version;
         public uint NumPrimGroups;
 
         public Mesh(File file, uint type) : base(file, type)
@@ -15,7 +14,7 @@ namespace Pure3D.Chunks
         public override void ReadHeader(Stream stream, long length)
         {
             BinaryReader reader = new BinaryReader(stream);
-            base.ReadHeader(stream, length);
+            Name = Util.ReadString(reader);
             Version = reader.ReadUInt32();
             NumPrimGroups = reader.ReadUInt32();
         }

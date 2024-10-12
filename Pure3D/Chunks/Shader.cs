@@ -3,9 +3,8 @@
 namespace Pure3D.Chunks
 {
     [ChunkType(69632)]
-    public class Shader : Named
+    public class Shader : VersionNamed
     {
-        public uint Version;
         public string PddiShaderName;
         public uint HasTranslucency;
         public uint VertexNeeds;
@@ -18,9 +17,8 @@ namespace Pure3D.Chunks
 
         public override void ReadHeader(Stream stream, long length)
         {
-            base.ReadHeader(stream, length);
-
             BinaryReader reader = new BinaryReader(stream);
+            Name = Util.ReadString(reader);
             Version = reader.ReadUInt32();
             PddiShaderName = Util.ReadString(reader);
             HasTranslucency = reader.ReadUInt32();

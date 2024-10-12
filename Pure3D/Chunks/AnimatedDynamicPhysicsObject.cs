@@ -3,9 +3,8 @@ using System.IO;
 namespace Pure3D.Chunks
 {
     [ChunkType(66060302)]
-    public class AnimatedDynamicPhysicsObject : Named
+    public class AnimatedDynamicPhysicsObject : VersionNamed
     {
-        public uint Version;
         public uint RenderOrder;
 
         public AnimatedDynamicPhysicsObject(File file, uint type) : base(file, type)
@@ -14,8 +13,8 @@ namespace Pure3D.Chunks
 
         public override void ReadHeader(Stream stream, long length)
         {
-            base.ReadHeader(stream, length);
             BinaryReader reader = new(stream);
+            Name = Util.ReadString(reader);
             Version = reader.ReadUInt32();
             RenderOrder = reader.ReadUInt32();
         }

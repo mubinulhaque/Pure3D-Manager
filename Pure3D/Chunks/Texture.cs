@@ -3,9 +3,8 @@
 namespace Pure3D.Chunks
 {
     [ChunkType(102400)]
-    public class Texture : Named
+    public class Texture : VersionNamed
     {
-        public uint Version;
         public uint Width;
         public uint Height;
         public uint Bpp;
@@ -22,7 +21,7 @@ namespace Pure3D.Chunks
         public override void ReadHeader(Stream stream, long length)
         {
             BinaryReader reader = new BinaryReader(stream);
-            base.ReadHeader(stream, length);
+            Name = Util.ReadString(reader);
             Version = reader.ReadUInt32();
             Width = reader.ReadUInt32();
             Height = reader.ReadUInt32();
