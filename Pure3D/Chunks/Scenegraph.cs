@@ -77,4 +77,33 @@ namespace Pure3D.Chunks
             return "Scenegraph Branch";
         }
     }
+
+    [ChunkType(1179907)]
+    public class ScenegraphTransform : Named
+    {
+        public uint NumberOfChildren;
+        public Matrix Transform;
+
+        public ScenegraphTransform(File file, uint type) : base(file, type)
+        {
+        }
+
+        public override void ReadHeader(Stream stream, long length)
+        {
+            base.ReadHeader(stream, length);
+            BinaryReader reader = new(stream);
+            NumberOfChildren = reader.ReadUInt32();
+            Transform = Util.ReadMatrix(reader);
+        }
+
+        public override string ToString()
+        {
+            return $"{ToShortString()}: {Name} ({NumberOfChildren} Children)";
+        }
+
+        public override string ToShortString()
+        {
+            return "Scenegraph Transform";
+        }
+    }
 }

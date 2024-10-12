@@ -656,18 +656,64 @@ public partial class Detailer : Tree
 				break;
 
 			case Scenegraph:
-			case ScenegraphBranch:
+				break;
+
+			case ScenegraphBranch sgb:
+				TreeItem sgbChildren = CreateItem(root);
+				sgbChildren.SetText(
+					0,
+					$"{sgb.NumberOfChildren} Children"
+				);
 				break;
 
 			case ScenegraphRoot:
 				TreeItem scenegraphRoot = CreateItem(root);
 				scenegraphRoot.SetText(
 					0,
-					$"No properties available for this chunk"
+					"No properties available for this chunk"
 				);
 				scenegraphRoot.SetTooltipText(
 					0,
 					"No, really, this chunk does nothing"
+				);
+				break;
+
+			case ScenegraphTransform sgt:
+				TreeItem sgtChildren = CreateItem(root);
+				sgtChildren.SetText(
+					0,
+					$"{sgt.NumberOfChildren} Children"
+				);
+
+				TreeItem sgtTransform = CreateItem(root);
+				sgtTransform.SetText(
+					0,
+					"Transform:"
+				);
+
+				string[] sgtMatrix = Util.PrintMatrix(sgt.Transform);
+				TreeItem sgtTransform0 = CreateItem(sgtTransform);
+				sgtTransform0.SetText(
+					0,
+					sgtMatrix[0]
+				);
+
+				TreeItem sgtTransform1 = CreateItem(sgtTransform);
+				sgtTransform1.SetText(
+					0,
+					sgtMatrix[1]
+				);
+
+				TreeItem sgtTransform2 = CreateItem(sgtTransform);
+				sgtTransform2.SetText(
+					0,
+					sgtMatrix[2]
+				);
+
+				TreeItem sgtTransform3 = CreateItem(sgtTransform);
+				sgtTransform3.SetText(
+					0,
+					sgtMatrix[3]
 				);
 				break;
 
