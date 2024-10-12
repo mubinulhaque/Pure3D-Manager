@@ -666,17 +666,17 @@ public partial class Detailer : Tree
 				);
 				break;
 
-			case ScenegraphDrawable sDrawable:
-				TreeItem sdDrawable = CreateItem(root);
-				sdDrawable.SetText(
+			case ScenegraphDrawable sgd:
+				TreeItem sgdDrawable = CreateItem(root);
+				sgdDrawable.SetText(
 					0,
-					$"Drawable Name: {sDrawable.Drawable}"
+					$"Drawable Name: {sgd.Drawable}"
 				);
 
-				TreeItem sdTranslucent = CreateItem(root);
-				sdTranslucent.SetText(
+				TreeItem sgdTranslucent = CreateItem(root);
+				sgdTranslucent.SetText(
 					0,
-					$"Translucent: {sDrawable.IsTranslucent}"
+					$"Translucent: {sgd.IsTranslucent}"
 				);
 				break;
 
@@ -689,6 +689,14 @@ public partial class Detailer : Tree
 				scenegraphRoot.SetTooltipText(
 					0,
 					"No, really, this chunk does nothing"
+				);
+				break;
+
+			case ScenegraphSortOrder sgso:
+				TreeItem sgsoSortOrder = CreateItem(root);
+				sgsoSortOrder.SetText(
+					0,
+					$"Sort Order: {sgso.SortOrder}"
 				);
 				break;
 

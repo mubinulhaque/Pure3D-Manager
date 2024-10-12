@@ -135,4 +135,29 @@ namespace Pure3D.Chunks
         }
     }
 
+    [ChunkType(1179914)]
+    public class ScenegraphSortOrder : Chunk
+    {
+        public float SortOrder;
+
+        public ScenegraphSortOrder(File file, uint type) : base(file, type)
+        {
+        }
+
+        public override void ReadHeader(Stream stream, long length)
+        {
+            BinaryReader reader = new(stream);
+            SortOrder = reader.ReadSingle();
+        }
+
+        public override string ToString()
+        {
+            return $"{ToShortString()}: {SortOrder}";
+        }
+
+        public override string ToShortString()
+        {
+            return "Scenegraph Sort Order";
+        }
+    }
 }
