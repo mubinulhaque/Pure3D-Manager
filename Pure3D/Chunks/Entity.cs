@@ -19,19 +19,14 @@ namespace Pure3D.Chunks
             RenderOrder = reader.ReadUInt32();
         }
 
-        public virtual string GetChunkName()
-        {
-            return "Entity";
-        }
-
         public override string ToString()
         {
-            return $"{GetChunkName()}: {Name} (Version {Version}, Render Order: {RenderOrder})";
+            return $"{ToShortString()}: {Name} (Version {Version}, Render Order: {RenderOrder})";
         }
 
         public override string ToShortString()
         {
-            return $"{GetChunkName()}";
+            return "Entity";
         }
     }
 
@@ -42,7 +37,7 @@ namespace Pure3D.Chunks
         {
         }
 
-        public override string GetChunkName()
+        public override string ToShortString()
         {
             return "Dynamic Physics Object";
         }
@@ -55,7 +50,7 @@ namespace Pure3D.Chunks
         {
         }
 
-        public override string GetChunkName()
+        public override string ToShortString()
         {
             return "Instanced Static Physics Object";
         }
@@ -68,7 +63,7 @@ namespace Pure3D.Chunks
         {
         }
 
-        public override string GetChunkName()
+        public override string ToShortString()
         {
             return "Static Entity";
         }
