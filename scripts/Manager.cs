@@ -106,8 +106,8 @@ public partial class Manager : Control
 		// Recursively load the children of each chunk
 		foreach (var child in chunk.Children) LoadChunk(child, item);
 
-		// Collapse all child chunks of the Root chunk
-		if (parent != null) if (parent.GetText(0) == "Root") item.Collapsed = true;
+		// Collapse everything but the Root chunk
+		if (parent != null) item.Collapsed = true;
 
 		return item;
 	}
