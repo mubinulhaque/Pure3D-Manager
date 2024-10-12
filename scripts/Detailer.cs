@@ -658,6 +658,18 @@ public partial class Detailer : Tree
 			case Scenegraph:
 				break;
 
+			case ScenegraphRoot:
+				TreeItem scenegraphRoot = CreateItem(root);
+				scenegraphRoot.SetText(
+					0,
+					$"No properties available for this chunk"
+				);
+				scenegraphRoot.SetTooltipText(
+					0,
+					"No, really, this chunk does nothing"
+				);
+				break;
+
 			case Skeleton skel:
 				TreeItem skelJoints = CreateItem(root);
 				skelJoints.SetText(

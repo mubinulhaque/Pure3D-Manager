@@ -27,4 +27,28 @@ namespace Pure3D.Chunks
             return "Scenegraph";
         }
     }
+
+    [ChunkType(1179905)]
+    public class ScenegraphRoot : Chunk
+    {
+
+        public ScenegraphRoot(File file, uint type) : base(file, type)
+        {
+        }
+
+        public override void ReadHeader(Stream stream, long length)
+        {
+            BinaryReader reader = new(stream);
+        }
+
+        public override string ToString()
+        {
+            return ToShortString();
+        }
+
+        public override string ToShortString()
+        {
+            return "Scenegraph Root";
+        }
+    }
 }
