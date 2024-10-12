@@ -37,7 +37,6 @@ namespace Pure3D.Chunks
 
         public override void ReadHeader(Stream stream, long length)
         {
-            BinaryReader reader = new(stream);
         }
 
         public override string ToString()
@@ -106,4 +105,34 @@ namespace Pure3D.Chunks
             return "Scenegraph Transform";
         }
     }
+
+    [ChunkType(1179911)]
+    public class ScenegraphDrawable : Named
+    {
+        public string Drawable;
+        public bool IsTranslucent;
+
+        public ScenegraphDrawable(File file, uint type) : base(file, type)
+        {
+        }
+
+        public override void ReadHeader(Stream stream, long length)
+        {
+            base.ReadHeader(stream, length);
+            BinaryReader reader = new(stream);
+            Drawable = Util.ReadString(reader);
+            IsTranslucent = reader.ReadUInt32() == 1;
+        }
+
+        public override string ToString()
+        {
+            return $"{ToShortString()}: {Name} (Translucent: {IsTranslucent}, Drawable: {Drawable})";
+        }
+
+        public override string ToShortString()
+        {
+            return "Scenegraph Drawable";
+        }
+    }
+
 }

@@ -666,6 +666,20 @@ public partial class Detailer : Tree
 				);
 				break;
 
+			case ScenegraphDrawable sDrawable:
+				TreeItem sdDrawable = CreateItem(root);
+				sdDrawable.SetText(
+					0,
+					$"Drawable Name: {sDrawable.Drawable}"
+				);
+
+				TreeItem sdTranslucent = CreateItem(root);
+				sdTranslucent.SetText(
+					0,
+					$"Translucent: {sDrawable.IsTranslucent}"
+				);
+				break;
+
 			case ScenegraphRoot:
 				TreeItem scenegraphRoot = CreateItem(root);
 				scenegraphRoot.SetText(
