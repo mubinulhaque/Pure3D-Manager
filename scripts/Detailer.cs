@@ -798,58 +798,58 @@ public partial class Detailer : Tree
 				);
 				break;
 
-			case StatePropStateData spsd:
+			case StatePropState sps:
 				root.SetText(
 					0,
-					spsd.ToShortString()
+					sps.ToShortString()
 				);
 
-				TreeItem spsdName = CreateItem(root);
-				spsdName.SetText(
+				TreeItem spsName = CreateItem(root);
+				spsName.SetText(
 					0,
-					$"Name: {spsd.Name}"
+					$"Name: {sps.Name}"
 				);
 
-				TreeItem spsdTrans = CreateItem(root);
-				spsdTrans.SetText(
+				TreeItem spsTrans = CreateItem(root);
+				spsTrans.SetText(
 					0,
-					$"Automatic Transition: {spsd.AutoTransition}"
+					$"Automatic Transition: {sps.AutoTransition}"
 				);
 
-				TreeItem spsdState = CreateItem(root);
-				spsdState.SetText(
+				TreeItem spsState = CreateItem(root);
+				spsState.SetText(
 					0,
-					$"Out State: {spsd.OutState}"
+					$"Out State: {sps.OutState}"
 				);
 
-				TreeItem spsdDrawables = CreateItem(root);
-				spsdDrawables.SetText(
+				TreeItem spsDrawables = CreateItem(root);
+				spsDrawables.SetText(
 					0,
-					$"{spsd.NumberOfDrawables} Drawables"
+					$"{sps.NumberOfDrawables} Drawables"
 				);
 
-				TreeItem spsdControllers = CreateItem(root);
-				spsdControllers.SetText(
+				TreeItem spsControllers = CreateItem(root);
+				spsControllers.SetText(
 					0,
-					$"{spsd.NumberOfFrameControllers} Frame Controllers"
+					$"{sps.NumberOfFrameControllers} Frame Controllers"
 				);
 
-				TreeItem spsdEvents = CreateItem(root);
-				spsdEvents.SetText(
+				TreeItem spsEvents = CreateItem(root);
+				spsEvents.SetText(
 					0,
-					$"{spsd.NumberOfEvents} Events"
+					$"{sps.NumberOfEvents} Events"
 				);
 
-				TreeItem spsdCallbacks = CreateItem(root);
-				spsdCallbacks.SetText(
+				TreeItem spsCallbacks = CreateItem(root);
+				spsCallbacks.SetText(
 					0,
-					$"{spsd.NumberOfCallbacks} Callbacks"
+					$"{sps.NumberOfCallbacks} Callbacks"
 				);
 
-				TreeItem spsdFrame = CreateItem(root);
-				spsdFrame.SetText(
+				TreeItem spsFrame = CreateItem(root);
+				spsFrame.SetText(
 					0,
-					$"Out Frame: {spsd.OutFrame}"
+					$"Out Frame: {sps.OutFrame}"
 				);
 				break;
 

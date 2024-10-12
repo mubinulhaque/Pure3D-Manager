@@ -32,7 +32,7 @@ namespace Pure3D.Chunks
     }
 
     [ChunkType(134348801)]
-    public class StatePropStateData : Named
+    public class StatePropState : Named
     {
         public bool AutoTransition;
         public uint OutState;
@@ -42,7 +42,7 @@ namespace Pure3D.Chunks
         public uint NumberOfCallbacks;
         public float OutFrame;
 
-        public StatePropStateData(File file, uint type) : base(file, type)
+        public StatePropState(File file, uint type) : base(file, type)
         {
         }
 
@@ -66,7 +66,7 @@ namespace Pure3D.Chunks
 
         public override string ToShortString()
         {
-            return "State Prop State Data";
+            return "State Prop State";
         }
     }
 
