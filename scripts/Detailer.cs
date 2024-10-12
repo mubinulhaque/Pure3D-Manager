@@ -204,6 +204,26 @@ public partial class Detailer : Tree
 				);
 				break;
 
+			case CollisionEffect colEffect:
+				TreeItem colEffectType = CreateItem(root);
+				colEffectType.SetText(
+					0,
+					$"Type: {colEffect.Classtype}"
+				);
+
+				TreeItem colEffectProp = CreateItem(root);
+				colEffectProp.SetText(
+					0,
+					$"Physics Prop ID: {colEffect.PhysicsProp}"
+				);
+
+				TreeItem colEffectSound = CreateItem(root);
+				colEffectSound.SetText(
+					0,
+					$"Sound: {colEffect.Sound}"
+				);
+				break;
+
 			case CollisionOBB colOBB:
 				TreeItem colOBBExtents = CreateItem(root);
 				colOBBExtents.SetText(
