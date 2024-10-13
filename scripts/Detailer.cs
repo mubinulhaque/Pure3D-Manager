@@ -1,4 +1,5 @@
 using System;
+using System.Text;
 using Godot;
 using Pure3D;
 using Pure3D.Chunks;
@@ -333,6 +334,11 @@ public partial class Detailer : Tree
 
 			case Skeleton skel:
 				AddItem(root, $"{skel.GetNumJoints()} Joints");
+				break;
+
+			case Spline spline:
+				TreeItem splinePos = AddItem(root, $"{spline.NumberOfPositions} Positions");
+				AddItemList(splinePos, "Position", spline.Positions);
 				break;
 
 			case StateProp sp:
