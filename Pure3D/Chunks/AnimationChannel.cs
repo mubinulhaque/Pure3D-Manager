@@ -84,7 +84,7 @@ namespace Pure3D.Chunks
     [ChunkType(1184009)]
     public class ColourChannel : AnimationChannel
     {
-        public Color[] Values;
+        public uint[] Values;
 
         public ColourChannel(File file, uint type) : base(file, type)
         {
@@ -95,10 +95,10 @@ namespace Pure3D.Chunks
             base.ReadHeader(stream, length);
             BinaryReader reader = new(stream);
 
-            Values = new Color[NumberOfFrames];
+            Values = new uint[NumberOfFrames];
             for (int i = 0; i < NumberOfFrames; i++)
             {
-                Values[i] = Util.GetColour(reader.ReadUInt32());
+                Values[i] = reader.ReadUInt32();
             }
         }
 

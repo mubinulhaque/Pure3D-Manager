@@ -5,7 +5,7 @@ namespace Pure3D
         public float X;
         public float Y;
 
-        public override string ToString()
+        public override readonly string ToString()
         {
             return $"({X}, {Y})";
         }
@@ -17,7 +17,7 @@ namespace Pure3D
         public float Y;
         public float Z;
 
-        public override string ToString()
+        public override readonly string ToString()
         {
             return $"({X}, {Y}, {Z})";
         }
@@ -38,7 +38,7 @@ namespace Pure3D
         public float Z;
         public float W;
 
-        public override string ToString()
+        public override readonly string ToString()
         {
             return $"({X}, {Y}, {Z}, {W})";
         }

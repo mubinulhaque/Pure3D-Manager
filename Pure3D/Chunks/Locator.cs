@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Runtime.InteropServices;
 
 namespace Pure3D.Chunks
 {
@@ -167,6 +168,11 @@ namespace Pure3D.Chunks
                 byte3,
                 byte4
             };
+        }
+
+        public override string ToString()
+        {
+            return $"{Bytes[0]}, {Bytes[1]}, {Bytes[2]}, {Bytes[3]}";
         }
     }
 
