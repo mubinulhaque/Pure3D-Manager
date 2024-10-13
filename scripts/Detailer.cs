@@ -203,8 +203,11 @@ public partial class Detailer : Tree
 					0,
 					"Matrix List"
 				);
-
-				AddItemList(root, "Matrix", list.Matrices);
+				for (uint i = 0; i < list.Matrices.Length; i++)
+					AddItem(
+						root,
+						$"Matrix {i + 1}: ({list.Matrices[i][0]}, {list.Matrices[i][1]}, {list.Matrices[i][2]}, {list.Matrices[i][3]})"
+					);
 				break;
 
 			case MatrixPalette list:
@@ -709,30 +712,6 @@ public partial class Detailer : Tree
 			);
 		}
 	}
-
-	/// <summary>
-	/// Adds an item for every element of a 2D Array
-	/// </summary>
-	/// <param name="parent">Parent of the new items</param>
-	/// <param name="indexText">Text describing what the items are</param>
-	// /// <param name="list">Array to add items for</param>
-	// public void AddItemList2D(TreeItem parent, string indexText, Array list)
-	// {
-	// 	for (uint i = 0; i < list.Length; i++)
-	// 	{
-	// 		string listValues = $"{list.GetValue(i, 0)}";
-
-	// 		for (uint j = 1; i < list.GetLength(1); i++)
-	// 		{
-	// 			listValues += $", {list.GetValue(i, j)}";
-	// 		}
-
-	// 		AddItem(
-	// 			parent,
-	// 			$"{indexText} {i + 1}: {listValues}"
-	// 		);
-	// 	}
-	// }
 
 	/// <summary>
 	/// Adds an item and a Colour for every element of an Array
