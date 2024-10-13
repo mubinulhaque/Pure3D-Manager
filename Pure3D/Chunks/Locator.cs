@@ -6,9 +6,8 @@ namespace Pure3D.Chunks
     /// Currently unused
     /// </summary>
     [ChunkType(81920)]
-    public class Locator : Named
+    public class Locator : VersionNamed
     {
-        public uint Version;
         public Vector3 Position;
 
         public Locator(File file, uint type) : base(file, type)
@@ -18,14 +17,14 @@ namespace Pure3D.Chunks
         public override void ReadHeader(Stream stream, long length)
         {
             BinaryReader reader = new BinaryReader(stream);
-            base.ReadHeader(stream, length);
+            Name = Util.ReadString(reader);
             Version = reader.ReadUInt32();
             Position = Util.ReadVector3(reader);
         }
 
         public override string ToString()
         {
-            return $"Locator: {Name}";
+            return $"Locator: {Name} (Position: ({Position.X}, {Position.Y}, {Position.Z}), Version: {Version})";
         }
 
         public override string ToShortString()
@@ -45,10 +44,6 @@ namespace Pure3D.Chunks
         /// </summary>
         public Types LocatorType;
         /// <summary>
-        /// Amount of Trigger Volumes attached
-        /// </summary>
-        public uint NumberOfTriggers;
-        /// <summary>
         /// Size of the <c>Data</c> array
         /// </summary>
         public uint DataSize;
@@ -60,6 +55,10 @@ namespace Pure3D.Chunks
         /// Position of the Locator
         /// </summary>
         public Vector3 Position;
+        /// <summary>
+        /// Amount of Trigger Volumes attached
+        /// </summary>
+        public uint NumberOfTriggers;
 
         public Locator2(File file, uint type) : base(file, type)
         {
@@ -85,12 +84,12 @@ namespace Pure3D.Chunks
             }
 
             Position = Util.ReadVector3(reader);
-            reader.ReadBytes(4);
+            NumberOfTriggers = reader.ReadUInt32();
         }
 
         public override string ToString()
         {
-            return $"{Name} Locator Type: {LocatorType}";
+            return $"{Name} Locator Type: {LocatorType} ({NumberOfTriggers} Triggers)";
         }
 
         public override string ToShortString()
@@ -157,11 +156,11 @@ namespace Pure3D.Chunks
         /// <summary>
         /// Four bytes to be converted into a different data type
         /// </summary>
-        public byte[] bytes;
+        public byte[] Bytes;
 
         public Locator2Data(byte byte1, byte byte2, byte byte3, byte byte4)
         {
-            bytes = new byte[4]
+            Bytes = new byte[4]
             {
                 byte1,
                 byte2,

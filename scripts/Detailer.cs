@@ -424,6 +424,50 @@ public partial class Detailer : Tree
 				}
 				break;
 
+			case Locator locator:
+				TreeItem locatorPos = CreateItem(root);
+				locatorPos.SetText(
+					0,
+					$"Positon: ({locator.Position.X}, {locator.Position.Y}, {locator.Position.Z})"
+				);
+				break;
+
+			case Locator2 locator2:
+				TreeItem locator2Type = CreateItem(root);
+				locator2Type.SetText(
+					0,
+					$"Type: {locator2.LocatorType}"
+				);
+
+				TreeItem locator2Size = CreateItem(root);
+				locator2Size.SetText(
+					0,
+					$"Data Size: {locator2.DataSize}"
+				);
+
+				for (uint i = 0; i < locator2.DataSize; i++)
+				{
+					Locator2Data locData = locator2.Data[i];
+					TreeItem member = CreateItem(root);
+					member.SetText(
+						0,
+						$"Data {i + 1}: ({locData.Bytes[0]}, {locData.Bytes[1]}, {locData.Bytes[2]}, {locData.Bytes[3]})"
+					);
+				}
+
+				TreeItem locator2Pos = CreateItem(root);
+				locator2Pos.SetText(
+					0,
+					$"Position: ({locator2.Position.X}, {locator2.Position.Y}, {locator2.Position.Z})"
+				);
+
+				TreeItem locator2Triggers = CreateItem(root);
+				locator2Triggers.SetText(
+					0,
+					$"{locator2.NumberOfTriggers} Triggers"
+				);
+				break;
+
 			case LocatorMatrix locatorMatrix:
 				ViewMatrix(root, "Transform:", locatorMatrix.Transform);
 				break;
