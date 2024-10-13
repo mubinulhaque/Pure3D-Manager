@@ -1477,6 +1477,12 @@ public partial class Detailer : Tree
 		return channelFrames;
 	}
 
+	/// <summary>
+	/// Details a Pure3D Matrix in a readable format
+	/// </summary>
+	/// <param name="root">Root chunk of the Details tree</param>
+	/// <param name="flavourText">Title of the Matrix</param>
+	/// <param name="matrix">Pure3D Matrix to be read</param>
 	public void ViewMatrix(TreeItem root, string flavourText, Pure3D.Matrix matrix)
 	{
 
