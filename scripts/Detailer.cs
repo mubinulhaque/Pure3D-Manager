@@ -303,6 +303,19 @@ public partial class Detailer : Tree
 					AddItem(primContains, "Weights");
 				break;
 
+			case RailCamera railcam:
+				AddItem(root, $"Behaviour: {railcam.Behaviour}");
+				AddItem(root, $"Radius: {railcam.MinRadius} - {railcam.MaxRadius}");
+				AddItem(root, $"Track Rail: {railcam.TrackRail}");
+				AddItem(root, $"Track Distance: {railcam.TrackDistance}");
+				AddItem(root, $"Reverse Sense: {railcam.ReverseSense}");
+				AddItem(root, $"Field of View: {railcam.FOV}");
+				AddItem(root, $"Target Offset: {Util.PrintVector3(railcam.TargetOffset)}");
+				AddItem(root, $"Axis Play: {Util.PrintVector3(railcam.AxisPlay)}");
+				AddItem(root, $"Position Lag: {railcam.PositionLag}");
+				AddItem(root, $"Target Lag: {railcam.TargetLag}");
+				break;
+
 			case Scenegraph:
 				break;
 
