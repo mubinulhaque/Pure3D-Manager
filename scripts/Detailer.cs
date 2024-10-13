@@ -424,6 +424,10 @@ public partial class Detailer : Tree
 				}
 				break;
 
+			case LocatorMatrix locatorMatrix:
+				ViewMatrix(root, "Transform:", locatorMatrix.Transform);
+				break;
+
 			case MatrixList list:
 				root.SetText(
 					0,

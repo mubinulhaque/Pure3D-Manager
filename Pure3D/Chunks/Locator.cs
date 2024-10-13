@@ -83,7 +83,7 @@ namespace Pure3D.Chunks
                     reader.ReadByte()
                 );
             }
-            
+
             Position = Util.ReadVector3(reader);
             reader.ReadBytes(4);
         }
@@ -168,6 +168,33 @@ namespace Pure3D.Chunks
                 byte3,
                 byte4
             };
+        }
+    }
+
+    [ChunkType(50331660)]
+    public class LocatorMatrix : Chunk
+    {
+        public Matrix Transform;
+
+        public LocatorMatrix(File file, uint type) : base(file, type)
+        {
+        }
+
+        public override void ReadHeader(Stream stream, long length)
+        {
+            BinaryReader reader = new(stream);
+            Transform = Util.ReadMatrix(reader);
+        }
+
+        public override string ToString()
+        {
+            string[] matrix = Util.PrintMatrix(Transform);
+            return $"{ToShortString()} (Transform: {matrix[0]}, {matrix[1]}, {matrix[2]}, {matrix[3]})";
+        }
+
+        public override string ToShortString()
+        {
+            return "Locator Matrix";
         }
     }
 }
