@@ -3,9 +3,8 @@ using System.IO;
 namespace Pure3D.Chunks
 {
     [ChunkType(117506051)]
-    public class CollisionCylinder : Chunk
+    public class CollisionCylinder : CollisionSphere
     {
-        public float Radius;
         public float HalfLength;
         public bool FlatEnd;
 
@@ -15,8 +14,8 @@ namespace Pure3D.Chunks
 
         public override void ReadHeader(Stream stream, long length)
         {
+            base.ReadHeader(stream, length);
             BinaryReader reader = new(stream);
-            Radius = reader.ReadSingle();
             HalfLength = reader.ReadSingle();
             FlatEnd = reader.ReadUInt16() == 1;
         }
@@ -29,6 +28,31 @@ namespace Pure3D.Chunks
         public override string ToShortString()
         {
             return "Collision Cylinder";
+        }
+    }
+
+    [ChunkType(117506050)]
+    public class CollisionSphere : Chunk
+    {
+        public float Radius;
+
+        public CollisionSphere(File file, uint type) : base(file, type)
+        {
+        }
+
+        public override void ReadHeader(Stream stream, long length)
+        {
+            Radius = new BinaryReader(stream).ReadSingle();
+        }
+
+        public override string ToString()
+        {
+            return $"{ToShortString()} (Radius: {Radius})";
+        }
+
+        public override string ToShortString()
+        {
+            return "Collision Sphere";
         }
     }
 }

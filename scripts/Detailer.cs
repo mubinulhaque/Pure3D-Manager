@@ -109,6 +109,10 @@ public partial class Detailer : Tree
 				AddItem(root, $"Flat End: {colCylinder.FlatEnd}");
 				break;
 
+			case CollisionSphere colSphere:
+				AddItem(root, $"Radius: {colSphere.Radius}");
+				break;
+
 			case CollisionVector colVector:
 				AddItem(root, $"Vector: {Util.PrintVector3(colVector.Vector)}");
 				break;
