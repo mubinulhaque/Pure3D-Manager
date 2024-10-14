@@ -193,6 +193,17 @@ public partial class Detailer : Tree
 				AddItemList(root, "Normal", intersect.Normals);
 				break;
 
+			case Light light:
+				AddItem(root, $"Type: {light.LightType}");
+				Color lightColour = Util.GetColour(light.Colour);
+				AddItem(root, $"Colour: ({lightColour.R}, {lightColour.G}, {lightColour.B}, {lightColour.A})");
+				CreateItem(root).SetCustomBgColor(0, lightColour);
+				AddItem(root, $"Constant: {light.Constant}");
+				AddItem(root, $"Linear: {light.Linear}");
+				AddItem(root, $"Squared: {light.Squared}");
+				AddItem(root, $"Enabled: {light.Enabled}");
+				break;
+
 			case Locator locator:
 				AddItem(root, $"Positon: ({locator.Position.X}, {locator.Position.Y}, {locator.Position.Z})");
 				break;
