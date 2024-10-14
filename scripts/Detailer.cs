@@ -565,8 +565,7 @@ public partial class Detailer : Tree
 				AddItem(root, $"Value: {shaderTex.Value}");
 				break;
 
-			case VertexShader vShader:
-				AddItem(root, $"Shader Name: {vShader.VertexShaderName}");
+			case VertexShader:
 				break;
 			#endregion
 
