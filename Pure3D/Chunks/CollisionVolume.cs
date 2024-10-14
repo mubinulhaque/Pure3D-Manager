@@ -7,7 +7,7 @@ namespace Pure3D.Chunks
     public class CollisionVolume : Chunk
     {
         public uint NumberOfSubVolumes;
-        public uint OwnerIndex;
+        public int OwnerIndex;
         public uint ObjectReferenceIndex;
 
         public CollisionVolume(File file, uint type) : base(file, type)
@@ -18,7 +18,7 @@ namespace Pure3D.Chunks
         {
             BinaryReader reader = new(stream);
             NumberOfSubVolumes = reader.ReadUInt32();
-            OwnerIndex = reader.ReadUInt32();
+            OwnerIndex = reader.ReadInt32();
             ObjectReferenceIndex = reader.ReadUInt32();
         }
 
