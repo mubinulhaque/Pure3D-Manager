@@ -404,6 +404,11 @@ public partial class Detailer : Tree
 				break;
 
 			case SurfaceList surfaces:
+				root.SetText(
+					0,
+					"Surface List"
+				);
+
 				AddItem(root, $"Version: {surfaces.Version}");
 				AddItem(root, $"{surfaces.NumberOfSurfaces} Surfaces");
 				AddItemList(root, "Surface", surfaces.Surfaces);
