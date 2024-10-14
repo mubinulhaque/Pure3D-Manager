@@ -6,7 +6,7 @@ namespace Pure3D.Chunks
     public class Shader : VersionNamed
     {
         public string PddiShaderName;
-        public uint HasTranslucency;
+        public bool HasTranslucency;
         public uint VertexNeeds;
         public uint VertexMask;
         protected uint NumParams; // Should match the number of children
@@ -21,7 +21,7 @@ namespace Pure3D.Chunks
             Name = Util.ReadString(reader);
             Version = reader.ReadUInt32();
             PddiShaderName = Util.ReadString(reader);
-            HasTranslucency = reader.ReadUInt32();
+            HasTranslucency = reader.ReadUInt32() == 1;
             VertexNeeds = reader.ReadUInt32();
             VertexMask = reader.ReadUInt32();
             NumParams = reader.ReadUInt32();

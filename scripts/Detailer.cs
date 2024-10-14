@@ -535,8 +535,9 @@ public partial class Detailer : Tree
 
 			#region Shader Chunks
 			case Pure3D.Chunks.Shader shader:
+				AddItem(root, $"Shader Name: {shader.PddiShaderName}");
 				AddItem(root, $"Translucency: {shader.HasTranslucency}");
-				AddItem(root, $"Vertex Mask: {shader.VertexMask}");
+				AddItem(root, $"Vertex Mask: 0x{shader.VertexMask:X}");
 				AddItem(root, $"Vertex Needs: {shader.VertexNeeds}");
 				AddItem(root, $"{shader.GetNumParams()} Parameters");
 				break;
@@ -545,7 +546,7 @@ public partial class Detailer : Tree
 				AddItem(root, $"Parameter: {shaderColour.Param}");
 
 				Color scColour = Util.GetColour(shaderColour.Colour);
-				AddItem(root, "Colour: ({scColour.R}, {scColour.G}, {scColour.B}, {scColour.A})");
+				AddItem(root, $"Colour: ({scColour.R}, {scColour.G}, {scColour.B}, {scColour.A})");
 				CreateItem(root).SetCustomBgColor(0, scColour);
 				break;
 
