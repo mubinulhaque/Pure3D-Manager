@@ -397,6 +397,12 @@ public partial class Detailer : Tree
 				// since this is just VersionNamed
 				break;
 
+			case SurfaceList surfaces:
+				AddItem(root, $"Version: {surfaces.Version}");
+				AddItem(root, $"{surfaces.NumberOfSurfaces} Surfaces");
+				AddItemList(root, "Surface", surfaces.Surfaces);
+				break;
+
 			case TriggerVolume trigger:
 				AddItem(root, $"Is Rect: {trigger.IsRect}");
 				AddItem(root, $"Half Extents: {Util.PrintVector3(trigger.HalfExtents)}");
