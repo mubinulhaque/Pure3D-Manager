@@ -97,10 +97,16 @@ public partial class Detailer : Tree
 				AddItem(root, $"Half Extents: {Util.PrintVector3(colOBB.HalfExtents)}");
 				break;
 
-			case CollisionObject collisionObject:
-				AddItem(root, $"{collisionObject.NumberOfOwners} Owners");
-				AddItem(root, $"Material: {collisionObject.Material}");
-				AddItem(root, $"{collisionObject.NumberOfOwners} Sub Objects");
+			case CollisionObject colObject:
+				AddItem(root, $"{colObject.NumberOfOwners} Owners");
+				AddItem(root, $"Material: {colObject.Material}");
+				AddItem(root, $"{colObject.NumberOfOwners} Sub Objects");
+				break;
+
+			case CollisionCylinder colCylinder:
+				AddItem(root, $"Radius: {colCylinder.Radius}");
+				AddItem(root, $"Half Length: {colCylinder.HalfLength}");
+				AddItem(root, $"Flat End: {colCylinder.FlatEnd}");
 				break;
 
 			case CollisionVector colVector:
