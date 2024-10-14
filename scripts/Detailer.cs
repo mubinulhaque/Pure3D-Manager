@@ -204,6 +204,10 @@ public partial class Detailer : Tree
 				AddItem(root, $"Enabled: {light.Enabled}");
 				break;
 
+			case LightDirection lightDir:
+				AddItem(root, $"Direction: {Util.PrintVector3(lightDir.Direction)}");
+				break;
+
 			case Locator locator:
 				AddItem(root, $"Positon: ({locator.Position.X}, {locator.Position.Y}, {locator.Position.Z})");
 				break;

@@ -39,4 +39,30 @@ namespace Pure3D.Chunks
             return "Light";
         }
     }
+
+
+    [ChunkType(77825)]
+    public class LightDirection : Chunk
+    {
+        public Vector3 Direction;
+
+        public LightDirection(File file, uint type) : base(file, type)
+        {
+        }
+
+        public override void ReadHeader(Stream stream, long length)
+        {
+            Direction = Util.ReadVector3(new BinaryReader(stream));
+        }
+
+        public override string ToString()
+        {
+            return $"{ToShortString()}: {Direction}";
+        }
+
+        public override string ToShortString()
+        {
+            return "Light Direction";
+        }
+    }
 }
