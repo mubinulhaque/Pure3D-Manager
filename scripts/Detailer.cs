@@ -224,7 +224,8 @@ public partial class Detailer : Tree
 			case Locator2 locator2:
 				AddItem(root, $"Type: {locator2.LocatorType}");
 				AddItem(root, $"Data Size: {locator2.DataSize}");
-				AddItemList(AddItem(root, "Data:"), "Data", locator2.Data);
+				if (locator2.DataSize > 0)
+					AddItemList(AddItem(root, "Data:"), "Data", locator2.Data);
 				AddItem(root, $"Position: ({locator2.Position.X}, {locator2.Position.Y}, {locator2.Position.Z})");
 				AddItem(root, $"{locator2.NumberOfTriggers} Triggers");
 				break;
