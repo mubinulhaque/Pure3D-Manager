@@ -208,7 +208,6 @@ namespace Pure3D.Chunks
             for (int i = 0; i < NumberOfFrames; i++)
             {
                 Values[i] = Util.ReadVector2(reader);
-                Godot.GD.Print($"Float 2 Channel Value {i + 1}: {Values[i]}");
             }
         }
 
