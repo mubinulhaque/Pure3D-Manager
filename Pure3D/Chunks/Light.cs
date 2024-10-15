@@ -60,7 +60,7 @@ namespace Pure3D.Chunks
 
         public override string ToShortString()
         {
-            return "Light Direction";
+            return "Light Vector";
         }
     }
 
@@ -89,6 +89,31 @@ namespace Pure3D.Chunks
         public override string ToShortString()
         {
             return "Light Position";
+        }
+    }
+
+    [ChunkType(77828)]
+    public class LightShadow : Chunk
+    {
+        public bool Shadow;
+
+        public LightShadow(File file, uint type) : base(file, type)
+        {
+        }
+
+        public override void ReadHeader(Stream stream, long length)
+        {
+            Shadow = new BinaryReader(stream).ReadUInt32() == 1;
+        }
+
+        public override string ToString()
+        {
+            return $"{ToShortString()}: {Shadow}";
+        }
+
+        public override string ToShortString()
+        {
+            return "Light Shadow";
         }
     }
 }

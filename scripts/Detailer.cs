@@ -208,6 +208,10 @@ public partial class Detailer : Tree
 				AddItem(root, $"{lightVec.ToShortString()}: {Util.PrintVector3(lightVec.Vector)}");
 				break;
 
+			case LightShadow lightShadow:
+				AddItem(root, $"Casts Shadow: {lightShadow.Shadow}");
+				break;
+
 			case Locator locator:
 				AddItem(root, $"Positon: ({locator.Position.X}, {locator.Position.Y}, {locator.Position.Z})");
 				break;
