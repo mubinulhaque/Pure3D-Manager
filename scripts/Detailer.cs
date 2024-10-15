@@ -515,7 +515,7 @@ public partial class Detailer : Tree
 			case BooleanChannel bc:
 				TreeItem bcFrames = ViewAnimationChannelChunk(root, bc);
 				AddItem(bcFrames, $"Start State: {bc.Start}");
-				AddItemList(bcFrames, "Frame", bc.Values);
+				AddItemList(bcFrames, "Frame", bc.Frames);
 				break;
 
 			case ChannelInterpolationMode mode:

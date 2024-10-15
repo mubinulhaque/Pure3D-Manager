@@ -45,8 +45,7 @@ namespace Pure3D.Chunks
     [ChunkType(1184008)]
     public class BooleanChannel : AnimationChannel
     {
-        public uint Start;
-        public ushort[] Values;
+        public bool Start;
 
         public BooleanChannel(File file, uint type) : base(file, type)
         {
@@ -56,21 +55,18 @@ namespace Pure3D.Chunks
         {
             BinaryReader reader = new(stream);
             Version = reader.ReadUInt32();
+            Godot.GD.Print($"Bool Channel Version: {Version}");
             Parameter = Util.ZeroTerminate(Encoding.ASCII.GetString(reader.ReadBytes(4)));
-            NumberOfFrames = reader.ReadUInt16();
-
-            Start = reader.ReadUInt16();
+            Godot.GD.Print($"Bool Channel Param: {Parameter}");
+            Start = reader.ReadUInt16() == 1;
+            Godot.GD.Print($"Bool Channel Start: {Start}");
+            NumberOfFrames = reader.ReadUInt32();
+            Godot.GD.Print($"Bool Channel Frame Count: {NumberOfFrames}");
 
             Frames = new ushort[NumberOfFrames];
             for (int i = 0; i < NumberOfFrames; i++)
             {
                 Frames[i] = reader.ReadUInt16();
-            }
-
-            Values = new ushort[NumberOfFrames];
-            for (int i = 0; i < NumberOfFrames; i++)
-            {
-                Values[i] = reader.ReadUInt16();
             }
         }
 
