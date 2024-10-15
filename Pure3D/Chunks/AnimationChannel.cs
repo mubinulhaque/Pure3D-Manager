@@ -55,13 +55,9 @@ namespace Pure3D.Chunks
         {
             BinaryReader reader = new(stream);
             Version = reader.ReadUInt32();
-            Godot.GD.Print($"Bool Channel Version: {Version}");
             Parameter = Util.ZeroTerminate(Encoding.ASCII.GetString(reader.ReadBytes(4)));
-            Godot.GD.Print($"Bool Channel Param: {Parameter}");
             Start = reader.ReadUInt16() == 1;
-            Godot.GD.Print($"Bool Channel Start: {Start}");
             NumberOfFrames = reader.ReadUInt32();
-            Godot.GD.Print($"Bool Channel Frame Count: {NumberOfFrames}");
 
             Frames = new ushort[NumberOfFrames];
             for (int i = 0; i < NumberOfFrames; i++)
