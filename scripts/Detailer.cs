@@ -204,6 +204,11 @@ public partial class Detailer : Tree
 				AddItem(root, $"Enabled: {light.Enabled}");
 				break;
 
+			case LightGroup lights:
+				AddItem(root, $"{lights.NumberOfLights} Lights");
+				AddItemList(root, "Light", lights.Lights);
+				break;
+
 			case LightVector lightVec:
 				AddItem(root, $"{lightVec.ToShortString()}: {Util.PrintVector3(lightVec.Vector)}");
 				break;
