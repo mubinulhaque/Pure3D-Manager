@@ -619,6 +619,11 @@ public partial class Detailer : Tree
 				AddItem(root, $"Value: {aParam.Value}");
 				break;
 
+			case InstancedParticleSystem instParticles:
+				AddItem(root, $"Index: {instParticles.Index}");
+				AddItem(root, $"{instParticles.NumberOfInstances} Instances");
+				break;
+
 			case MultiController mController:
 				AddItem(root, $"{mController.NumberOfTracks} Tracks");
 				AddItem(root, $"Length: {mController.Length}");
