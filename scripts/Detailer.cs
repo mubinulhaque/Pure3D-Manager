@@ -619,6 +619,11 @@ public partial class Detailer : Tree
 				AddItem(root, $"Value: {aParam.Value}");
 				break;
 
+			case History history:
+				AddItem(root, $"{history.NumberOfLines} Lines");
+				AddItemList(root, "Line", history.Lines);
+				break;
+
 			case InstancedParticleSystem instParticles:
 				AddItem(root, $"Index: {instParticles.Index}");
 				AddItem(root, $"{instParticles.NumberOfInstances} Instances");
