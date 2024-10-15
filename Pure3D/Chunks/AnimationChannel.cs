@@ -190,6 +190,34 @@ namespace Pure3D.Chunks
         }
     }
 
+    [ChunkType(1184001)]
+    public class Float2Channel : AnimationChannel
+    {
+        public Vector2[] Values;
+
+        public Float2Channel(File file, uint type) : base(file, type)
+        {
+        }
+
+        public override void ReadHeader(Stream stream, long length)
+        {
+            base.ReadHeader(stream, length);
+            BinaryReader reader = new(stream);
+
+            Values = new Vector2[NumberOfFrames];
+            for (int i = 0; i < NumberOfFrames; i++)
+            {
+                Values[i] = Util.ReadVector2(reader);
+                Godot.GD.Print($"Float 2 Channel Value {i + 1}: {Values[i]}");
+            }
+        }
+
+        public override string ToShortString()
+        {
+            return "Float 2 Channel";
+        }
+    }
+
     [ChunkType(1184014)]
     public class IntegerChannel : AnimationChannel
     {

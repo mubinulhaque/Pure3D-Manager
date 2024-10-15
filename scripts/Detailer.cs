@@ -525,12 +525,21 @@ public partial class Detailer : Tree
 
 			case ColourChannel cc:
 				TreeItem ccFrames = ViewAnimationChannelChunk(root, cc);
-				AddColourList(ccFrames, cc.Values);
+				for (uint i = 0; i < cc.NumberOfFrames; i++)
+				{
+					Color ccColour = Util.GetColour(cc.Values[i]);
+					AddItem(
+						ccFrames,
+						$"Frame {cc.Frames[i] + 1}: {ccColour}"
+					);
+					TreeItem colourValue = CreateItem(ccFrames);
+					colourValue.SetCustomBgColor(0, ccColour);
+				}
 				break;
 
 			case CompressedQuaternionChannel cqc:
 				TreeItem cqcFrames = ViewAnimationChannelChunk(root, cqc);
-				AddItemList(cqcFrames, "Frame", cqc.Frames);
+				AddFrameList(cqcFrames, "Frame", cqc.Frames, cqc.Values);
 				break;
 
 			case EntityChannel ec:
@@ -540,36 +549,41 @@ public partial class Detailer : Tree
 
 			case Float1Channel f1c:
 				TreeItem f1cFrames = ViewAnimationChannelChunk(root, f1c);
-				AddItemList(f1cFrames, "Frame", f1c.Frames);
+				AddFrameList(f1cFrames, "Frame", f1c.Frames, f1c.Values);
+				break;
+
+			case Float2Channel f2c:
+				TreeItem f2cFrames = ViewAnimationChannelChunk(root, f2c);
+				AddFrameList(f2cFrames, "Frame", f2c.Frames, f2c.Values);
 				break;
 
 			case IntegerChannel ic:
 				TreeItem icFrames = ViewAnimationChannelChunk(root, ic);
-				AddItemList(icFrames, "Frame", ic.Frames);
+				AddFrameList(icFrames, "Frame", ic.Frames, ic.Values);
 				break;
 
 			case QuaternionChannel qc:
 				TreeItem qcFrames = ViewAnimationChannelChunk(root, qc);
-				AddItemList(qcFrames, "Frame", qc.Frames);
+				AddFrameList(qcFrames, "Frame", qc.Frames, qc.Values);
 				break;
 
 			case Vector1Channel v1c:
 				TreeItem v1cFrames = ViewAnimationChannelChunk(root, v1c);
 				AddItem(v1cFrames, $"Mapping: {v1c.Mapping}");
 				AddItem(v1cFrames, $"Constants: ({v1c.Constants.X}, {v1c.Constants.Y}, {v1c.Constants.Z})");
-				AddItemList(v1cFrames, "Frame", v1c.Frames);
+				AddFrameList(v1cFrames, "Frame", v1c.Frames, v1c.Values);
 				break;
 
 			case Vector2Channel v2c:
 				TreeItem v2cFrames = ViewAnimationChannelChunk(root, v2c);
 				AddItem(v2cFrames, $"Mapping: {v2c.Mapping}");
 				AddItem(v2cFrames, $"Constants: ({v2c.Constants.X}, {v2c.Constants.Y}, {v2c.Constants.Z})");
-				AddItemList(v2cFrames, "Frame", v2c.Frames);
+				AddFrameList(v2cFrames, "Frame", v2c.Frames, v2c.Values);
 				break;
 
 			case Vector3Channel v3c:
 				TreeItem v3cFrames = ViewAnimationChannelChunk(root, v3c);
-				AddItemList(v3cFrames, "Frame", v3c.Frames);
+				AddFrameList(v3cFrames, "Frame", v3c.Frames, v3c.Values);
 				break;
 			#endregion
 
@@ -807,4 +821,23 @@ public partial class Detailer : Tree
 			colourValue.SetCustomBgColor(0, colour);
 		}
 	}
+
+
+	/// <summary>
+	/// Adds an item for every element of an Animation Channel
+	/// </summary>
+	/// <param name="parent">Parent of the new items</param>
+	/// <param name="indexText">Text describing what the items are</param>
+	/// <param name="list">Array to add items for</param>
+	public void AddFrameList(TreeItem parent, string indexText, ushort[] frames, Array values)
+	{
+		for (uint i = 0; i < frames.Length; i++)
+		{
+			AddItem(
+				parent,
+				$"{indexText} {frames[i] + 1}: {values.GetValue(i)}"
+			);
+		}
+	}
+
 }
