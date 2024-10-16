@@ -487,6 +487,11 @@ public partial class Detailer : Tree
 				AddItem(root, $"Maximum Bounds: {trees.MaxBounds}");
 				break;
 
+			case TreeNode tree:
+				AddItem(root, $"{tree.NumberOfChildren} Children");
+				AddItem(root, $"Parent Offset: {tree.ParentOffset}");
+				break;
+
 			case TriggerVolume trigger:
 				AddItem(root, $"Is Rect: {trigger.IsRect}");
 				AddItem(root, $"Half Extents: {Util.PrintVector3(trigger.HalfExtents)}");

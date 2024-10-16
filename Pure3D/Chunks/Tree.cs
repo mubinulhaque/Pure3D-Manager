@@ -31,4 +31,32 @@ namespace Pure3D.Chunks
             return $"{NumberOfTrees} Trees";
         }
     }
+
+    [ChunkType(66060293)]
+    public class TreeNode : Chunk
+    {
+        public uint NumberOfChildren;
+        public int ParentOffset;
+
+        public TreeNode(File file, uint type) : base(file, type)
+        {
+        }
+
+        public override void ReadHeader(Stream stream, long length)
+        {
+            BinaryReader reader = new(stream);
+            NumberOfChildren = reader.ReadUInt32();
+            ParentOffset = reader.ReadInt32();
+        }
+
+        public override string ToString()
+        {
+            return $"{ToShortString()} ({NumberOfChildren} Children, Parent Offset: {ParentOffset})";
+        }
+
+        public override string ToShortString()
+        {
+            return "Tree Node";
+        }
+    }
 }
