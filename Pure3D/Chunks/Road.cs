@@ -37,7 +37,7 @@ namespace Pure3D.Chunks
 
         public override string ToShortString()
         {
-            return $"Road";
+            return "Road";
         }
     }
 

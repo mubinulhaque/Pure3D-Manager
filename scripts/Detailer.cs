@@ -1,5 +1,4 @@
 using System;
-using System.Text;
 using Godot;
 using Pure3D;
 using Pure3D.Chunks;
@@ -475,6 +474,17 @@ public partial class Detailer : Tree
 				AddItem(root, $"Version: {surfaces.Version}");
 				AddItem(root, $"{surfaces.NumberOfSurfaces} Surfaces");
 				AddItemList(root, "Surface", surfaces.Surfaces);
+				break;
+
+			case TreeHierarchy trees:
+				root.SetText(
+					0,
+					"Tree Hierarchy"
+				);
+
+				AddItem(root, $"{trees.NumberOfTrees} Tree Nodes");
+				AddItem(root, $"Minimum Bounds: {trees.MinBounds}");
+				AddItem(root, $"Maximum Bounds: {trees.MaxBounds}");
 				break;
 
 			case TriggerVolume trigger:
