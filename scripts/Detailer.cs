@@ -204,6 +204,12 @@ public partial class Detailer : Tree
 				AddItemList(root, "Normal", intersect.Normals);
 				break;
 
+			case Intersection intersection:
+				AddItem(root, $"Position: {intersection.Position}");
+				AddItem(root, $"Radius: {intersection.Radius}");
+				AddItem(root, $"Traffic Behaviour: {intersection.TrafficBehaviour}");
+				break;
+
 			case Light light:
 				AddItem(root, $"Type: {light.LightType}");
 				Color lightColour = Util.GetColour(light.Colour);
