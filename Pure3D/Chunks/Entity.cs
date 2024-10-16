@@ -42,6 +42,19 @@ namespace Pure3D.Chunks
         }
     }
 
+    [ChunkType(66060297)]
+    public class InstaStaticEntity : Entity
+    {
+        public InstaStaticEntity(File file, uint type) : base(file, type)
+        {
+        }
+
+        public override string ToShortString()
+        {
+            return "Instanced Static Entity";
+        }
+    }
+
     [ChunkType(66060298)]
     public class InstaStaticPhysicsObject : Entity
     {
