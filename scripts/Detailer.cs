@@ -482,7 +482,7 @@ public partial class Detailer : Tree
 					"Tree Hierarchy"
 				);
 
-				AddItem(root, $"{trees.NumberOfTrees} Tree Nodes");
+				AddItem(root, $"{trees.NumberOfChildren} Children");
 				AddItem(root, $"Minimum Bounds: {trees.MinBounds}");
 				AddItem(root, $"Maximum Bounds: {trees.MaxBounds}");
 				break;
@@ -490,6 +490,19 @@ public partial class Detailer : Tree
 			case TreeNode tree:
 				AddItem(root, $"{tree.NumberOfChildren} Children");
 				AddItem(root, $"Parent Offset: {tree.ParentOffset}");
+				break;
+
+			case TreeNode2 tree2:
+				AddItem(root, $"Axis: {tree2.Axis}");
+				AddItem(root, $"Position: {tree2.Position}");
+				AddItem(root, $"{tree2.StaticEntityLimit} Maximum Static Entities");
+				AddItem(root, $"{tree2.StaticPhysicsEntityLimit} Maximum Static Physics Entities");
+				AddItem(root, $"{tree2.IntersectLimit} Maximum Intersects");
+				AddItem(root, $"{tree2.DynamicPhysicsEntityLimit} Maximum Dynamic Physics Entities");
+				AddItem(root, $"{tree2.FenceLimit} Maximum Fences");
+				AddItem(root, $"{tree2.RoadLimit} Maximum Roads");
+				AddItem(root, $"{tree2.PathLimit} Maximum Paths");
+				AddItem(root, $"{tree2.AnimationLimit} Maximum Animations");
 				break;
 
 			case TriggerVolume trigger:
