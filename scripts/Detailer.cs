@@ -70,7 +70,7 @@ public partial class Detailer : Tree
 				AddItem(root, $"Count: {breakable.Count}");
 				break;
 
-			case CollisionAABB colAABB:
+			case CollisionAABB:
 				TreeItem newItem = AddItem(root, $"No properties for this chunk...");
 				newItem.SetTooltipText(0, "No, really");
 				break;
@@ -171,6 +171,17 @@ public partial class Detailer : Tree
 
 			case Entity entity:
 				AddItem(root, $"Render Order: {entity.RenderOrder}");
+				break;
+
+			case Fence:
+				TreeItem newFence = AddItem(root, $"No properties for this chunk...");
+				newFence.SetTooltipText(0, "No, really");
+				break;
+
+			case Fence2 fence:
+				AddItem(root, $"Start: {fence.Start}");
+				AddItem(root, $"End: {fence.End}");
+				AddItem(root, $"Normal: {fence.Normal}");
 				break;
 
 			case IndexList list:
