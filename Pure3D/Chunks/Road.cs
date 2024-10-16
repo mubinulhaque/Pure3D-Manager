@@ -2,8 +2,47 @@ using System.IO;
 
 namespace Pure3D.Chunks
 {
-    [ChunkType(50331657)]
+    [ChunkType(50331651)]
     public class Road : Named
+    {
+        public uint RoadType;
+        public string Start; // Intersection before the road
+        public string End; // Intersection after the road
+        public uint MaxCars;
+        public uint Speed;
+        // Will do these two later
+        // They use Speed as a bit mask
+        // public uint Difficulty;
+        // public uint Shortcut;
+
+        public Road(File file, uint type) : base(file, type)
+        {
+        }
+
+        public override void ReadHeader(Stream stream, long length)
+        {
+            base.ReadHeader(stream, length);
+            BinaryReader reader = new(stream);
+            RoadType = reader.ReadUInt32();
+            Start = Util.ReadString(reader);
+            End = Util.ReadString(reader);
+            MaxCars = reader.ReadUInt32();
+            Speed = reader.ReadUInt32();
+        }
+
+        public override string ToString()
+        {
+            return $"{ToShortString()}: {Name} (Start: {Start}, End: {End}, {MaxCars} Cars Maximum)";
+        }
+
+        public override string ToShortString()
+        {
+            return $"Road";
+        }
+    }
+
+    [ChunkType(50331657)]
+    public class RoadData : Named
     {
         public uint RoadType;
         public uint NumberOfLanes;
@@ -12,7 +51,7 @@ namespace Pure3D.Chunks
         public Vector3 Top;
         public Vector3 Bottom;
 
-        public Road(File file, uint type) : base(file, type)
+        public RoadData(File file, uint type) : base(file, type)
         {
         }
 
@@ -35,7 +74,7 @@ namespace Pure3D.Chunks
 
         public override string ToShortString()
         {
-            return "Road";
+            return "Road Data";
         }
     }
 }

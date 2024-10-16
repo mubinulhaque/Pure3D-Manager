@@ -370,11 +370,19 @@ public partial class Detailer : Tree
 
 			case Road road:
 				AddItem(root, $"Type: {road.RoadType}");
-				AddItem(root, $"{road.NumberOfLanes} Lanes");
-				AddItem(root, $"Has Shoulder: {road.HasShoulder}");
-				AddItem(root, $"Direction: {road.Direction}");
-				AddItem(root, $"Top: {road.Top}");
-				AddItem(root, $"Bottom: {road.Bottom}");
+				AddItem(root, $"Start Intersection: {road.Start}");
+				AddItem(root, $"End Intersection: {road.End}");
+				AddItem(root, $"{road.MaxCars} Cars Maximum");
+				AddItem(root, $"Speed: {road.Speed}");
+				break;
+
+			case RoadData roadData:
+				AddItem(root, $"Type: {roadData.RoadType}");
+				AddItem(root, $"{roadData.NumberOfLanes} Lanes");
+				AddItem(root, $"Has Shoulder: {roadData.HasShoulder}");
+				AddItem(root, $"Direction: {roadData.Direction}");
+				AddItem(root, $"Top: {roadData.Top}");
+				AddItem(root, $"Bottom: {roadData.Bottom}");
 				break;
 
 			case Scenegraph:
