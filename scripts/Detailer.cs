@@ -368,6 +368,15 @@ public partial class Detailer : Tree
 				AddItem(root, $"Target Lag: {railcam.TargetLag}");
 				break;
 
+			case Road road:
+				AddItem(root, $"Type: {road.RoadType}");
+				AddItem(root, $"{road.NumberOfLanes} Lanes");
+				AddItem(root, $"Has Shoulder: {road.HasShoulder}");
+				AddItem(root, $"Direction: {road.Direction}");
+				AddItem(root, $"Top: {road.Top}");
+				AddItem(root, $"Bottom: {road.Bottom}");
+				break;
+
 			case Scenegraph:
 				break;
 
