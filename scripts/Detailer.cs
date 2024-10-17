@@ -74,34 +74,6 @@ public partial class Detailer : Tree
 				AddColourList(root, list.Colours);
 				break;
 
-			case CompositeDrawableEffectList list:
-				root.SetText(
-					0,
-					"Composite Drawable Effect List"
-				);
-
-				AddItem(root, $"{list.NumElements} Effects");
-				break;
-
-			case CompositeDrawablePropList list:
-				AddItem(root, "Composite Drawable Prop List");
-				AddItem(root, $"{list.NumElements} Props");
-				break;
-
-			case CompositeDrawableProp cdp:
-				AddItem(root, $"Translucent: {cdp.IsTranslucent}");
-				AddItem(root, $"Skeleton Joint Index: {cdp.SkeletonJointID}");
-				break;
-
-			case CompositeDrawableSkinList list:
-				root.SetText(
-					0,
-					"Composite Drawable Skin List"
-				);
-
-				AddItem(root, $"{list.NumElements} Skins");
-				break;
-
 			case Entity entity:
 				AddItem(root, $"Render Order: {entity.RenderOrder}");
 				break;
@@ -145,47 +117,6 @@ public partial class Detailer : Tree
 
 			case LensFlare lensFlare:
 				AddItem(root, $"{lensFlare.NumberOfBillboardQuadGroups} Billboard Quad Groups");
-				break;
-
-			case Light light:
-				AddItem(root, $"Type: {light.LightType}");
-				Color lightColour = Util.GetColour(light.Colour);
-				AddItem(root, $"Colour: ({lightColour.R}, {lightColour.G}, {lightColour.B}, {lightColour.A})");
-				CreateItem(root).SetCustomBgColor(0, lightColour);
-				AddItem(root, $"Constant: {light.Constant}");
-				AddItem(root, $"Linear: {light.Linear}");
-				AddItem(root, $"Squared: {light.Squared}");
-				AddItem(root, $"Enabled: {light.Enabled}");
-				break;
-
-			case LightGroup lights:
-				AddItem(root, $"{lights.NumberOfLights} Lights");
-				AddItemList(root, "Light", lights.Lights);
-				break;
-
-			case LightVector lightVec:
-				AddItem(root, $"{lightVec.ToShortString()}: {Util.PrintVector3(lightVec.Vector)}");
-				break;
-
-			case LightShadow lightShadow:
-				AddItem(root, $"Casts Shadow: {lightShadow.Shadow}");
-				break;
-
-			case Locator locator:
-				AddItem(root, $"Positon: ({locator.Position.X}, {locator.Position.Y}, {locator.Position.Z})");
-				break;
-
-			case Locator2 locator2:
-				AddItem(root, $"Type: {locator2.LocatorType}");
-				AddItem(root, $"Data Size: {locator2.DataSize}");
-				if (locator2.DataSize > 0)
-					AddItemList(AddItem(root, "Data:"), "Data", locator2.Data);
-				AddItem(root, $"Position: ({locator2.Position.X}, {locator2.Position.Y}, {locator2.Position.Z})");
-				AddItem(root, $"{locator2.NumberOfTriggers} Triggers");
-				break;
-
-			case LocatorMatrix locatorMatrix:
-				ViewMatrix(root, "Transform:", locatorMatrix.Transform);
 				break;
 
 			case MatrixList list:
@@ -310,35 +241,6 @@ public partial class Detailer : Tree
 				AddItem(root, $"Target Lag: {railcam.TargetLag}");
 				break;
 
-			case Scenegraph:
-				break;
-
-			case ScenegraphBranch sgb:
-				AddItem(root, $"{sgb.NumberOfChildren} Children");
-				break;
-
-			case ScenegraphDrawable sgd:
-				AddItem(root, $"Drawable Name: {sgd.Drawable}");
-				AddItem(root, $"Translucent: {sgd.IsTranslucent}");
-				break;
-
-			case ScenegraphRoot:
-				TreeItem scenegraphRoot = AddItem(root, "No properties available for this chunk");
-				scenegraphRoot.SetTooltipText(
-					0,
-					"No, really, this chunk does nothing"
-				);
-				break;
-
-			case ScenegraphSortOrder sgso:
-				AddItem(root, $"Sort Order: {sgso.SortOrder}");
-				break;
-
-			case ScenegraphTransform sgt:
-				AddItem(root, $"{sgt.NumberOfChildren} Children");
-				ViewMatrix(root, "Transform:", sgt.Transform);
-				break;
-
 			case Skeleton skel:
 				AddItem(root, $"{skel.GetNumJoints()} Joints");
 				break;
@@ -346,44 +248,6 @@ public partial class Detailer : Tree
 			case Spline spline:
 				TreeItem splinePos = AddItem(root, $"{spline.NumberOfPositions} Positions");
 				AddItemList(splinePos, "Position", spline.Positions);
-				break;
-
-			case StateProp sp:
-				AddItem(root, $"Object Factory: {sp.ObjectFactory}");
-				AddItem(root, $"{sp.NumberOfStates} States");
-				break;
-
-			case StatePropCallback spc:
-				AddItem(root, $"Event: {spc.Event}");
-				AddItem(root, $"Frame: {spc.Frame}");
-				break;
-
-			case StatePropEvent spe:
-				AddItem(root, $"State: {spe.State}");
-				AddItem(root, $"Event: {spe.Event}");
-				break;
-
-			case StatePropFrameController spfc:
-				AddItem(root, $"Cyclic: {spfc.IsCyclic}");
-				AddItem(root, $"{spfc.NumberOfCycles} Cycles");
-				AddItem(root, $"Hold Frame: {spfc.HoldFrame}");
-				AddItem(root, $"Minimum Frame: {spfc.MinFrame}");
-				AddItem(root, $"Maximum Frame: {spfc.MaxFrame}");
-				AddItem(root, $"Relative Speed: {spfc.RelativeSpeed}");
-				break;
-
-			case StatePropState sps:
-				AddItem(root, $"Automatic Transition: {sps.AutoTransition}");
-				AddItem(root, $"Out State: {sps.OutState}");
-				AddItem(root, $"{sps.NumberOfDrawables} Drawables");
-				AddItem(root, $"{sps.NumberOfFrameControllers} Frame Controllers");
-				AddItem(root, $"{sps.NumberOfEvents} Events");
-				AddItem(root, $"{sps.NumberOfCallbacks} Callbacks");
-				AddItem(root, $"Out Frame: {sps.OutFrame}");
-				break;
-
-			case StatePropVisibility spv:
-				AddItem(root, $"Visible: {spv.Visible}");
 				break;
 
 			case StaticPhysicsObject:
@@ -429,12 +293,6 @@ public partial class Detailer : Tree
 				AddItem(root, $"{tree2.RoadLimit} Maximum Roads");
 				AddItem(root, $"{tree2.PathLimit} Maximum Paths");
 				AddItem(root, $"{tree2.AnimatedEntityLimit} Maximum Animated Entities");
-				break;
-
-			case TriggerVolume trigger:
-				AddItem(root, $"Is Rect: {trigger.IsRect}");
-				AddItem(root, $"Half Extents: {Util.PrintVector3(trigger.HalfExtents)}");
-				ViewMatrix(root, "Shape:", trigger.Shape);
 				break;
 
 			case UVList list:
@@ -644,6 +502,87 @@ public partial class Detailer : Tree
 				break;
 			#endregion
 
+			#region Composite Drawable Chunks
+			case CompositeDrawableEffectList list:
+				root.SetText(
+					0,
+					"Composite Drawable Effect List"
+				);
+
+				AddItem(root, $"{list.NumElements} Effects");
+				break;
+
+			case CompositeDrawablePropList list:
+				AddItem(root, "Composite Drawable Prop List");
+				AddItem(root, $"{list.NumElements} Props");
+				break;
+
+			case CompositeDrawableProp cdp:
+				AddItem(root, $"Translucent: {cdp.IsTranslucent}");
+				AddItem(root, $"Skeleton Joint Index: {cdp.SkeletonJointID}");
+				break;
+
+			case CompositeDrawableSkinList list:
+				root.SetText(
+					0,
+					"Composite Drawable Skin List"
+				);
+
+				AddItem(root, $"{list.NumElements} Skins");
+				break;
+			#endregion
+
+			#region Light Chunks
+			case Light light:
+				AddItem(root, $"Type: {light.LightType}");
+				Color lightColour = Util.GetColour(light.Colour);
+				AddItem(root, $"Colour: ({lightColour.R}, {lightColour.G}, {lightColour.B}, {lightColour.A})");
+				CreateItem(root).SetCustomBgColor(0, lightColour);
+				AddItem(root, $"Constant: {light.Constant}");
+				AddItem(root, $"Linear: {light.Linear}");
+				AddItem(root, $"Squared: {light.Squared}");
+				AddItem(root, $"Enabled: {light.Enabled}");
+				break;
+
+			case LightGroup lights:
+				AddItem(root, $"{lights.NumberOfLights} Lights");
+				AddItemList(root, "Light", lights.Lights);
+				break;
+
+			case LightVector lightVec:
+				AddItem(root, $"{lightVec.ToShortString()}: {Util.PrintVector3(lightVec.Vector)}");
+				break;
+
+			case LightShadow lightShadow:
+				AddItem(root, $"Casts Shadow: {lightShadow.Shadow}");
+				break;
+			#endregion
+
+			#region Locator Chunks
+			case Locator locator:
+				AddItem(root, $"Positon: ({locator.Position.X}, {locator.Position.Y}, {locator.Position.Z})");
+				break;
+
+			case Locator2 locator2:
+				AddItem(root, $"Type: {locator2.LocatorType}");
+				AddItem(root, $"Data Size: {locator2.DataSize}");
+				if (locator2.DataSize > 0)
+					AddItemList(AddItem(root, "Data:"), "Data", locator2.Data);
+				AddItem(root, $"Position: ({locator2.Position.X}, {locator2.Position.Y}, {locator2.Position.Z})");
+				AddItem(root, $"{locator2.NumberOfTriggers} Triggers");
+				break;
+
+			case LocatorMatrix locatorMatrix:
+				ViewMatrix(root, "Transform:", locatorMatrix.Transform);
+				break;
+
+			case TriggerVolume trigger:
+				AddItem(root, $"Is Rect: {trigger.IsRect}");
+				AddItem(root, $"Half Extents: {Util.PrintVector3(trigger.HalfExtents)}");
+				ViewMatrix(root, "Shape:", trigger.Shape);
+				break;
+			#endregion
+
 			#region Road Chunks
 			case Road road:
 				AddItem(root, $"Type: {road.RoadType}");
@@ -666,6 +605,37 @@ public partial class Detailer : Tree
 				AddItem(root, $"Road Segment Data: {roadSegment.RoadData}");
 				ViewMatrix(root, "Transform", roadSegment.Transform);
 				ViewMatrix(root, "Scale", roadSegment.Scale);
+				break;
+			#endregion
+
+			#region Scenegraph Chunks
+			case Scenegraph:
+				break;
+
+			case ScenegraphBranch sgb:
+				AddItem(root, $"{sgb.NumberOfChildren} Children");
+				break;
+
+			case ScenegraphDrawable sgd:
+				AddItem(root, $"Drawable Name: {sgd.Drawable}");
+				AddItem(root, $"Translucent: {sgd.IsTranslucent}");
+				break;
+
+			case ScenegraphRoot:
+				TreeItem scenegraphRoot = AddItem(root, "No properties available for this chunk");
+				scenegraphRoot.SetTooltipText(
+					0,
+					"No, really, this chunk does nothing"
+				);
+				break;
+
+			case ScenegraphSortOrder sgso:
+				AddItem(root, $"Sort Order: {sgso.SortOrder}");
+				break;
+
+			case ScenegraphTransform sgt:
+				AddItem(root, $"{sgt.NumberOfChildren} Children");
+				ViewMatrix(root, "Transform:", sgt.Transform);
 				break;
 			#endregion
 
@@ -702,6 +672,46 @@ public partial class Detailer : Tree
 				break;
 
 			case VertexShader:
+				break;
+			#endregion
+
+			#region State Prop Chunks
+			case StateProp sp:
+				AddItem(root, $"Object Factory: {sp.ObjectFactory}");
+				AddItem(root, $"{sp.NumberOfStates} States");
+				break;
+
+			case StatePropCallback spc:
+				AddItem(root, $"Event: {spc.Event}");
+				AddItem(root, $"Frame: {spc.Frame}");
+				break;
+
+			case StatePropEvent spe:
+				AddItem(root, $"State: {spe.State}");
+				AddItem(root, $"Event: {spe.Event}");
+				break;
+
+			case StatePropFrameController spfc:
+				AddItem(root, $"Cyclic: {spfc.IsCyclic}");
+				AddItem(root, $"{spfc.NumberOfCycles} Cycles");
+				AddItem(root, $"Hold Frame: {spfc.HoldFrame}");
+				AddItem(root, $"Minimum Frame: {spfc.MinFrame}");
+				AddItem(root, $"Maximum Frame: {spfc.MaxFrame}");
+				AddItem(root, $"Relative Speed: {spfc.RelativeSpeed}");
+				break;
+
+			case StatePropState sps:
+				AddItem(root, $"Automatic Transition: {sps.AutoTransition}");
+				AddItem(root, $"Out State: {sps.OutState}");
+				AddItem(root, $"{sps.NumberOfDrawables} Drawables");
+				AddItem(root, $"{sps.NumberOfFrameControllers} Frame Controllers");
+				AddItem(root, $"{sps.NumberOfEvents} Events");
+				AddItem(root, $"{sps.NumberOfCallbacks} Callbacks");
+				AddItem(root, $"Out Frame: {sps.OutFrame}");
+				break;
+
+			case StatePropVisibility spv:
+				AddItem(root, $"Visible: {spv.Visible}");
 				break;
 			#endregion
 
