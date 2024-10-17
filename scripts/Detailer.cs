@@ -143,6 +143,10 @@ public partial class Detailer : Tree
 				AddItem(root, $"Traffic Behaviour: {intersection.TrafficBehaviour}");
 				break;
 
+			case LensFlare lensFlare:
+				AddItem(root, $"{lensFlare.NumberOfBillboardQuadGroups} Billboard Quad Groups");
+				break;
+
 			case Light light:
 				AddItem(root, $"Type: {light.LightType}");
 				Color lightColour = Util.GetColour(light.Colour);
