@@ -384,6 +384,12 @@ public partial class Detailer : Tree
 				AddItem(root, $"Bottom: {roadData.Bottom}");
 				break;
 
+			case RoadSegment roadSegment:
+				AddItem(root, $"Road Segment Data: {roadSegment.RoadData}");
+				ViewMatrix(root, "Transform", roadSegment.Transform);
+				ViewMatrix(root, "Scale", roadSegment.Scale);
+				break;
+
 			case Scenegraph:
 				break;
 

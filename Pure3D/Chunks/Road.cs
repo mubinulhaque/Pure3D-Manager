@@ -74,7 +74,38 @@ namespace Pure3D.Chunks
 
         public override string ToShortString()
         {
-            return "Road Data";
+            return "Road Segment Data";
+        }
+    }
+
+    [ChunkType(50331650)]
+    public class RoadSegment : Named
+    {
+        public string RoadData;
+        public Matrix Transform;
+        public Matrix Scale;
+
+        public RoadSegment(File file, uint type) : base(file, type)
+        {
+        }
+
+        public override void ReadHeader(Stream stream, long length)
+        {
+            base.ReadHeader(stream, length);
+            BinaryReader reader = new(stream);
+            RoadData = Util.ReadString(reader);
+            Transform = Util.ReadMatrix(reader);
+            Scale = Util.ReadMatrix(reader);
+        }
+
+        public override string ToString()
+        {
+            return $"{ToShortString()}: {Name} (Segment Data: {RoadData})";
+        }
+
+        public override string ToShortString()
+        {
+            return "Road Segment";
         }
     }
 }
