@@ -38,7 +38,7 @@ namespace Pure3D.Chunks
 
         public override string ToShortString()
         {
-            return $"Animated Collision";
+            return "Animated Collision";
         }
     }
 
@@ -51,7 +51,7 @@ namespace Pure3D.Chunks
 
         public override string ToShortString()
         {
-            return $"Animated Dynamic Physics Object";
+            return "Animated Dynamic Physics Object";
         }
     }
 
@@ -64,7 +64,7 @@ namespace Pure3D.Chunks
 
         public override string ToShortString()
         {
-            return $"Animated Entity";
+            return "Animated Entity";
         }
     }
 
