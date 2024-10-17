@@ -50,10 +50,6 @@ public partial class Detailer : Tree
 			#endregion
 
 			#region 3D Chunks
-			case AnimatedDynamicPhysicsObject adpo:
-				AddItem(root, $"Render Order: {adpo.RenderOrder}");
-				break;
-
 			case BoundingBox bBox:
 				AddItem(root, $"Lower Corner: {bBox.Low}");
 				AddItem(root, $"Upper Corner: {bBox.High}");
@@ -67,68 +63,6 @@ public partial class Detailer : Tree
 			case BreakableObject breakable:
 				AddItem(root, $"Index: {breakable.Index}");
 				AddItem(root, $"Count: {breakable.Count}");
-				break;
-
-			case CollisionAABB:
-				TreeItem newItem = AddItem(root, $"No properties for this chunk...");
-				newItem.SetTooltipText(0, "No, really");
-				break;
-
-			case CollisionAttribute colAttribute:
-				AddItem(root, $"Static: {colAttribute.IsStatic}");
-				AddItem(root, $"Default Area: {colAttribute.DefaultArea}");
-				AddItem(root, $"Can Roll: {colAttribute.CanRoll}");
-				AddItem(root, $"Can Slide: {colAttribute.CanSlide}");
-				AddItem(root, $"Can Spin: {colAttribute.CanSpin}");
-				AddItem(root, $"Can Bounce: {colAttribute.CanBounce}");
-				AddItem(root, $"Extra Attribute 1: {colAttribute.ExtraAttribute1}");
-				AddItem(root, $"Extra Attribute 2: {colAttribute.ExtraAttribute2}");
-				AddItem(root, $"Extra Attribute 3: {colAttribute.ExtraAttribute3}");
-				break;
-
-			case CollisionEffect colEffect:
-				AddItem(root, $"Type: {colEffect.Classtype}");
-				AddItem(root, $"Physics Prop ID: {colEffect.PhysicsProp}");
-				AddItem(root, $"Sound: {colEffect.Sound}");
-				break;
-
-			case CollisionOBB colOBB:
-				AddItem(root, $"Half Extents: {Util.PrintVector3(colOBB.HalfExtents)}");
-				break;
-
-			case CollisionObject colObject:
-				AddItem(root, $"{colObject.NumberOfOwners} Owners");
-				AddItem(root, $"Material: {colObject.Material}");
-				AddItem(root, $"{colObject.NumberOfOwners} Sub Objects");
-				break;
-
-			case CollisionCylinder colCylinder:
-				AddItem(root, $"Radius: {colCylinder.Radius}");
-				AddItem(root, $"Half Length: {colCylinder.HalfLength}");
-				AddItem(root, $"Flat End: {colCylinder.FlatEnd}");
-				break;
-
-			case CollisionSphere colSphere:
-				AddItem(root, $"Radius: {colSphere.Radius}");
-				break;
-
-			case CollisionVector colVector:
-				AddItem(root, $"Vector: {Util.PrintVector3(colVector.Vector)}");
-				break;
-
-			case CollisionVolume colVol:
-				AddItem(root, $"{colVol.NumberOfSubVolumes} Sub Volumes");
-				AddItem(root, $"Owner Index: {colVol.OwnerIndex}");
-				AddItem(root, $"Object Reference Index: {colVol.ObjectReferenceIndex}");
-				break;
-
-			case CollisionVolumeOwner colVolOwner:
-				AddItem(root, $"{colVolOwner.NumberOfNames} Names");
-				break;
-
-			case CollisionVolumeOwnerName:
-				// No need for any code
-				// since this has only has a Name property
 				break;
 
 			case ColourList list:
@@ -365,29 +299,6 @@ public partial class Detailer : Tree
 				AddItem(root, $"Axis Play: {Util.PrintVector3(railcam.AxisPlay)}");
 				AddItem(root, $"Position Lag: {railcam.PositionLag}");
 				AddItem(root, $"Target Lag: {railcam.TargetLag}");
-				break;
-
-			case Road road:
-				AddItem(root, $"Type: {road.RoadType}");
-				AddItem(root, $"Start Intersection: {road.Start}");
-				AddItem(root, $"End Intersection: {road.End}");
-				AddItem(root, $"{road.MaxCars} Cars Maximum");
-				AddItem(root, $"Speed: {road.Speed}");
-				break;
-
-			case RoadData roadData:
-				AddItem(root, $"Type: {roadData.RoadType}");
-				AddItem(root, $"{roadData.NumberOfLanes} Lanes");
-				AddItem(root, $"Has Shoulder: {roadData.HasShoulder}");
-				AddItem(root, $"Direction: {roadData.Direction}");
-				AddItem(root, $"Top: {roadData.Top}");
-				AddItem(root, $"Bottom: {roadData.Bottom}");
-				break;
-
-			case RoadSegment roadSegment:
-				AddItem(root, $"Road Segment Data: {roadSegment.RoadData}");
-				ViewMatrix(root, "Transform", roadSegment.Transform);
-				ViewMatrix(root, "Scale", roadSegment.Scale);
 				break;
 
 			case Scenegraph:
@@ -652,6 +563,95 @@ public partial class Detailer : Tree
 			case Vector3Channel v3c:
 				TreeItem v3cFrames = ViewAnimationChannelChunk(root, v3c);
 				AddFrameList(v3cFrames, "Frame", v3c.Frames, v3c.Values);
+				break;
+			#endregion
+
+			#region Collision Chunks
+			case CollisionAABB:
+				TreeItem newItem = AddItem(root, $"No properties for this chunk...");
+				newItem.SetTooltipText(0, "No, really");
+				break;
+
+			case CollisionAttribute colAttribute:
+				AddItem(root, $"Static: {colAttribute.IsStatic}");
+				AddItem(root, $"Default Area: {colAttribute.DefaultArea}");
+				AddItem(root, $"Can Roll: {colAttribute.CanRoll}");
+				AddItem(root, $"Can Slide: {colAttribute.CanSlide}");
+				AddItem(root, $"Can Spin: {colAttribute.CanSpin}");
+				AddItem(root, $"Can Bounce: {colAttribute.CanBounce}");
+				AddItem(root, $"Extra Attribute 1: {colAttribute.ExtraAttribute1}");
+				AddItem(root, $"Extra Attribute 2: {colAttribute.ExtraAttribute2}");
+				AddItem(root, $"Extra Attribute 3: {colAttribute.ExtraAttribute3}");
+				break;
+
+			case CollisionEffect colEffect:
+				AddItem(root, $"Type: {colEffect.Classtype}");
+				AddItem(root, $"Physics Prop ID: {colEffect.PhysicsProp}");
+				AddItem(root, $"Sound: {colEffect.Sound}");
+				break;
+
+			case CollisionOBB colOBB:
+				AddItem(root, $"Half Extents: {Util.PrintVector3(colOBB.HalfExtents)}");
+				break;
+
+			case CollisionObject colObject:
+				AddItem(root, $"{colObject.NumberOfOwners} Owners");
+				AddItem(root, $"Material: {colObject.Material}");
+				AddItem(root, $"{colObject.NumberOfOwners} Sub Objects");
+				break;
+
+			case CollisionCylinder colCylinder:
+				AddItem(root, $"Radius: {colCylinder.Radius}");
+				AddItem(root, $"Half Length: {colCylinder.HalfLength}");
+				AddItem(root, $"Flat End: {colCylinder.FlatEnd}");
+				break;
+
+			case CollisionSphere colSphere:
+				AddItem(root, $"Radius: {colSphere.Radius}");
+				break;
+
+			case CollisionVector colVector:
+				AddItem(root, $"Vector: {Util.PrintVector3(colVector.Vector)}");
+				break;
+
+			case CollisionVolume colVol:
+				AddItem(root, $"{colVol.NumberOfSubVolumes} Sub Volumes");
+				AddItem(root, $"Owner Index: {colVol.OwnerIndex}");
+				AddItem(root, $"Object Reference Index: {colVol.ObjectReferenceIndex}");
+				break;
+
+			case CollisionVolumeOwner colVolOwner:
+				AddItem(root, $"{colVolOwner.NumberOfNames} Names");
+				break;
+
+			case CollisionVolumeOwnerName:
+				// No need for any code
+				// since this has only has a Name property
+				break;
+			#endregion
+
+			#region Road Chunks
+			case Road road:
+				AddItem(root, $"Type: {road.RoadType}");
+				AddItem(root, $"Start Intersection: {road.Start}");
+				AddItem(root, $"End Intersection: {road.End}");
+				AddItem(root, $"{road.MaxCars} Cars Maximum");
+				AddItem(root, $"Speed: {road.Speed}");
+				break;
+
+			case RoadData roadData:
+				AddItem(root, $"Type: {roadData.RoadType}");
+				AddItem(root, $"{roadData.NumberOfLanes} Lanes");
+				AddItem(root, $"Has Shoulder: {roadData.HasShoulder}");
+				AddItem(root, $"Direction: {roadData.Direction}");
+				AddItem(root, $"Top: {roadData.Top}");
+				AddItem(root, $"Bottom: {roadData.Bottom}");
+				break;
+
+			case RoadSegment roadSegment:
+				AddItem(root, $"Road Segment Data: {roadSegment.RoadData}");
+				ViewMatrix(root, "Transform", roadSegment.Transform);
+				ViewMatrix(root, "Scale", roadSegment.Scale);
 				break;
 			#endregion
 

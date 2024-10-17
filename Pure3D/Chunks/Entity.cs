@@ -29,6 +29,19 @@ namespace Pure3D.Chunks
         }
     }
 
+    [ChunkType(66060302)]
+    public class AnimatedDynamicPhysicsObject : Entity
+    {
+        public AnimatedDynamicPhysicsObject(File file, uint type) : base(file, type)
+        {
+        }
+
+        public override string ToShortString()
+        {
+            return $"Animated Dynamic Physics Object";
+        }
+    }
+
     [ChunkType(66060290)]
     public class DynamicPhysicsObject : Entity
     {
