@@ -450,6 +450,11 @@ public partial class Detailer : Tree
 
 				AddItemList(root, "Weight", list.Weights);
 				break;
+
+			case WorldSphere world:
+				AddItem(root, $"{world.NumberOfMeshes} Meshes");
+				AddItem(root, $"{world.NumberOfBillboardQuadGroups} Billboard Quad Groups");
+				break;
 			#endregion
 
 			#region Animation Chunks
