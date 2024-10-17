@@ -240,6 +240,11 @@ public partial class Detailer : Tree
 				AddItem(root, $"Factory: {pSystem2.Factory}");
 				break;
 
+			case Path path:
+				AddItem(root, $"{path.NumberOfPositions} Positions");
+				AddItemList(root, "Position", path.Positions);
+				break;
+
 			case PositionList list:
 				root.SetText(
 					0,
