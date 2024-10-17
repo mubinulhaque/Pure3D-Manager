@@ -419,7 +419,7 @@ public partial class Detailer : Tree
 				AddItem(root, $"{tree2.FenceLimit} Maximum Fences");
 				AddItem(root, $"{tree2.RoadLimit} Maximum Roads");
 				AddItem(root, $"{tree2.PathLimit} Maximum Paths");
-				AddItem(root, $"{tree2.AnimationLimit} Maximum Animations");
+				AddItem(root, $"{tree2.AnimatedEntityLimit} Maximum Animated Entities");
 				break;
 
 			case TriggerVolume trigger:

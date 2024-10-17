@@ -72,7 +72,7 @@ namespace Pure3D.Chunks
         public uint FenceLimit;
         public uint RoadLimit;
         public uint PathLimit;
-        public uint AnimationLimit;
+        public uint AnimatedEntityLimit;
 
         public TreeNode2(File file, uint type) : base(file, type)
         {
@@ -90,7 +90,7 @@ namespace Pure3D.Chunks
             FenceLimit = reader.ReadUInt32();
             RoadLimit = reader.ReadUInt32();
             PathLimit = reader.ReadUInt32();
-            AnimationLimit = reader.ReadUInt32();
+            AnimatedEntityLimit = reader.ReadUInt32();
         }
 
         public override string ToString()
