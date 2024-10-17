@@ -12,7 +12,7 @@ config_version=5
 
 config/name="Pure3D Manager"
 config/description="Recreation of the Lucas Pure3D editor"
-config/version="0.1.0-alpha"
+config/version="1.0.0"
 run/main_scene="res://scenes/viewer.tscn"
 config/features=PackedStringArray("4.3", "C#", "Forward Plus")
 run/low_processor_mode=true
@@ -35,3 +35,4 @@ project/assembly_name="Pure3D Viewer"
 
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"
+textures/vram_compression/import_etc2_astc=true

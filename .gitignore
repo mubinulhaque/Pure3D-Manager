@@ -6,3 +6,6 @@
 *.p3d
 *.p3dxml
 models/
+
+# Exports of the project
+exports/
