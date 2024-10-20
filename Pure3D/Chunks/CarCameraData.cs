@@ -6,7 +6,7 @@ namespace Pure3D.Chunks
     public class CarCameraData : Chunk
     {
         public uint Index;
-        public float Unknown;
+        public float Rotation;
         public float Angle;
         public float Distance;
         public Vector3 Look;
@@ -19,7 +19,7 @@ namespace Pure3D.Chunks
         {
             BinaryReader reader = new BinaryReader(stream);
             Index = reader.ReadUInt32();
-            Unknown = reader.ReadSingle();
+            Rotation = reader.ReadSingle();
             Angle = reader.ReadSingle();
             Distance = reader.ReadSingle();
             Look = Util.ReadVector3(reader);
@@ -27,7 +27,7 @@ namespace Pure3D.Chunks
 
         public override string ToString()
         {
-            return $"Car Camera Data ({Index})";
+            return $"({ToShortString()}) {Index} (Rotation: {Rotation}, Angle: {Angle}, Distance: {Distance}, Look: {Look})";
         }
 
         public override string ToShortString()

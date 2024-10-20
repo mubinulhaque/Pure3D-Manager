@@ -525,6 +525,24 @@ public partial class Detailer : Tree
 				AddItem(root, $"Count: {breakable.Count}");
 				break;
 
+			case Camera cam:
+				AddItem(root, $"Field of View: {cam.FieldOfView}");
+				AddItem(root, $"Aspect Ratio: {cam.AspectRatio}");
+				AddItem(root, $"Near Clip: {cam.NearClip}");
+				AddItem(root, $"Far Clip: {cam.FarClip}");
+				AddItem(root, $"Position: {cam.Position}");
+				AddItem(root, $"Look: {cam.Look}");
+				AddItem(root, $"Up: {cam.Up}");
+				break;
+
+			case CarCameraData carCam:
+				AddItem(root, $"Index: {carCam.Index}");
+				AddItem(root, $"Rotation: {carCam.Rotation}");
+				AddItem(root, $"Angle: {carCam.Angle}");
+				AddItem(root, $"Distance: {carCam.Distance}");
+				AddItem(root, $"Look: {carCam.Look}");
+				break;
+
 			case ColourList list:
 				root.SetText(
 					0,

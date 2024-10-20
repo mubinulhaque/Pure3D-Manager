@@ -3,9 +3,8 @@
 namespace Pure3D.Chunks
 {
     [ChunkType(8704)]
-    public class Camera : Named
+    public class Camera : VersionNamed
     {
-        public uint Version;
         public float FieldOfView;
         public float AspectRatio;
         public float NearClip;
@@ -21,7 +20,7 @@ namespace Pure3D.Chunks
         public override void ReadHeader(Stream stream, long length)
         {
             BinaryReader reader = new BinaryReader(stream);
-            base.ReadHeader(stream, length);
+            Name = Util.ReadString(reader);
             Version = reader.ReadUInt32();
             FieldOfView = reader.ReadSingle();
             AspectRatio = reader.ReadSingle();
@@ -34,7 +33,7 @@ namespace Pure3D.Chunks
 
         public override string ToString()
         {
-            return $"Camera: {Name}";
+            return $"Camera: {Name} (FOV: {FieldOfView}, Aspect Ratio: {AspectRatio}, Near Clip: {NearClip}, Far Clip: {FarClip}, Version: {Version})";
         }
 
         public override string ToShortString()
