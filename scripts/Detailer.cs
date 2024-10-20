@@ -389,6 +389,11 @@ public partial class Detailer : Tree
 				AddItem(root, $"{ips.NumberOfInstances} Instances");
 				break;
 
+			case ParticleInstancingInfo pii:
+				AddItem(root, $"Version: {pii.Version}");
+				AddItem(root, $"{pii.MaxInstances} Maximum Instances");
+				break;
+
 			case ParticleSystem2 pSystem2:
 				AddItem(root, $"Factory: {pSystem2.Factory}");
 				break;
@@ -823,11 +828,6 @@ public partial class Detailer : Tree
 			case History history:
 				AddItem(root, $"{history.NumberOfLines} Lines");
 				AddItemList(root, "Line", history.Lines);
-				break;
-
-			case InstancedParticleSystem instParticles:
-				AddItem(root, $"Index: {instParticles.Index}");
-				AddItem(root, $"{instParticles.NumberOfInstances} Instances");
 				break;
 
 			case MultiController mController:
