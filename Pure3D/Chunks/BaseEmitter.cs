@@ -11,7 +11,7 @@ namespace Pure3D.Chunks
         public bool ZTest;
         public bool ZWrite;
         public bool Fog;
-        public uint MaximumParticleCount;
+        public uint MaxParticleCount;
         public bool InfiniteLife;
         public float RotationalCohesion;
         public float TranslationalCohesion;
@@ -29,7 +29,7 @@ namespace Pure3D.Chunks
             ZTest = reader.ReadUInt32() == 1;
             ZWrite = reader.ReadUInt32() == 1;
             Fog = reader.ReadUInt32() == 1;
-            MaximumParticleCount = reader.ReadUInt32();
+            MaxParticleCount = reader.ReadUInt32();
             InfiniteLife = reader.ReadUInt32() == 1;
             RotationalCohesion = reader.ReadSingle();
             TranslationalCohesion = reader.ReadSingle();
