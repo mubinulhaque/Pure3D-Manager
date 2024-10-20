@@ -36,7 +36,220 @@ public partial class Detailer : Tree
 		// Load the chunk's details based on its type
 		switch (chunk)
 		{
-			#region 2D Chunks
+			#region Animation Chunks
+			case AnimatedObject animObj:
+				AddItem(root, $"Associated Factory: {animObj.Factory}");
+				AddItem(root, $"Starting Animation: {animObj.StartAnimation}");
+				break;
+
+			case AnimatedObjectWrapper animObjWrapper:
+				AddItem(root, $"Alpha: {animObjWrapper.HasAlpha}");
+				break;
+
+			case AnimatedObjectAnimation aoa:
+				AddItem(root, $"Frame Rate: {aoa.FrameRate}");
+				AddItem(root, $"{aoa.NumberOfFrameControllers} Frame Controllers");
+				break;
+
+			case AnimatedObjectFactory aof:
+				AddItem(root, $"Unknown: {aof.Unknown}");
+				AddItem(root, $"{aof.NumberOfAnimations} Animations");
+				break;
+
+			case Pure3D.Chunks.Animation anim:
+				AddItem(root, $"{anim.NumberOfFrames} Frames");
+				AddItem(root, $"Frame Rate: {anim.FrameRate}");
+				AddItem(root, $"Looping: {anim.Looping}");
+				break;
+
+			case AnimationGroup animGroup:
+				AddItem(root, $"Group: {animGroup.GroupId}");
+				AddItem(root, $"{animGroup.NumberOfChannels} Channels");
+				break;
+
+			case AnimationGroupList agl:
+				AddItem(root, $"Version: {agl.Version}");
+				AddItem(root, $"{agl.NumberOfGroups} Groups");
+				break;
+
+			case AnimationSize animSize:
+				AddItem(root, $"Version: {animSize.Version}");
+				AddItem(root, $"GameCube: {animSize.GameCube}");
+				AddItem(root, $"PC: {animSize.PC}");
+				AddItem(root, $"PS2: {animSize.PS2}");
+				AddItem(root, $"Xbox: {animSize.Xbox}");
+				break;
+
+			case BooleanChannel bc:
+				TreeItem bcFrames = ViewAnimationChannelChunk(root, bc);
+				AddItem(bcFrames, $"Start State: {bc.Start}");
+				AddItemList(bcFrames, "Frame", bc.Frames);
+				break;
+
+			case ChannelInterpolationMode mode:
+				AddItem(root, $"Version: {mode.Version}");
+				AddItem(root, $"Mode: {mode.Mode}");
+				break;
+
+			case ColourChannel cc:
+				TreeItem ccFrames = ViewAnimationChannelChunk(root, cc);
+				for (uint i = 0; i < cc.NumberOfFrames; i++)
+				{
+					Color ccColour = Util.GetColour(cc.Values[i]);
+					AddItem(
+						ccFrames,
+						$"Frame {cc.Frames[i] + 1}: {ccColour}"
+					);
+					TreeItem colourValue = CreateItem(ccFrames);
+					colourValue.SetCustomBgColor(0, ccColour);
+				}
+				break;
+
+			case CompressedQuaternionChannel cqc:
+				TreeItem cqcFrames = ViewAnimationChannelChunk(root, cqc);
+				AddFrameList(cqcFrames, "Frame", cqc.Frames, cqc.Values);
+				break;
+
+			case EntityChannel ec:
+				TreeItem ecFrames = ViewAnimationChannelChunk(root, ec);
+				AddItemList(ecFrames, "Frame", ec.Values);
+				break;
+
+			case Float1Channel f1c:
+				TreeItem f1cFrames = ViewAnimationChannelChunk(root, f1c);
+				AddFrameList(f1cFrames, "Frame", f1c.Frames, f1c.Values);
+				break;
+
+			case Float2Channel f2c:
+				TreeItem f2cFrames = ViewAnimationChannelChunk(root, f2c);
+				AddFrameList(f2cFrames, "Frame", f2c.Frames, f2c.Values);
+				break;
+
+			case IntegerChannel ic:
+				TreeItem icFrames = ViewAnimationChannelChunk(root, ic);
+				AddFrameList(icFrames, "Frame", ic.Frames, ic.Values);
+				break;
+
+			case QuaternionChannel qc:
+				TreeItem qcFrames = ViewAnimationChannelChunk(root, qc);
+				AddFrameList(qcFrames, "Frame", qc.Frames, qc.Values);
+				break;
+
+			case Vector1Channel v1c:
+				TreeItem v1cFrames = ViewAnimationChannelChunk(root, v1c);
+				AddItem(v1cFrames, $"Mapping: {v1c.Mapping}");
+				AddItem(v1cFrames, $"Constants: ({v1c.Constants.X}, {v1c.Constants.Y}, {v1c.Constants.Z})");
+				AddFrameList(v1cFrames, "Frame", v1c.Frames, v1c.Values);
+				break;
+
+			case Vector2Channel v2c:
+				TreeItem v2cFrames = ViewAnimationChannelChunk(root, v2c);
+				AddItem(v2cFrames, $"Mapping: {v2c.Mapping}");
+				AddItem(v2cFrames, $"Constants: ({v2c.Constants.X}, {v2c.Constants.Y}, {v2c.Constants.Z})");
+				AddFrameList(v2cFrames, "Frame", v2c.Frames, v2c.Values);
+				break;
+
+			case Vector3Channel v3c:
+				TreeItem v3cFrames = ViewAnimationChannelChunk(root, v3c);
+				AddFrameList(v3cFrames, "Frame", v3c.Frames, v3c.Values);
+				break;
+			#endregion
+
+			#region Collision Chunks
+			case CollisionAABB:
+				TreeItem newItem = AddItem(root, $"No properties for this chunk...");
+				newItem.SetTooltipText(0, "No, really");
+				break;
+
+			case CollisionAttribute colAttribute:
+				AddItem(root, $"Static: {colAttribute.IsStatic}");
+				AddItem(root, $"Default Area: {colAttribute.DefaultArea}");
+				AddItem(root, $"Can Roll: {colAttribute.CanRoll}");
+				AddItem(root, $"Can Slide: {colAttribute.CanSlide}");
+				AddItem(root, $"Can Spin: {colAttribute.CanSpin}");
+				AddItem(root, $"Can Bounce: {colAttribute.CanBounce}");
+				AddItem(root, $"Extra Attribute 1: {colAttribute.ExtraAttribute1}");
+				AddItem(root, $"Extra Attribute 2: {colAttribute.ExtraAttribute2}");
+				AddItem(root, $"Extra Attribute 3: {colAttribute.ExtraAttribute3}");
+				break;
+
+			case CollisionEffect colEffect:
+				AddItem(root, $"Type: {colEffect.Classtype}");
+				AddItem(root, $"Physics Prop ID: {colEffect.PhysicsProp}");
+				AddItem(root, $"Sound: {colEffect.Sound}");
+				break;
+
+			case CollisionOBB colOBB:
+				AddItem(root, $"Half Extents: {Util.PrintVector3(colOBB.HalfExtents)}");
+				break;
+
+			case CollisionObject colObject:
+				AddItem(root, $"{colObject.NumberOfOwners} Owners");
+				AddItem(root, $"Material: {colObject.Material}");
+				AddItem(root, $"{colObject.NumberOfOwners} Sub Objects");
+				break;
+
+			case CollisionCylinder colCylinder:
+				AddItem(root, $"Radius: {colCylinder.Radius}");
+				AddItem(root, $"Half Length: {colCylinder.HalfLength}");
+				AddItem(root, $"Flat End: {colCylinder.FlatEnd}");
+				break;
+
+			case CollisionSphere colSphere:
+				AddItem(root, $"Radius: {colSphere.Radius}");
+				break;
+
+			case CollisionVector colVector:
+				AddItem(root, $"Vector: {Util.PrintVector3(colVector.Vector)}");
+				break;
+
+			case CollisionVolume colVol:
+				AddItem(root, $"{colVol.NumberOfSubVolumes} Sub Volumes");
+				AddItem(root, $"Owner Index: {colVol.OwnerIndex}");
+				AddItem(root, $"Object Reference Index: {colVol.ObjectReferenceIndex}");
+				break;
+
+			case CollisionVolumeOwner colVolOwner:
+				AddItem(root, $"{colVolOwner.NumberOfNames} Names");
+				break;
+
+			case CollisionVolumeOwnerName:
+				// No need for any code
+				// since this has only has a Name property
+				break;
+			#endregion
+
+			#region Composite Drawable Chunks
+			case CompositeDrawableEffectList list:
+				root.SetText(
+					0,
+					"Composite Drawable Effect List"
+				);
+
+				AddItem(root, $"{list.NumElements} Effects");
+				break;
+
+			case CompositeDrawablePropList list:
+				AddItem(root, "Composite Drawable Prop List");
+				AddItem(root, $"{list.NumElements} Props");
+				break;
+
+			case CompositeDrawableProp cdp:
+				AddItem(root, $"Translucent: {cdp.IsTranslucent}");
+				AddItem(root, $"Skeleton Joint Index: {cdp.SkeletonJointID}");
+				break;
+
+			case CompositeDrawableSkinList list:
+				root.SetText(
+					0,
+					"Composite Drawable Skin List"
+				);
+
+				AddItem(root, $"{list.NumElements} Skins");
+				break;
+			#endregion
+
+			#region Image Chunks
 			case Pure3D.Chunks.Image img:
 				AddItem(root, $"Resolution: {img.Width} x {img.Height}");
 				AddItem(root, $"Bits Per Pixel: {img.Bpp}");
@@ -49,7 +262,190 @@ public partial class Detailer : Tree
 				break;
 			#endregion
 
-			#region 3D Chunks
+			#region Light Chunks
+			case Light light:
+				AddItem(root, $"Type: {light.LightType}");
+				Color lightColour = Util.GetColour(light.Colour);
+				AddItem(root, $"Colour: ({lightColour.R}, {lightColour.G}, {lightColour.B}, {lightColour.A})");
+				CreateItem(root).SetCustomBgColor(0, lightColour);
+				AddItem(root, $"Constant: {light.Constant}");
+				AddItem(root, $"Linear: {light.Linear}");
+				AddItem(root, $"Squared: {light.Squared}");
+				AddItem(root, $"Enabled: {light.Enabled}");
+				break;
+
+			case LightGroup lights:
+				AddItem(root, $"{lights.NumberOfLights} Lights");
+				AddItemList(root, "Light", lights.Lights);
+				break;
+
+			case LightVector lightVec:
+				AddItem(root, $"{lightVec.ToShortString()}: {Util.PrintVector3(lightVec.Vector)}");
+				break;
+
+			case LightShadow lightShadow:
+				AddItem(root, $"Casts Shadow: {lightShadow.Shadow}");
+				break;
+			#endregion
+
+			#region Locator Chunks
+			case Locator locator:
+				AddItem(root, $"Positon: ({locator.Position.X}, {locator.Position.Y}, {locator.Position.Z})");
+				break;
+
+			case Locator2 locator2:
+				AddItem(root, $"Type: {locator2.LocatorType}");
+				AddItem(root, $"Data Size: {locator2.DataSize}");
+				if (locator2.DataSize > 0)
+					AddItemList(AddItem(root, "Data:"), "Data", locator2.Data);
+				AddItem(root, $"Position: ({locator2.Position.X}, {locator2.Position.Y}, {locator2.Position.Z})");
+				AddItem(root, $"{locator2.NumberOfTriggers} Triggers");
+				break;
+
+			case LocatorMatrix locatorMatrix:
+				ViewMatrix(root, "Transform:", locatorMatrix.Transform);
+				break;
+
+			case TriggerVolume trigger:
+				AddItem(root, $"Is Rect: {trigger.IsRect}");
+				AddItem(root, $"Half Extents: {Util.PrintVector3(trigger.HalfExtents)}");
+				ViewMatrix(root, "Shape:", trigger.Shape);
+				break;
+			#endregion
+
+			#region Road Chunks
+			case Road road:
+				AddItem(root, $"Type: {road.RoadType}");
+				AddItem(root, $"Start Intersection: {road.Start}");
+				AddItem(root, $"End Intersection: {road.End}");
+				AddItem(root, $"{road.MaxCars} Cars Maximum");
+				AddItem(root, $"Speed: {road.Speed}");
+				break;
+
+			case RoadData roadData:
+				AddItem(root, $"Type: {roadData.RoadType}");
+				AddItem(root, $"{roadData.NumberOfLanes} Lanes");
+				AddItem(root, $"Has Shoulder: {roadData.HasShoulder}");
+				AddItem(root, $"Direction: {roadData.Direction}");
+				AddItem(root, $"Top: {roadData.Top}");
+				AddItem(root, $"Bottom: {roadData.Bottom}");
+				break;
+
+			case RoadSegment roadSegment:
+				AddItem(root, $"Road Segment Data: {roadSegment.RoadData}");
+				ViewMatrix(root, "Transform", roadSegment.Transform);
+				ViewMatrix(root, "Scale", roadSegment.Scale);
+				break;
+			#endregion
+
+			#region Scenegraph Chunks
+			case Scenegraph:
+				break;
+
+			case ScenegraphBranch sgb:
+				AddItem(root, $"{sgb.NumberOfChildren} Children");
+				break;
+
+			case ScenegraphDrawable sgd:
+				AddItem(root, $"Drawable Name: {sgd.Drawable}");
+				AddItem(root, $"Translucent: {sgd.IsTranslucent}");
+				break;
+
+			case ScenegraphRoot:
+				TreeItem scenegraphRoot = AddItem(root, "No properties available for this chunk");
+				scenegraphRoot.SetTooltipText(
+					0,
+					"No, really, this chunk does nothing"
+				);
+				break;
+
+			case ScenegraphSortOrder sgso:
+				AddItem(root, $"Sort Order: {sgso.SortOrder}");
+				break;
+
+			case ScenegraphTransform sgt:
+				AddItem(root, $"{sgt.NumberOfChildren} Children");
+				ViewMatrix(root, "Transform:", sgt.Transform);
+				break;
+			#endregion
+
+			#region Shader Chunks
+			case Pure3D.Chunks.Shader shader:
+				AddItem(root, $"Shader Name: {shader.PddiShaderName}");
+				AddItem(root, $"Translucency: {shader.HasTranslucency}");
+				AddItem(root, $"Vertex Mask: 0x{shader.VertexMask:X}");
+				AddItem(root, $"Vertex Needs: {shader.VertexNeeds}");
+				AddItem(root, $"{shader.GetNumParams()} Parameters");
+				break;
+
+			case ShaderColourParam shaderColour:
+				AddItem(root, $"Parameter: {shaderColour.Param}");
+
+				Color scColour = Util.GetColour(shaderColour.Colour);
+				AddItem(root, $"Colour: ({scColour.R}, {scColour.G}, {scColour.B}, {scColour.A})");
+				CreateItem(root).SetCustomBgColor(0, scColour);
+				break;
+
+			case ShaderFloatParam shaderFloat:
+				AddItem(root, $"Parameter: {shaderFloat.Param}");
+				AddItem(root, $"Value: {shaderFloat.Value}");
+				break;
+
+			case ShaderIntParam shaderInt:
+				AddItem(root, $"Parameter: {shaderInt.Param}");
+				AddItem(root, $"Value: {shaderInt.Value}");
+				break;
+
+			case ShaderTextureParam shaderTex:
+				AddItem(root, $"Parameter: {shaderTex.Param}");
+				AddItem(root, $"Value: {shaderTex.Value}");
+				break;
+
+			case VertexShader:
+				break;
+			#endregion
+
+			#region State Prop Chunks
+			case StateProp sp:
+				AddItem(root, $"Object Factory: {sp.ObjectFactory}");
+				AddItem(root, $"{sp.NumberOfStates} States");
+				break;
+
+			case StatePropCallback spc:
+				AddItem(root, $"Event: {spc.Event}");
+				AddItem(root, $"Frame: {spc.Frame}");
+				break;
+
+			case StatePropEvent spe:
+				AddItem(root, $"State: {spe.State}");
+				AddItem(root, $"Event: {spe.Event}");
+				break;
+
+			case StatePropFrameController spfc:
+				AddItem(root, $"Cyclic: {spfc.IsCyclic}");
+				AddItem(root, $"{spfc.NumberOfCycles} Cycles");
+				AddItem(root, $"Hold Frame: {spfc.HoldFrame}");
+				AddItem(root, $"Minimum Frame: {spfc.MinFrame}");
+				AddItem(root, $"Maximum Frame: {spfc.MaxFrame}");
+				AddItem(root, $"Relative Speed: {spfc.RelativeSpeed}");
+				break;
+
+			case StatePropState sps:
+				AddItem(root, $"Automatic Transition: {sps.AutoTransition}");
+				AddItem(root, $"Out State: {sps.OutState}");
+				AddItem(root, $"{sps.NumberOfDrawables} Drawables");
+				AddItem(root, $"{sps.NumberOfFrameControllers} Frame Controllers");
+				AddItem(root, $"{sps.NumberOfEvents} Events");
+				AddItem(root, $"{sps.NumberOfCallbacks} Callbacks");
+				AddItem(root, $"Out Frame: {sps.OutFrame}");
+				break;
+
+			case StatePropVisibility spv:
+				AddItem(root, $"Visible: {spv.Visible}");
+				break;
+			#endregion
+
+			#region Other 3D Chunks
 			case BoundingBox bBox:
 				AddItem(root, $"Lower Corner: {bBox.Low}");
 				AddItem(root, $"Upper Corner: {bBox.High}");
@@ -316,402 +712,6 @@ public partial class Detailer : Tree
 			case WorldSphere world:
 				AddItem(root, $"{world.NumberOfMeshes} Meshes");
 				AddItem(root, $"{world.NumberOfBillboardQuadGroups} Billboard Quad Groups");
-				break;
-			#endregion
-
-			#region Animation Chunks
-			case AnimatedObject animObj:
-				AddItem(root, $"Associated Factory: {animObj.Factory}");
-				AddItem(root, $"Starting Animation: {animObj.StartAnimation}");
-				break;
-
-			case AnimatedObjectWrapper animObjWrapper:
-				AddItem(root, $"Alpha: {animObjWrapper.HasAlpha}");
-				break;
-
-			case AnimatedObjectAnimation aoa:
-				AddItem(root, $"Frame Rate: {aoa.FrameRate}");
-				AddItem(root, $"{aoa.NumberOfFrameControllers} Frame Controllers");
-				break;
-
-			case AnimatedObjectFactory aof:
-				AddItem(root, $"Unknown: {aof.Unknown}");
-				AddItem(root, $"{aof.NumberOfAnimations} Animations");
-				break;
-
-			case Pure3D.Chunks.Animation anim:
-				AddItem(root, $"{anim.NumberOfFrames} Frames");
-				AddItem(root, $"Frame Rate: {anim.FrameRate}");
-				AddItem(root, $"Looping: {anim.Looping}");
-				break;
-
-			case AnimationGroup animGroup:
-				AddItem(root, $"Group: {animGroup.GroupId}");
-				AddItem(root, $"{animGroup.NumberOfChannels} Channels");
-				break;
-
-			case AnimationGroupList agl:
-				AddItem(root, $"Version: {agl.Version}");
-				AddItem(root, $"{agl.NumberOfGroups} Groups");
-				break;
-
-			case AnimationSize animSize:
-				AddItem(root, $"Version: {animSize.Version}");
-				AddItem(root, $"GameCube: {animSize.GameCube}");
-				AddItem(root, $"PC: {animSize.PC}");
-				AddItem(root, $"PS2: {animSize.PS2}");
-				AddItem(root, $"Xbox: {animSize.Xbox}");
-				break;
-
-			case BooleanChannel bc:
-				TreeItem bcFrames = ViewAnimationChannelChunk(root, bc);
-				AddItem(bcFrames, $"Start State: {bc.Start}");
-				AddItemList(bcFrames, "Frame", bc.Frames);
-				break;
-
-			case ChannelInterpolationMode mode:
-				AddItem(root, $"Version: {mode.Version}");
-				AddItem(root, $"Mode: {mode.Mode}");
-				break;
-
-			case ColourChannel cc:
-				TreeItem ccFrames = ViewAnimationChannelChunk(root, cc);
-				for (uint i = 0; i < cc.NumberOfFrames; i++)
-				{
-					Color ccColour = Util.GetColour(cc.Values[i]);
-					AddItem(
-						ccFrames,
-						$"Frame {cc.Frames[i] + 1}: {ccColour}"
-					);
-					TreeItem colourValue = CreateItem(ccFrames);
-					colourValue.SetCustomBgColor(0, ccColour);
-				}
-				break;
-
-			case CompressedQuaternionChannel cqc:
-				TreeItem cqcFrames = ViewAnimationChannelChunk(root, cqc);
-				AddFrameList(cqcFrames, "Frame", cqc.Frames, cqc.Values);
-				break;
-
-			case EntityChannel ec:
-				TreeItem ecFrames = ViewAnimationChannelChunk(root, ec);
-				AddItemList(ecFrames, "Frame", ec.Values);
-				break;
-
-			case Float1Channel f1c:
-				TreeItem f1cFrames = ViewAnimationChannelChunk(root, f1c);
-				AddFrameList(f1cFrames, "Frame", f1c.Frames, f1c.Values);
-				break;
-
-			case Float2Channel f2c:
-				TreeItem f2cFrames = ViewAnimationChannelChunk(root, f2c);
-				AddFrameList(f2cFrames, "Frame", f2c.Frames, f2c.Values);
-				break;
-
-			case IntegerChannel ic:
-				TreeItem icFrames = ViewAnimationChannelChunk(root, ic);
-				AddFrameList(icFrames, "Frame", ic.Frames, ic.Values);
-				break;
-
-			case QuaternionChannel qc:
-				TreeItem qcFrames = ViewAnimationChannelChunk(root, qc);
-				AddFrameList(qcFrames, "Frame", qc.Frames, qc.Values);
-				break;
-
-			case Vector1Channel v1c:
-				TreeItem v1cFrames = ViewAnimationChannelChunk(root, v1c);
-				AddItem(v1cFrames, $"Mapping: {v1c.Mapping}");
-				AddItem(v1cFrames, $"Constants: ({v1c.Constants.X}, {v1c.Constants.Y}, {v1c.Constants.Z})");
-				AddFrameList(v1cFrames, "Frame", v1c.Frames, v1c.Values);
-				break;
-
-			case Vector2Channel v2c:
-				TreeItem v2cFrames = ViewAnimationChannelChunk(root, v2c);
-				AddItem(v2cFrames, $"Mapping: {v2c.Mapping}");
-				AddItem(v2cFrames, $"Constants: ({v2c.Constants.X}, {v2c.Constants.Y}, {v2c.Constants.Z})");
-				AddFrameList(v2cFrames, "Frame", v2c.Frames, v2c.Values);
-				break;
-
-			case Vector3Channel v3c:
-				TreeItem v3cFrames = ViewAnimationChannelChunk(root, v3c);
-				AddFrameList(v3cFrames, "Frame", v3c.Frames, v3c.Values);
-				break;
-			#endregion
-
-			#region Collision Chunks
-			case CollisionAABB:
-				TreeItem newItem = AddItem(root, $"No properties for this chunk...");
-				newItem.SetTooltipText(0, "No, really");
-				break;
-
-			case CollisionAttribute colAttribute:
-				AddItem(root, $"Static: {colAttribute.IsStatic}");
-				AddItem(root, $"Default Area: {colAttribute.DefaultArea}");
-				AddItem(root, $"Can Roll: {colAttribute.CanRoll}");
-				AddItem(root, $"Can Slide: {colAttribute.CanSlide}");
-				AddItem(root, $"Can Spin: {colAttribute.CanSpin}");
-				AddItem(root, $"Can Bounce: {colAttribute.CanBounce}");
-				AddItem(root, $"Extra Attribute 1: {colAttribute.ExtraAttribute1}");
-				AddItem(root, $"Extra Attribute 2: {colAttribute.ExtraAttribute2}");
-				AddItem(root, $"Extra Attribute 3: {colAttribute.ExtraAttribute3}");
-				break;
-
-			case CollisionEffect colEffect:
-				AddItem(root, $"Type: {colEffect.Classtype}");
-				AddItem(root, $"Physics Prop ID: {colEffect.PhysicsProp}");
-				AddItem(root, $"Sound: {colEffect.Sound}");
-				break;
-
-			case CollisionOBB colOBB:
-				AddItem(root, $"Half Extents: {Util.PrintVector3(colOBB.HalfExtents)}");
-				break;
-
-			case CollisionObject colObject:
-				AddItem(root, $"{colObject.NumberOfOwners} Owners");
-				AddItem(root, $"Material: {colObject.Material}");
-				AddItem(root, $"{colObject.NumberOfOwners} Sub Objects");
-				break;
-
-			case CollisionCylinder colCylinder:
-				AddItem(root, $"Radius: {colCylinder.Radius}");
-				AddItem(root, $"Half Length: {colCylinder.HalfLength}");
-				AddItem(root, $"Flat End: {colCylinder.FlatEnd}");
-				break;
-
-			case CollisionSphere colSphere:
-				AddItem(root, $"Radius: {colSphere.Radius}");
-				break;
-
-			case CollisionVector colVector:
-				AddItem(root, $"Vector: {Util.PrintVector3(colVector.Vector)}");
-				break;
-
-			case CollisionVolume colVol:
-				AddItem(root, $"{colVol.NumberOfSubVolumes} Sub Volumes");
-				AddItem(root, $"Owner Index: {colVol.OwnerIndex}");
-				AddItem(root, $"Object Reference Index: {colVol.ObjectReferenceIndex}");
-				break;
-
-			case CollisionVolumeOwner colVolOwner:
-				AddItem(root, $"{colVolOwner.NumberOfNames} Names");
-				break;
-
-			case CollisionVolumeOwnerName:
-				// No need for any code
-				// since this has only has a Name property
-				break;
-			#endregion
-
-			#region Composite Drawable Chunks
-			case CompositeDrawableEffectList list:
-				root.SetText(
-					0,
-					"Composite Drawable Effect List"
-				);
-
-				AddItem(root, $"{list.NumElements} Effects");
-				break;
-
-			case CompositeDrawablePropList list:
-				AddItem(root, "Composite Drawable Prop List");
-				AddItem(root, $"{list.NumElements} Props");
-				break;
-
-			case CompositeDrawableProp cdp:
-				AddItem(root, $"Translucent: {cdp.IsTranslucent}");
-				AddItem(root, $"Skeleton Joint Index: {cdp.SkeletonJointID}");
-				break;
-
-			case CompositeDrawableSkinList list:
-				root.SetText(
-					0,
-					"Composite Drawable Skin List"
-				);
-
-				AddItem(root, $"{list.NumElements} Skins");
-				break;
-			#endregion
-
-			#region Light Chunks
-			case Light light:
-				AddItem(root, $"Type: {light.LightType}");
-				Color lightColour = Util.GetColour(light.Colour);
-				AddItem(root, $"Colour: ({lightColour.R}, {lightColour.G}, {lightColour.B}, {lightColour.A})");
-				CreateItem(root).SetCustomBgColor(0, lightColour);
-				AddItem(root, $"Constant: {light.Constant}");
-				AddItem(root, $"Linear: {light.Linear}");
-				AddItem(root, $"Squared: {light.Squared}");
-				AddItem(root, $"Enabled: {light.Enabled}");
-				break;
-
-			case LightGroup lights:
-				AddItem(root, $"{lights.NumberOfLights} Lights");
-				AddItemList(root, "Light", lights.Lights);
-				break;
-
-			case LightVector lightVec:
-				AddItem(root, $"{lightVec.ToShortString()}: {Util.PrintVector3(lightVec.Vector)}");
-				break;
-
-			case LightShadow lightShadow:
-				AddItem(root, $"Casts Shadow: {lightShadow.Shadow}");
-				break;
-			#endregion
-
-			#region Locator Chunks
-			case Locator locator:
-				AddItem(root, $"Positon: ({locator.Position.X}, {locator.Position.Y}, {locator.Position.Z})");
-				break;
-
-			case Locator2 locator2:
-				AddItem(root, $"Type: {locator2.LocatorType}");
-				AddItem(root, $"Data Size: {locator2.DataSize}");
-				if (locator2.DataSize > 0)
-					AddItemList(AddItem(root, "Data:"), "Data", locator2.Data);
-				AddItem(root, $"Position: ({locator2.Position.X}, {locator2.Position.Y}, {locator2.Position.Z})");
-				AddItem(root, $"{locator2.NumberOfTriggers} Triggers");
-				break;
-
-			case LocatorMatrix locatorMatrix:
-				ViewMatrix(root, "Transform:", locatorMatrix.Transform);
-				break;
-
-			case TriggerVolume trigger:
-				AddItem(root, $"Is Rect: {trigger.IsRect}");
-				AddItem(root, $"Half Extents: {Util.PrintVector3(trigger.HalfExtents)}");
-				ViewMatrix(root, "Shape:", trigger.Shape);
-				break;
-			#endregion
-
-			#region Road Chunks
-			case Road road:
-				AddItem(root, $"Type: {road.RoadType}");
-				AddItem(root, $"Start Intersection: {road.Start}");
-				AddItem(root, $"End Intersection: {road.End}");
-				AddItem(root, $"{road.MaxCars} Cars Maximum");
-				AddItem(root, $"Speed: {road.Speed}");
-				break;
-
-			case RoadData roadData:
-				AddItem(root, $"Type: {roadData.RoadType}");
-				AddItem(root, $"{roadData.NumberOfLanes} Lanes");
-				AddItem(root, $"Has Shoulder: {roadData.HasShoulder}");
-				AddItem(root, $"Direction: {roadData.Direction}");
-				AddItem(root, $"Top: {roadData.Top}");
-				AddItem(root, $"Bottom: {roadData.Bottom}");
-				break;
-
-			case RoadSegment roadSegment:
-				AddItem(root, $"Road Segment Data: {roadSegment.RoadData}");
-				ViewMatrix(root, "Transform", roadSegment.Transform);
-				ViewMatrix(root, "Scale", roadSegment.Scale);
-				break;
-			#endregion
-
-			#region Scenegraph Chunks
-			case Scenegraph:
-				break;
-
-			case ScenegraphBranch sgb:
-				AddItem(root, $"{sgb.NumberOfChildren} Children");
-				break;
-
-			case ScenegraphDrawable sgd:
-				AddItem(root, $"Drawable Name: {sgd.Drawable}");
-				AddItem(root, $"Translucent: {sgd.IsTranslucent}");
-				break;
-
-			case ScenegraphRoot:
-				TreeItem scenegraphRoot = AddItem(root, "No properties available for this chunk");
-				scenegraphRoot.SetTooltipText(
-					0,
-					"No, really, this chunk does nothing"
-				);
-				break;
-
-			case ScenegraphSortOrder sgso:
-				AddItem(root, $"Sort Order: {sgso.SortOrder}");
-				break;
-
-			case ScenegraphTransform sgt:
-				AddItem(root, $"{sgt.NumberOfChildren} Children");
-				ViewMatrix(root, "Transform:", sgt.Transform);
-				break;
-			#endregion
-
-			#region Shader Chunks
-			case Pure3D.Chunks.Shader shader:
-				AddItem(root, $"Shader Name: {shader.PddiShaderName}");
-				AddItem(root, $"Translucency: {shader.HasTranslucency}");
-				AddItem(root, $"Vertex Mask: 0x{shader.VertexMask:X}");
-				AddItem(root, $"Vertex Needs: {shader.VertexNeeds}");
-				AddItem(root, $"{shader.GetNumParams()} Parameters");
-				break;
-
-			case ShaderColourParam shaderColour:
-				AddItem(root, $"Parameter: {shaderColour.Param}");
-
-				Color scColour = Util.GetColour(shaderColour.Colour);
-				AddItem(root, $"Colour: ({scColour.R}, {scColour.G}, {scColour.B}, {scColour.A})");
-				CreateItem(root).SetCustomBgColor(0, scColour);
-				break;
-
-			case ShaderFloatParam shaderFloat:
-				AddItem(root, $"Parameter: {shaderFloat.Param}");
-				AddItem(root, $"Value: {shaderFloat.Value}");
-				break;
-
-			case ShaderIntParam shaderInt:
-				AddItem(root, $"Parameter: {shaderInt.Param}");
-				AddItem(root, $"Value: {shaderInt.Value}");
-				break;
-
-			case ShaderTextureParam shaderTex:
-				AddItem(root, $"Parameter: {shaderTex.Param}");
-				AddItem(root, $"Value: {shaderTex.Value}");
-				break;
-
-			case VertexShader:
-				break;
-			#endregion
-
-			#region State Prop Chunks
-			case StateProp sp:
-				AddItem(root, $"Object Factory: {sp.ObjectFactory}");
-				AddItem(root, $"{sp.NumberOfStates} States");
-				break;
-
-			case StatePropCallback spc:
-				AddItem(root, $"Event: {spc.Event}");
-				AddItem(root, $"Frame: {spc.Frame}");
-				break;
-
-			case StatePropEvent spe:
-				AddItem(root, $"State: {spe.State}");
-				AddItem(root, $"Event: {spe.Event}");
-				break;
-
-			case StatePropFrameController spfc:
-				AddItem(root, $"Cyclic: {spfc.IsCyclic}");
-				AddItem(root, $"{spfc.NumberOfCycles} Cycles");
-				AddItem(root, $"Hold Frame: {spfc.HoldFrame}");
-				AddItem(root, $"Minimum Frame: {spfc.MinFrame}");
-				AddItem(root, $"Maximum Frame: {spfc.MaxFrame}");
-				AddItem(root, $"Relative Speed: {spfc.RelativeSpeed}");
-				break;
-
-			case StatePropState sps:
-				AddItem(root, $"Automatic Transition: {sps.AutoTransition}");
-				AddItem(root, $"Out State: {sps.OutState}");
-				AddItem(root, $"{sps.NumberOfDrawables} Drawables");
-				AddItem(root, $"{sps.NumberOfFrameControllers} Frame Controllers");
-				AddItem(root, $"{sps.NumberOfEvents} Events");
-				AddItem(root, $"{sps.NumberOfCallbacks} Callbacks");
-				AddItem(root, $"Out Frame: {sps.OutFrame}");
-				break;
-
-			case StatePropVisibility spv:
-				AddItem(root, $"Visible: {spv.Visible}");
 				break;
 			#endregion
 
