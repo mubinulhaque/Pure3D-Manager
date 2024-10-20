@@ -271,14 +271,18 @@ public partial class Detailer : Tree
 				AddItem(root, $"{list.NumElements} Effects");
 				break;
 
-			case CompositeDrawablePropList list:
-				AddItem(root, "Composite Drawable Prop List");
-				AddItem(root, $"{list.NumElements} Props");
-				break;
-
 			case CompositeDrawableProp cdp:
 				AddItem(root, $"Translucent: {cdp.IsTranslucent}");
 				AddItem(root, $"Skeleton Joint Index: {cdp.SkeletonJointID}");
+				break;
+
+			case CompositeDrawablePropList list:
+				root.SetText(
+					0,
+					"Composite Drawable Prop List"
+				);
+				AddItem(root, "Composite Drawable Prop List");
+				AddItem(root, $"{list.NumElements} Props");
 				break;
 
 			case CompositeDrawableSkinList list:
