@@ -378,7 +378,7 @@ public partial class Detailer : Tree
 				AddItem(root, $"Z Test: {baseEmitter.ZTest}");
 				AddItem(root, $"Z Write: {baseEmitter.ZWrite}");
 				AddItem(root, $"Fog: {baseEmitter.Fog}");
-				AddItem(root, $"{baseEmitter.MaximumParticleCount} Maximum Particles");
+				AddItem(root, $"{baseEmitter.MaxParticleCount} Maximum Particles");
 				AddItem(root, $"Infinite Life: {baseEmitter.InfiniteLife}");
 				AddItem(root, $"Rotational Cohesion: {baseEmitter.RotationalCohesion}");
 				AddItem(root, $"Translational Cohesion: {baseEmitter.TranslationalCohesion}");
