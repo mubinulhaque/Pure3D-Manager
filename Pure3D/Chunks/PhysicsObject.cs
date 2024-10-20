@@ -3,9 +3,8 @@
 namespace Pure3D.Chunks
 {
     [ChunkType(117510144)]
-    public class PhysicsObject : Named
+    public class PhysicsObject : VersionNamed
     {
-        public uint Version;
         public string MaterialName;
         public uint NumJoints;
         public float Volume;
@@ -18,7 +17,7 @@ namespace Pure3D.Chunks
         public override void ReadHeader(Stream stream, long length)
         {
             BinaryReader reader = new BinaryReader(stream);
-            base.ReadHeader(stream, length);
+            Name = Util.ReadString(reader);
             Version = reader.ReadUInt32();
             MaterialName = Util.ReadString(reader);
             NumJoints = reader.ReadUInt32();
