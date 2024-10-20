@@ -140,7 +140,7 @@ public partial class Viewer : Node
 				LoadImageData(image);
 				break;
 
-			case Pure3D.Chunks.Animation anim:
+			case AnimationChunk anim:
 				LoadAnimation(anim);
 				break;
 
@@ -462,7 +462,7 @@ public partial class Viewer : Node
 	/// Loads a Pure3D Animation as a Godot Animation
 	/// </summary>
 	/// <param name="anim">Pure3D Animation to be loaded</param>
-	private void LoadAnimation(Pure3D.Chunks.Animation anim)
+	private void LoadAnimation(AnimationChunk anim)
 	{
 		if (!_library.HasAnimation(anim.Name))
 		{

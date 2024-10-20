@@ -8,14 +8,14 @@ namespace Pure3D.Chunks
     /// and an <c>AnimationSize</c>.
     /// </summary>
     [ChunkType(1183744)]
-    public class Animation : VersionNamed
+    public class AnimationChunk : VersionNamed
     {
         public string AnimType;
         public float NumberOfFrames;
         public float FrameRate;
         public uint Looping;
 
-        public Animation(File file, uint type) : base(file, type)
+        public AnimationChunk(File file, uint type) : base(file, type)
         {
         }
 

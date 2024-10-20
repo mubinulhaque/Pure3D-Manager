@@ -37,7 +37,7 @@ public partial class Detailer : Tree
 		switch (chunk)
 		{
 			#region Animation Chunks
-			case Pure3D.Chunks.Animation anim:
+			case AnimationChunk anim:
 				AddItem(root, $"{anim.NumberOfFrames} Frames");
 				AddItem(root, $"Frame Rate: {anim.FrameRate}");
 				AddItem(root, $"Looping: {anim.Looping}");
