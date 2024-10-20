@@ -132,7 +132,7 @@ public partial class Viewer : Node
 				LoadMesh(mesh);
 				break;
 
-			case Pure3D.Chunks.Image image:
+			case ImageChunk image:
 				LoadImage(image);
 				break;
 
@@ -186,7 +186,7 @@ public partial class Viewer : Node
 	/// Views a Pure3D Image in a Texture Rect
 	/// </summary>
 	/// <param name="image">Pure3D Image chunk to be viewed</param>
-	private void LoadImage(Pure3D.Chunks.Image image)
+	private void LoadImage(ImageChunk image)
 	{
 		LoadImageData(image.LoadImageData());
 	}

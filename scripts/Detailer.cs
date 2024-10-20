@@ -308,7 +308,7 @@ public partial class Detailer : Tree
 			#endregion
 
 			#region Image Chunks
-			case Pure3D.Chunks.Image img:
+			case ImageChunk img:
 				AddItem(root, $"Resolution: {img.Width} x {img.Height}");
 				AddItem(root, $"Bits Per Pixel: {img.Bpp}");
 				AddItem(root, $"Palletised: {img.Palettized}");

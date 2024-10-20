@@ -7,7 +7,7 @@ namespace Pure3D.Chunks
     /// Always has a single child of ImageData, which contains the binary data of the Image
     /// </summary>
     [ChunkType(102401)]
-    public class Image : VersionNamed
+    public class ImageChunk : VersionNamed
     {
         public uint Width;
         public uint Height;
@@ -16,7 +16,7 @@ namespace Pure3D.Chunks
         public bool HasAlpha;
         public Formats Format;
 
-        public Image(File file, uint type) : base(file, type)
+        public ImageChunk(File file, uint type) : base(file, type)
         {
         }
 
