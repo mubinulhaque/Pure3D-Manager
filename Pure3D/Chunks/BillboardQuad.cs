@@ -4,9 +4,8 @@ using System.Text;
 namespace Pure3D.Chunks
 {
     [ChunkType(94209)]
-    public class BillboardQuad : Named
+    public class BillboardQuad : VersionNamed
     {
-        public uint Version;
         public string BillboardMode;
         public Vector3 Translation;
         public uint Colour;
@@ -25,9 +24,8 @@ namespace Pure3D.Chunks
 
         public override void ReadHeader(Stream stream, long length)
         {
-            BinaryReader reader = new BinaryReader(stream);
-            Version = reader.ReadUInt32();
             base.ReadHeader(stream, length);
+            BinaryReader reader = new BinaryReader(stream);
             BillboardMode = Util.ZeroTerminate(Encoding.ASCII.GetString(new BinaryReader(stream).ReadBytes(4)));
             Translation = Util.ReadVector3(reader);
             Colour = reader.ReadUInt32();

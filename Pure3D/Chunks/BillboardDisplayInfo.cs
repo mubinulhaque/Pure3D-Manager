@@ -19,7 +19,7 @@ namespace Pure3D.Chunks
 
         public override void ReadHeader(Stream stream, long length)
         {
-            BinaryReader reader = new BinaryReader(stream);
+            BinaryReader reader = new(stream);
             Version = reader.ReadUInt32();
             Rotation = Util.ReadQuaternion(reader);
             CutOffMode = Util.ZeroTerminate(Encoding.ASCII.GetString(new BinaryReader(stream).ReadBytes(4)));
@@ -30,12 +30,12 @@ namespace Pure3D.Chunks
 
         public override string ToString()
         {
-            return $"Billboard Display Info {Version}";
+            return $"Billboard Display Info (Rotation: {Rotation}, Cut Off Mode: {CutOffMode}, Version: {Version})";
         }
 
         public override string ToShortString()
         {
-            return "Billboard Display Info";
+            return "Billboard Display Information";
         }
     }
 }

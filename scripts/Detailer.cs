@@ -159,6 +159,44 @@ public partial class Detailer : Tree
 				break;
 			#endregion
 
+			#region Billboard Chunks
+			case BillboardDisplayInfo bdi:
+				AddItem(root, $"Version: {bdi.Version}");
+				AddItem(root, $"Rotation: {bdi.Rotation}");
+				AddItem(root, $"Cut Off Mode: {bdi.CutOffMode}");
+				AddItem(root, $"UV Offset Range: {bdi.UVOffsetRange}");
+				AddItem(root, $"Source Range: {bdi.SourceRange}");
+				AddItem(root, $"Edge Range: {bdi.EdgeRange}");
+				break;
+
+			case BillboardPerspectiveInfo bpi:
+				AddItem(root, $"Version: {bpi.Version}");
+				AddItem(root, $"Perspective: {bpi.Perspective}");
+				break;
+
+			case BillboardQuad bq:
+				AddItem(root, $"Billboard Mode: {bq.BillboardMode}");
+				AddItem(root, $"Translation: {bq.Translation}");
+				AddColourItem(root, bq.Colour);
+				AddItem(root, $"UV0: {bq.Uv0}");
+				AddItem(root, $"UV1: {bq.Uv1}");
+				AddItem(root, $"UV2: {bq.Uv2}");
+				AddItem(root, $"UV3: {bq.Uv3}");
+				AddItem(root, $"Width: {bq.Width}");
+				AddItem(root, $"Height: {bq.Height}");
+				AddItem(root, $"Distance: {bq.Distance}");
+				AddItem(root, $"UV Offset: {bq.UVOffset}");
+				break;
+
+			case BillboardQuadGroup bqg:
+				AddItem(root, $"Shader: {bqg.Shader}");
+				AddItem(root, $"Z Test: {bqg.ZTest}");
+				AddItem(root, $"Z Write: {bqg.ZWrite}");
+				AddItem(root, $"Fog: {bqg.Fog}");
+				AddItem(root, $"{bqg.NumQuads} Quads");
+				break;
+			#endregion
+
 			#region Collision Chunks
 			case CollisionAABB:
 				TreeItem newItem = AddItem(root, $"No properties for this chunk...");
@@ -913,6 +951,23 @@ public partial class Detailer : Tree
 	}
 
 	/// <summary>
+	/// Adds an item and a Colour for a property
+	/// </summary>
+	/// <param name="parent">Parent of the new items</param>
+	/// <param name="p3dColour">Pure3D colour</param>
+	public void AddColourItem(TreeItem parent, uint p3dColour)
+	{
+		Color colour = Util.GetColour(p3dColour);
+		TreeItem colourItem = CreateItem(parent);
+		TreeItem colourValue = CreateItem(parent);
+		colourItem.SetText(
+			0,
+			$"Colour: ({colour.R}, {colour.G}, {colour.B}, {colour.A})"
+		);
+		colourValue.SetCustomBgColor(0, colour);
+	}
+
+	/// <summary>
 	/// Adds an item and a Colour for every element of an Array
 	/// </summary>
 	/// <param name="parent">Parent of the new items</param>
@@ -931,7 +986,6 @@ public partial class Detailer : Tree
 			colourValue.SetCustomBgColor(0, colour);
 		}
 	}
-
 
 	/// <summary>
 	/// Adds an item for every element of an Animation Channel

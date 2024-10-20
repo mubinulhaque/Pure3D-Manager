@@ -3,12 +3,11 @@
 namespace Pure3D.Chunks
 {
     [ChunkType(94210)]
-    public class BillboardQuadGroup : Named
+    public class BillboardQuadGroup : VersionNamed
     {
-        public uint Version;
         public string Shader;
-        public uint ZTest;
-        public uint ZWrite;
+        public bool ZTest;
+        public bool ZWrite;
         public uint Fog;
         public uint NumQuads;
 
@@ -18,12 +17,11 @@ namespace Pure3D.Chunks
 
         public override void ReadHeader(Stream stream, long length)
         {
-            BinaryReader reader = new BinaryReader(stream);
-            Version = reader.ReadUInt32(); // version before name, rare case.
             base.ReadHeader(stream, length);
+            BinaryReader reader = new(stream);
             Shader = Util.ReadString(reader);
-            ZTest = reader.ReadUInt32();
-            ZWrite = reader.ReadUInt32();
+            ZTest = reader.ReadUInt32() == 1;
+            ZWrite = reader.ReadUInt32() == 1;
             Fog = reader.ReadUInt32();
             NumQuads = reader.ReadUInt32();
         }
