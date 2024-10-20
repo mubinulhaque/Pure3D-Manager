@@ -384,6 +384,11 @@ public partial class Detailer : Tree
 				AddItem(root, $"Translational Cohesion: {baseEmitter.TranslationalCohesion}");
 				break;
 
+			case InstancedParticleSystem ips:
+				AddItem(root, $"Index: {ips.Index}");
+				AddItem(root, $"{ips.NumberOfInstances} Instances");
+				break;
+
 			case ParticleSystem2 pSystem2:
 				AddItem(root, $"Factory: {pSystem2.Factory}");
 				break;
