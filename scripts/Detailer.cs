@@ -397,6 +397,14 @@ public partial class Detailer : Tree
 			case ParticleSystem2 pSystem2:
 				AddItem(root, $"Factory: {pSystem2.Factory}");
 				break;
+
+			case ParticleSystemFactory psf:
+				AddItem(root, $"Frames Per Second: {psf.FramesPerSecond}");
+				AddItem(root, $"{psf.NumberOfFrames} Frames");
+				AddItem(root, $"Looping: {psf.Looping}");
+				AddItem(root, $"Sorting: {psf.Sorting}");
+				AddItem(root, $"{psf.NumberOfEmitters} Emitters");
+				break;
 			#endregion
 
 			#region Road Chunks
