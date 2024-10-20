@@ -262,6 +262,10 @@ public partial class Detailer : Tree
 			#endregion
 
 			#region Composite Drawable Chunks
+			case CompositeDrawable cd:
+				AddItem(root, $"Associated Skeleton: {cd.SkeletonName}");
+				break;
+
 			case CompositeDrawableEffectList list:
 				root.SetText(
 					0,
@@ -285,6 +289,10 @@ public partial class Detailer : Tree
 				AddItem(root, $"{list.NumElements} Props");
 				break;
 
+			case CompositeDrawableSkin cds:
+				AddItem(root, $"Translucent: {cds.IsTranslucent}");
+				break;
+
 			case CompositeDrawableSkinList list:
 				root.SetText(
 					0,
@@ -292,6 +300,10 @@ public partial class Detailer : Tree
 				);
 
 				AddItem(root, $"{list.NumElements} Skins");
+				break;
+
+			case CompositeDrawableSortOrder cdso:
+				AddItem(root, $"Sort Order: {cdso.SortOrder}");
 				break;
 			#endregion
 
