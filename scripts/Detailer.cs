@@ -317,6 +317,20 @@ public partial class Detailer : Tree
 				break;
 			#endregion
 
+			#region Particle Chunks
+			case BaseEmitter baseEmitter:
+				AddItem(root, $"Particle Type: {baseEmitter.ParticleType}");
+				AddItem(root, $"Generator Type: {baseEmitter.GeneratorType}");
+				AddItem(root, $"Z Test: {baseEmitter.ZTest}");
+				AddItem(root, $"Z Write: {baseEmitter.ZWrite}");
+				AddItem(root, $"Fog: {baseEmitter.Fog}");
+				AddItem(root, $"{baseEmitter.MaximumParticleCount} Maximum Particles");
+				AddItem(root, $"Infinite Life: {baseEmitter.InfiniteLife}");
+				AddItem(root, $"Rotational Cohesion: {baseEmitter.RotationalCohesion}");
+				AddItem(root, $"Translational Cohesion: {baseEmitter.TranslationalCohesion}");
+				break;
+			#endregion
+
 			#region Road Chunks
 			case Road road:
 				AddItem(root, $"Type: {road.RoadType}");

@@ -1,26 +1,43 @@
 using System.IO;
+using System.Text;
 
 namespace Pure3D.Chunks
 {
     [ChunkType(88069)]
-    public class BaseEmitter : Chunk
+    public class BaseEmitter : VersionNamed
     {
-        public byte[] Data;
-        private uint unknownType;
+        public string ParticleType;
+        public string GeneratorType;
+        public bool ZTest;
+        public bool ZWrite;
+        public bool Fog;
+        public uint MaximumParticleCount;
+        public bool InfiniteLife;
+        public float RotationalCohesion;
+        public float TranslationalCohesion;
 
         public BaseEmitter(File file, uint type) : base(file, type)
         {
-            unknownType = type;
         }
 
         public override void ReadHeader(Stream stream, long length)
         {
-            Data = new BinaryReader(stream).ReadBytes((int)length);
+            base.ReadHeader(stream, length);
+            BinaryReader reader = new(stream);
+            ParticleType = Util.ZeroTerminate(Encoding.ASCII.GetString(reader.ReadBytes(4)));
+            GeneratorType = Util.ZeroTerminate(Encoding.ASCII.GetString(reader.ReadBytes(4)));
+            ZTest = reader.ReadUInt32() == 1;
+            ZWrite = reader.ReadUInt32() == 1;
+            Fog = reader.ReadUInt32() == 1;
+            MaximumParticleCount = reader.ReadUInt32();
+            InfiniteLife = reader.ReadUInt32() == 1;
+            RotationalCohesion = reader.ReadSingle();
+            TranslationalCohesion = reader.ReadSingle();
         }
 
         public override string ToString()
         {
-            return $"Base Emitter (TypeID: {unknownType}) (Len: {Data.Length})";
+            return $"{ToShortString()}: {Name} (Particles: {ParticleType}, Generator: {GeneratorType}, Version: {Version})";
         }
 
         public override string ToShortString()
