@@ -80,6 +80,10 @@ public partial class Detailer : Tree
 				AddItem(root, $"Xbox: {animSize.Xbox}");
 				break;
 
+			case BaseAnimation baseAnim:
+				AddItem(root, $"Version: {baseAnim.Version}");
+				break;
+
 			case BooleanChannel bc:
 				TreeItem bcFrames = ViewAnimationChannelChunk(root, bc);
 				AddItem(bcFrames, $"Start State: {bc.Start}");
