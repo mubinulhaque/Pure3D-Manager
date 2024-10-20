@@ -407,6 +407,33 @@ public partial class Detailer : Tree
 				break;
 			#endregion
 
+			#region Physics Chunks
+			case PhysicsInertiaMatrix pim:
+				AddItem(root, $"X: {pim.X}");
+				AddItem(root, $"Y: {pim.Y}");
+				break;
+
+			case PhysicsJoint pj:
+				AddItem(root, $"Index: {pj.Index}");
+				AddItem(root, $"Volume: {pj.Volume}");
+				AddItem(root, $"Stiffness: {pj.Stiffness}");
+				AddItem(root, $"Minimum Angle: {pj.MinAngle}");
+				AddItem(root, $"Maximum Angle: {pj.MaxAngle}");
+				AddItem(root, $"Degrees of Freedom: {pj.DOF}");
+				break;
+
+			case PhysicsObject po:
+				AddItem(root, $"Material: {po.MaterialName}");
+				AddItem(root, $"{po.NumJoints} Joints");
+				AddItem(root, $"Volume: {po.Volume}");
+				AddItem(root, $"Resting Sensitivity: {po.RestingSensitivity}");
+				break;
+
+			case PhysicsVector pv:
+				AddItem(root, $"Vector: {pv.Vector}");
+				break;
+			#endregion
+
 			#region Road Chunks
 			case Road road:
 				AddItem(root, $"Type: {road.RoadType}");
