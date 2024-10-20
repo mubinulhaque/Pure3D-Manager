@@ -37,25 +37,6 @@ public partial class Detailer : Tree
 		switch (chunk)
 		{
 			#region Animation Chunks
-			case AnimatedObject animObj:
-				AddItem(root, $"Associated Factory: {animObj.Factory}");
-				AddItem(root, $"Starting Animation: {animObj.StartAnimation}");
-				break;
-
-			case AnimatedObjectWrapper animObjWrapper:
-				AddItem(root, $"Alpha: {animObjWrapper.HasAlpha}");
-				break;
-
-			case AnimatedObjectAnimation aoa:
-				AddItem(root, $"Frame Rate: {aoa.FrameRate}");
-				AddItem(root, $"{aoa.NumberOfFrameControllers} Frame Controllers");
-				break;
-
-			case AnimatedObjectFactory aof:
-				AddItem(root, $"Unknown: {aof.Unknown}");
-				AddItem(root, $"{aof.NumberOfAnimations} Animations");
-				break;
-
 			case Pure3D.Chunks.Animation anim:
 				AddItem(root, $"{anim.NumberOfFrames} Frames");
 				AddItem(root, $"Frame Rate: {anim.FrameRate}");
@@ -70,6 +51,25 @@ public partial class Detailer : Tree
 			case AnimationGroupList agl:
 				AddItem(root, $"Version: {agl.Version}");
 				AddItem(root, $"{agl.NumberOfGroups} Groups");
+				break;
+
+			case AnimatedObject animObj:
+				AddItem(root, $"Associated Factory: {animObj.Factory}");
+				AddItem(root, $"Starting Animation: {animObj.StartAnimation}");
+				break;
+
+			case AnimatedObjectAnimation aoa:
+				AddItem(root, $"Frame Rate: {aoa.FrameRate}");
+				AddItem(root, $"{aoa.NumberOfFrameControllers} Frame Controllers");
+				break;
+
+			case AnimatedObjectFactory aof:
+				AddItem(root, $"Unknown: {aof.Unknown}");
+				AddItem(root, $"{aof.NumberOfAnimations} Animations");
+				break;
+
+			case AnimatedObjectWrapper animObjWrapper:
+				AddItem(root, $"Alpha: {animObjWrapper.HasAlpha}");
 				break;
 
 			case AnimationSize animSize:
