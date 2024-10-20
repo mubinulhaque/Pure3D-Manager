@@ -329,6 +329,10 @@ public partial class Detailer : Tree
 				AddItem(root, $"Rotational Cohesion: {baseEmitter.RotationalCohesion}");
 				AddItem(root, $"Translational Cohesion: {baseEmitter.TranslationalCohesion}");
 				break;
+
+			case ParticleSystem2 pSystem2:
+				AddItem(root, $"Factory: {pSystem2.Factory}");
+				break;
 			#endregion
 
 			#region Road Chunks
@@ -583,10 +587,6 @@ public partial class Detailer : Tree
 				);
 
 				AddItemList(root, "Packed Normal", list.Normals);
-				break;
-
-			case ParticleSystem2 pSystem2:
-				AddItem(root, $"Factory: {pSystem2.Factory}");
 				break;
 
 			case Path path:
