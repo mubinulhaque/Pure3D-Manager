@@ -384,6 +384,15 @@ public partial class Detailer : Tree
 				AddItem(root, $"Translational Cohesion: {baseEmitter.TranslationalCohesion}");
 				break;
 
+			case SpriteEmitter spriteEmitter:
+				AddItem(root, $"Shader: {spriteEmitter.Shader}");
+				AddItem(root, $"Angle Mode: {spriteEmitter.AngleMode}");
+				AddItem(root, $"Angle: {spriteEmitter.Angle}");
+				AddItem(root, $"Texture Animation Mode: {spriteEmitter.TextureAnimationMode}");
+				AddItem(root, $"{spriteEmitter.TextureFrameCount} Texture Frames");
+				AddItem(root, $"Texture Frame Rate: {spriteEmitter.TextureFrameRate}");
+				break;
+
 			case InstancedParticleSystem ips:
 				AddItem(root, $"Index: {ips.Index}");
 				AddItem(root, $"{ips.NumberOfInstances} Instances");
