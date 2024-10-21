@@ -3,11 +3,11 @@
 namespace Pure3D.Chunks
 {
     [ChunkType(65536)]
-    public class Mesh : VersionNamed
+    public class MeshChunk : VersionNamed
     {
         public uint NumPrimGroups;
 
-        public Mesh(File file, uint type) : base(file, type)
+        public MeshChunk(File file, uint type) : base(file, type)
         {
         }
 

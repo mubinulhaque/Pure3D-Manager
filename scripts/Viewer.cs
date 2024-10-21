@@ -128,7 +128,7 @@ public partial class Viewer : Node
 				LoadSkeleton(skel);
 				break;
 
-			case Pure3D.Chunks.Mesh mesh:
+			case MeshChunk mesh:
 				LoadMesh(mesh);
 				break;
 
@@ -315,7 +315,7 @@ public partial class Viewer : Node
 	/// Loads a Pure3D Mesh as a group of MeshInstance3Ds
 	/// </summary>
 	/// <param name="mesh">Pure3D Mesh to be loaded</param>
-	private void LoadMesh(Pure3D.Chunks.Mesh mesh)
+	private void LoadMesh(MeshChunk mesh)
 	{
 		if (!_3d_scenes.ContainsKey(mesh))
 		{
@@ -448,7 +448,7 @@ public partial class Viewer : Node
 
 					// Bind the Mesh to a Skeleton3D, if needed
 					if (GetNode(_animator.RootNode) is Skeleton3D skel
-						&& mesh is Pure3D.Chunks.Skin)
+						&& mesh is SkinChunk)
 						newInstance.Skeleton = skel.GetPath();
 				}
 			}

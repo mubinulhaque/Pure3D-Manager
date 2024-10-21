@@ -703,15 +703,15 @@ public partial class Detailer : Tree
 				break;
 
 			// Normally, everything is in alphabetical order
-			// But Skin inherits from Mesh,
+			// But Skin Chunk inherits from Mesh Chunk,
 			// So it has to come first
-			case Pure3D.Chunks.Skin skin:
+			case SkinChunk skin:
 				AddItem(root, $"Associated Skeleton: {skin.SkeletonName}");
 				AddItem(root, $"Version: {skin.Version}");
 				AddItem(root, $"{skin.NumPrimGroups} Primitive Groups");
 				break;
 
-			case Pure3D.Chunks.Mesh mesh:
+			case MeshChunk mesh:
 				AddItem(root, $"{mesh.NumPrimGroups} Primitive Groups");
 				break;
 

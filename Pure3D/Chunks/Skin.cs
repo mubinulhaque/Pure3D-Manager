@@ -4,14 +4,14 @@ using Godot;
 namespace Pure3D.Chunks
 {
     [ChunkType(65537)]
-    public class Skin : Mesh
+    public class SkinChunk : MeshChunk
     {
         /// <summary>
         /// Name of the associated Skeleton
         /// </summary>
         public string SkeletonName;
 
-        public Skin(File file, uint type) : base(file, type)
+        public SkinChunk(File file, uint type) : base(file, type)
         {
         }
 
