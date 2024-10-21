@@ -16,7 +16,7 @@ namespace Pure3D.Chunks
 
         public override void ReadHeader(Stream stream, long length)
         {
-            BinaryReader reader = new BinaryReader(stream);
+            BinaryReader reader = new(stream);
             MappedJointIndex = reader.ReadUInt32();
             XAxisMap = reader.ReadSingle();
             YAxisMap = reader.ReadSingle();

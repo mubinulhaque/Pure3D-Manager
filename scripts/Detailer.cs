@@ -526,6 +526,33 @@ public partial class Detailer : Tree
 				break;
 			#endregion
 
+			#region Skeleton Chunks
+			case Skeleton skel:
+				AddItem(root, $"{skel.GetNumJoints()} Joints");
+				break;
+
+			case SkeletonJoint skelJoint:
+				AddItem(root, $"Skeleton Parent: {skelJoint.SkeletonParent}");
+				AddItem(root, $"Degrees of Freedom: {skelJoint.DOF}");
+				AddItem(root, $"Free Axis: {skelJoint.FreeAxis}");
+				AddItem(root, $"Primary Axis: {skelJoint.PrimaryAxis}");
+				AddItem(root, $"Secondary Axis: {skelJoint.SecondaryAxis}");
+				AddItem(root, $"Twist Axis: {skelJoint.TwistAxis}");
+				ViewMatrix(root, "Rest Pose:", skelJoint.RestPose);
+				break;
+
+			case SkeletonJointBonePreserve sjbp:
+				AddItem(root, $"Preserve Bone Lengths: {sjbp.PreserveBoneLengths}");
+				break;
+
+			case SkeletonJointMirrorMap sjmm:
+				AddItem(root, $"Mapped Joint Index: {sjmm.MappedJointIndex}");
+				AddItem(root, $"X Axis Map: {sjmm.XAxisMap}");
+				AddItem(root, $"Y Axis Map: {sjmm.YAxisMap}");
+				AddItem(root, $"Z Axis Map: {sjmm.ZAxisMap}");
+				break;
+			#endregion
+
 			#region State Prop Chunks
 			case StateProp sp:
 				AddItem(root, $"Object Factory: {sp.ObjectFactory}");
@@ -770,10 +797,6 @@ public partial class Detailer : Tree
 				AddItem(root, $"Axis Play: {Util.PrintVector3(railcam.AxisPlay)}");
 				AddItem(root, $"Position Lag: {railcam.PositionLag}");
 				AddItem(root, $"Target Lag: {railcam.TargetLag}");
-				break;
-
-			case Skeleton skel:
-				AddItem(root, $"{skel.GetNumJoints()} Joints");
 				break;
 
 			case Spline spline:

@@ -19,7 +19,7 @@ namespace Pure3D.Chunks
 
         public override void ReadHeader(Stream stream, long length)
         {
-            BinaryReader reader = new BinaryReader(stream);
+            BinaryReader reader = new(stream);
             base.ReadHeader(stream, length);
             SkeletonParent = reader.ReadUInt32();
             DOF = reader.ReadInt32();
@@ -32,7 +32,7 @@ namespace Pure3D.Chunks
 
         public override string ToString()
         {
-            return $"Skeleton Joint: {Name}";
+            return $"Skeleton Joint: {Name} (DOF: {DOF}, Free Axis: {FreeAxis}, Skeleton: {SkeletonParent})";
         }
 
         public override string ToShortString()
