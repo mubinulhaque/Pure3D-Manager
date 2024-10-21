@@ -12,7 +12,7 @@ config_version=5
 
 config/name="Pure3D Manager"
 config/description="Recreation of the Lucas Pure3D editor"
-config/version="1.0.0"
+config/version="1.1.0"
 run/main_scene="res://scenes/viewer.tscn"
 config/features=PackedStringArray("4.3", "C#", "Forward Plus")
 run/low_processor_mode=true
