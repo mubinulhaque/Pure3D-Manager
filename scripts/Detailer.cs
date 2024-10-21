@@ -318,6 +318,17 @@ public partial class Detailer : Tree
 			case ImageData imgData:
 				AddItem(root, $"{imgData.Data.Length} Bytes Long");
 				break;
+
+			case TextureChunk texture:
+				AddItem(root, $"Width: {texture.Width}");
+				AddItem(root, $"Height: {texture.Height}");
+				AddItem(root, $"Bits Per Pixel: {texture.Bpp}");
+				AddItem(root, $"Alpha Depth: {texture.AlphaDepth}");
+				AddItem(root, $"Texture Type: {texture.TextureType}");
+				AddItem(root, $"Usage: {texture.Usage}");
+				AddItem(root, $"Priority: {texture.Priority}");
+				AddItem(root, $"{texture.NumMipMaps} Mipmaps");
+				break;
 			#endregion
 
 			#region Light Chunks
