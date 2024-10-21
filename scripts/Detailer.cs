@@ -452,6 +452,11 @@ public partial class Detailer : Tree
 			case PhysicsVector pv:
 				AddItem(root, $"Vector: {pv.Vector}");
 				break;
+
+			case StaticPhysicsObject:
+				// No code needed
+				// since this is just VersionNamed
+				break;
 			#endregion
 
 			#region Road Chunks
@@ -822,11 +827,6 @@ public partial class Detailer : Tree
 			case Spline spline:
 				TreeItem splinePos = AddItem(root, $"{spline.NumberOfPositions} Positions");
 				AddItemList(splinePos, "Position", spline.Positions);
-				break;
-
-			case StaticPhysicsObject:
-				// No code needed
-				// since this is just VersionNamed
 				break;
 
 			case SurfaceList surfaces:
