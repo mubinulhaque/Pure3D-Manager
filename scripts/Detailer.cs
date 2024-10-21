@@ -917,7 +917,7 @@ public partial class Detailer : Tree
 			case MultiControllerTrackList mctl:
 				root.SetText(
 					0,
-					"Multi Controller Tracks"
+					"Multi Controller Track List"
 				);
 
 				for (uint i = 0; i < mctl.NumberOfTracks; i++)
