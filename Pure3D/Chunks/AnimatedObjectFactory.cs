@@ -5,7 +5,7 @@ namespace Pure3D.Chunks
     [ChunkType(131072)]
     public class AnimatedObjectFactory : VersionNamed
     {
-        public string Unknown; // Either Skeleton or Composite Drawable
+        public string CompositeDrawable;
         public uint NumberOfAnimations;
 
         public AnimatedObjectFactory(File file, uint type) : base(file, type)
@@ -16,7 +16,7 @@ namespace Pure3D.Chunks
         {
             base.ReadHeader(stream, length);
             BinaryReader reader = new(stream);
-            Unknown = Util.ReadString(reader);
+            CompositeDrawable = Util.ReadString(reader);
             NumberOfAnimations = reader.ReadUInt32();
         }
 

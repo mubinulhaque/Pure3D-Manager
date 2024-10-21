@@ -64,7 +64,7 @@ public partial class Detailer : Tree
 				break;
 
 			case AnimatedObjectFactory aof:
-				AddItem(root, $"Unknown: {aof.Unknown}");
+				AddItem(root, $"Composite Drawable: {aof.CompositeDrawable}");
 				AddItem(root, $"{aof.NumberOfAnimations} Animations");
 				break;
 
