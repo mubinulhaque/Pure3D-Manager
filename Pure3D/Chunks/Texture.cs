@@ -3,7 +3,7 @@
 namespace Pure3D.Chunks
 {
     [ChunkType(102400)]
-    public class Texture : VersionNamed
+    public class TextureChunk : VersionNamed
     {
         public uint Width;
         public uint Height;
@@ -14,7 +14,7 @@ namespace Pure3D.Chunks
         public uint Priority;
         public uint NumMipMaps;
 
-        public Texture(File file, uint type) : base(file, type)
+        public TextureChunk(File file, uint type) : base(file, type)
         {
         }
 
