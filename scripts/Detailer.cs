@@ -313,6 +313,7 @@ public partial class Detailer : Tree
 				AddItem(root, $"Bits Per Pixel: {img.Bpp}");
 				AddItem(root, $"Palletised: {img.Palettized}");
 				AddItem(root, $"Has Alpha Channel: {img.HasAlpha}");
+				AddItem(root, $"Format: {img.Format}");
 				break;
 
 			case ImageData imgData:
