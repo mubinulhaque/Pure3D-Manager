@@ -1,3 +1,4 @@
+using Godot;
 using System.IO;
 
 namespace Pure3D.Chunks
@@ -5,7 +6,7 @@ namespace Pure3D.Chunks
     [ChunkType(77824)]
     public class Light : VersionNamed
     {
-        public uint LightType;
+        public LightTypes LightType;
         public uint Colour;
         public float Constant;
         public float Linear;
@@ -21,7 +22,7 @@ namespace Pure3D.Chunks
             BinaryReader reader = new(stream);
             Name = Util.ReadString(reader);
             Version = reader.ReadUInt32();
-            LightType = reader.ReadUInt32();
+            LightType = (LightTypes)reader.ReadUInt32();
             Colour = reader.ReadUInt32();
             Constant = reader.ReadSingle();
             Linear = reader.ReadSingle();
@@ -32,6 +33,14 @@ namespace Pure3D.Chunks
         public override string ToString()
         {
             return $"{ToShortString()}: {Name} (Type: {LightType}, Enabled: {Enabled}, Version: {Version})";
+        }
+
+        public enum LightTypes
+        {
+            AMBIENT,
+            POINT,
+            DIRECTIONAL,
+            SPOT
         }
 
         public override string ToShortString()
@@ -67,7 +76,6 @@ namespace Pure3D.Chunks
     [ChunkType(77825)]
     public class LightDirection : LightVector
     {
-
         public LightDirection(File file, uint type) : base(file, type)
         {
         }
@@ -81,7 +89,6 @@ namespace Pure3D.Chunks
     [ChunkType(77826)]
     public class LightPosition : LightDirection
     {
-
         public LightPosition(File file, uint type) : base(file, type)
         {
         }
