@@ -246,9 +246,9 @@ public partial class Detailer : Tree
 				break;
 
 			case CollisionVolume colVol:
-				AddItem(root, $"{colVol.NumberOfSubVolumes} Sub Volumes");
-				AddItem(root, $"Owner Index: {colVol.OwnerIndex}");
 				AddItem(root, $"Object Reference Index: {colVol.ObjectReferenceIndex}");
+				AddItem(root, $"Owner Index: {colVol.OwnerIndex}");
+				AddItem(root, $"{colVol.NumberOfSubVolumes} Sub Volumes");
 				break;
 
 			case CollisionVolumeOwner colVolOwner:
