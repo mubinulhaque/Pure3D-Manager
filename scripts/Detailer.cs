@@ -692,9 +692,21 @@ public partial class Detailer : Tree
 				break;
 
 			case Intersect intersect:
-				AddItemList(root, "Index", intersect.Indices);
-				AddItemList(root, "Position", intersect.Positions);
-				AddItemList(root, "Normal", intersect.Normals);
+				AddItemList(
+					AddItem(root, $"{intersect.Indices.Length} Indices"),
+					"Index",
+					intersect.Indices
+				);
+				AddItemList(
+					AddItem(root, $"{intersect.Positions.Length} Positions"),
+					"Position",
+					intersect.Positions
+				);
+				AddItemList(
+					AddItem(root, $"{intersect.Normals.Length} Normals"),
+					"Normal",
+					intersect.Normals
+				);
 				break;
 
 			case Intersection intersection:
