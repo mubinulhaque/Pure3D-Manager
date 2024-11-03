@@ -689,9 +689,8 @@ public partial class Viewer : Node
 			SurfaceTool st = new();
 			st.Begin(Mesh.PrimitiveType.Triangles);
 
-			// Set the normal of the next triangle
-			foreach (Vector3 normal in intersect.Normals)
-				st.SetNormal(normal);
+			// Normally, we add normals here
+			// But Godot doesn't allow adding face normals yet
 
 			// Add the next vertex
 			foreach (Vector3 pos in intersect.Positions)
