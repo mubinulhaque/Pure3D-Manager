@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Godot;
 using Pure3D;
 using Pure3D.Chunks;
@@ -52,7 +53,7 @@ public partial class Viewer : Node
 	/// <summary>
 	/// Collection of each Pure3D Image and their associated texture
 	/// </summary>
-	private readonly Dictionary<Pure3D.Chunks.ImageData, ImageTexture> _textures = new();
+	private readonly Dictionary<ImageData, ImageTexture> _textures = new();
 	/// <summary>
 	/// Collection of each 3D item in the tree and their associated 3D scene
 	/// </summary>
@@ -142,6 +143,10 @@ public partial class Viewer : Node
 
 			case AnimationChunk anim:
 				LoadAnimation(anim);
+				break;
+
+			case Intersect intersect:
+				LoadIntersect(intersect);
 				break;
 
 			default:
@@ -670,6 +675,47 @@ public partial class Viewer : Node
 		if (_animator != null)
 			if (GetNode(_animator.RootNode) is Skeleton3D skel)
 				_animator.Play();
+	}
+
+	/// <summary>
+	/// Loads a Pure3D Intersect and builds it as a Godot Mesh and Collision Shape
+	/// </summary>
+	/// <param name="intersect">Pure3D Intersect to be built</param>
+	private void LoadIntersect(Intersect intersect)
+	{
+		if (!_3d_scenes.ContainsKey(intersect))
+		{
+			// Create a new Surface Tool
+			SurfaceTool st = new();
+			st.Begin(Mesh.PrimitiveType.Triangles);
+
+			// Set the normal of the next triangle
+			foreach (Vector3 normal in intersect.Normals)
+				st.SetNormal(normal);
+
+			// Add the next vertex
+			foreach (Vector3 pos in intersect.Positions)
+				st.AddVertex(pos);
+
+			// Add the next index
+			for (int i = intersect.Indices.Length - 1; i >= 0; i--)
+				st.AddIndex((int)intersect.Indices[i]);
+
+			// Add the intersect Mesh to the scene
+			ArrayMesh newIntersect = st.Commit();
+			MeshInstance3D newInstance = new()
+			{
+				Mesh = newIntersect,
+				Name = $"Intersect_{GetTree().GetNodeCountInGroup("intersects")}",
+				Position = Vector3.Zero,
+				Visible = false
+			};
+			AddChild(newInstance);
+			newInstance.AddToGroup("intersects");
+			_3d_scenes.Add(intersect, newInstance);
+		}
+
+		View3dScene(intersect);
 	}
 	#endregion
 
