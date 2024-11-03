@@ -745,7 +745,6 @@ public partial class Detailer : Tree
 			// So it has to come first
 			case SkinChunk skin:
 				AddItem(root, $"Associated Skeleton: {skin.SkeletonName}");
-				AddItem(root, $"Version: {skin.Version}");
 				AddItem(root, $"{skin.NumPrimGroups} Primitive Groups");
 				break;
 
