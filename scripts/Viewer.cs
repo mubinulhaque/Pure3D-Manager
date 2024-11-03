@@ -27,6 +27,10 @@ public partial class Viewer : Node
 	/// </summary>
 	[Export] private SubViewport _3d_view;
 	/// <summary>
+	/// Where the current 3D model is placed
+	/// </summary>
+	[Export] public Node3D _origin;
+	/// <summary>
 	/// Camera for 3D scenes
 	/// </summary>
 	[Export] public Camera3D cam;
@@ -58,6 +62,10 @@ public partial class Viewer : Node
 	/// Collection of each 3D item in the tree and their associated 3D scene
 	/// </summary>
 	private readonly Dictionary<Chunk, Node3D> _3d_scenes = new();
+	/// <summary>
+	/// Collection of each 3D item in the tree and their position in the world
+	/// </summary>
+	private readonly Dictionary<Chunk, Vector3> _3d_positions = new();
 	/// <summary>
 	/// Node3D that is currently being viewed and can be exported
 	/// </summary>
@@ -237,6 +245,7 @@ public partial class Viewer : Node
 	{
 		_2d_root.Visible = false;
 		_currentNode3D = _3d_scenes[chunk];
+		_origin.Position = _3d_positions[chunk];
 		_3d_root.Visible = true;
 	}
 
@@ -336,6 +345,10 @@ public partial class Viewer : Node
 			_3d_scenes.Add(mesh, parent);
 			_3d_root.AddChild(parent);
 
+			// For calculating the average vertex position later
+			Vector3 totalPos = Vector3.Zero;
+			uint totalVerts = 0;
+
 			// Iterate through the Mesh's children
 			foreach (Chunk chunk in mesh.Children)
 			{
@@ -419,8 +432,14 @@ public partial class Viewer : Node
 
 						// Add the next vertex
 						if (vertList is PositionList verts)
+						{
 							st.AddVertex(verts.Positions[i]);
+							totalPos += verts.Positions[i];
+						}
 					}
+
+					// Add the number of vertices to the total
+					totalVerts += prim.NumVertices;
 
 					// Add tangents to the Mesh
 					if (normalList is NormalList && uvList is UVList) st.GenerateTangents();
@@ -448,6 +467,9 @@ public partial class Viewer : Node
 						newInstance.Skeleton = skel.GetPath();
 				}
 			}
+
+			// Add the average vertex position to the Dictionary
+			_3d_positions.Add(mesh, totalPos / totalVerts);
 		}
 
 		// View the Mesh
@@ -693,8 +715,16 @@ public partial class Viewer : Node
 			// But Godot doesn't allow adding face normals yet
 
 			// Add the next vertex
+			Vector3 totalPos = Vector3.Zero;
+
 			foreach (Vector3 pos in intersect.Positions)
+			{
 				st.AddVertex(pos);
+				totalPos += pos;
+			}
+
+			// Calculate the average vertex position
+			_3d_positions.Add(intersect, totalPos / intersect.Positions.Length);
 
 			// Add the next index
 			for (int i = intersect.Indices.Length - 1; i >= 0; i--)
