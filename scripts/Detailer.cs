@@ -222,7 +222,7 @@ public partial class Detailer : Tree
 				break;
 
 			case CollisionOBB colOBB:
-				AddItem(root, $"Half Extents: {colOBB.HalfExtents}");
+				AddItem(root, $"Scale: {colOBB.Scale}");
 				break;
 
 			case CollisionObject colObject:
@@ -378,7 +378,7 @@ public partial class Detailer : Tree
 
 			case TriggerVolume trigger:
 				AddItem(root, $"Is Rect: {trigger.IsRect}");
-				AddItem(root, $"Half Extents: {trigger.HalfExtents}");
+				AddItem(root, $"Scale: {trigger.Scale}");
 				ViewMatrix(root, "Shape:", trigger.Shape);
 				break;
 			#endregion

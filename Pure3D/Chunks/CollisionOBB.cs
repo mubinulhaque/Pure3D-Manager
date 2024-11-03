@@ -6,7 +6,7 @@ namespace Pure3D.Chunks
     [ChunkType(117506052)]
     public class CollisionOBB : Chunk
     {
-        public Vector3 HalfExtents;
+        public Vector3 Scale;
 
         public CollisionOBB(File file, uint type) : base(file, type)
         {
@@ -15,12 +15,12 @@ namespace Pure3D.Chunks
         public override void ReadHeader(Stream stream, long length)
         {
             BinaryReader reader = new(stream);
-            HalfExtents = Util.ReadVector3(reader);
+            Scale = Util.ReadVector3(reader);
         }
 
         public override string ToString()
         {
-            return $"{ToShortString()} (Half Extents: {HalfExtents})";
+            return $"{ToShortString()} (Scale: {Scale})";
         }
 
         public override string ToShortString()

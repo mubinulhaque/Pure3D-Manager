@@ -7,7 +7,7 @@ namespace Pure3D.Chunks
     public class TriggerVolume : Named
     {
         public bool IsRect;
-        public Vector3 HalfExtents;
+        public Vector3 Scale;
         public Matrix Shape;
 
         public TriggerVolume(File file, uint type) : base(file, type)
@@ -19,13 +19,13 @@ namespace Pure3D.Chunks
             base.ReadHeader(stream, length);
             BinaryReader reader = new(stream);
             IsRect = reader.ReadUInt32() == 1;
-            HalfExtents = Util.ReadVector3(reader);
+            Scale = Util.ReadVector3(reader);
             Shape = Util.ReadMatrix(reader);
         }
 
         public override string ToString()
         {
-            return $"{ToShortString()}: {Name} (Rect: {IsRect}, Half-Extents: {HalfExtents})";
+            return $"{ToShortString()}: {Name} (Rect: {IsRect}, Scale: {Scale})";
         }
 
         public override string ToShortString()
