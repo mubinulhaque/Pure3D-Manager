@@ -25,23 +25,21 @@ namespace Pure3D
 
         public static Vector2 ReadVector2(BinaryReader reader)
         {
-            Vector2 vector = new Vector2();
-
-            vector.X = reader.ReadSingle();
-            vector.Y = reader.ReadSingle();
-
-            return vector;
+            return new Vector2()
+            {
+                X = reader.ReadSingle(),
+                Y = reader.ReadSingle()
+            };
         }
 
         public static Vector3 ReadVector3(BinaryReader reader)
         {
-            Vector3 vector = new Vector3();
-
-            vector.X = reader.ReadSingle();
-            vector.Y = reader.ReadSingle();
-            vector.Z = reader.ReadSingle();
-
-            return vector;
+            return new Vector3()
+            {
+                X = reader.ReadSingle(),
+                Y = reader.ReadSingle(),
+                Z = reader.ReadSingle()
+            };
         }
 
         public static Quaternion ReadQuaternion(BinaryReader reader)
@@ -93,16 +91,6 @@ namespace Pure3D
 
             // So we correct it here
             return Color.Color8(values[2], values[1], values[0], values[3]);
-        }
-
-        /// <summary>
-        /// Prints a Pure3D Vector3 in a readable format
-        /// </summary>
-        /// <param name="vector">Pure3D Vector3</param>
-        /// <returns>String form of Vector3</returns>
-        public static string PrintVector3(Vector3 vector)
-        {
-            return $"({vector.X}, {vector.Y}, {vector.Z})";
         }
 
         /// <summary>

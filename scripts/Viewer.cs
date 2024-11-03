@@ -163,7 +163,7 @@ public partial class Viewer : Node
 	/// <param name="value">New zoom level</param>
 	public void ChangeZoom(float value)
 	{
-		cam.Position = new Godot.Vector3(
+		cam.Position = new Vector3(
 			cam.Position.X,
 			cam.Position.Y,
 			value
@@ -201,7 +201,7 @@ public partial class Viewer : Node
 		{
 			// If the Image Data has not been loaded yet
 			// Load the data from the chunk
-			Godot.Image newImage = new();
+			Image newImage = new();
 			Error err = newImage.LoadPngFromBuffer(data.Data);
 
 			if (err == Error.Ok)
@@ -282,10 +282,10 @@ public partial class Viewer : Node
 					Pure3D.Matrix restPose = joint.RestPose;
 
 					Transform3D boneTransform = new(new Basis(
-						new Godot.Vector3(restPose.M11, restPose.M12, restPose.M13),
-						new Godot.Vector3(restPose.M21, restPose.M22, restPose.M23),
-						new Godot.Vector3(restPose.M31, restPose.M32, restPose.M33)
-					), new Godot.Vector3(restPose.M41, restPose.M42, restPose.M43));
+						new Vector3(restPose.M11, restPose.M12, restPose.M13),
+						new Vector3(restPose.M21, restPose.M22, restPose.M23),
+						new Vector3(restPose.M31, restPose.M32, restPose.M33)
+					), new Vector3(restPose.M41, restPose.M42, restPose.M43));
 					skeleton.SetBoneRest(boneIndex, boneTransform);
 
 					// Add a primitive sphere to the bone to indicate its position
@@ -346,19 +346,19 @@ public partial class Viewer : Node
 					switch (prim.PrimitiveType)
 					{
 						case PrimitiveGroup.PrimitiveTypes.TriangleList:
-							st.Begin(Godot.Mesh.PrimitiveType.Triangles);
+							st.Begin(Mesh.PrimitiveType.Triangles);
 							break;
 
 						case PrimitiveGroup.PrimitiveTypes.TriangleStrip:
-							st.Begin(Godot.Mesh.PrimitiveType.TriangleStrip);
+							st.Begin(Mesh.PrimitiveType.TriangleStrip);
 							break;
 
 						case PrimitiveGroup.PrimitiveTypes.LineList:
-							st.Begin(Godot.Mesh.PrimitiveType.Lines);
+							st.Begin(Mesh.PrimitiveType.Lines);
 							break;
 
 						case PrimitiveGroup.PrimitiveTypes.LineStrip:
-							st.Begin(Godot.Mesh.PrimitiveType.LineStrip);
+							st.Begin(Mesh.PrimitiveType.LineStrip);
 							break;
 					}
 
@@ -397,22 +397,16 @@ public partial class Viewer : Node
 
 						// Set the normal of the next vertex
 						if (normalList is NormalList normals)
-						{
-							Pure3D.Vector3 normal = normals.Normals[i];
-							st.SetNormal(new Godot.Vector3(normal.X, normal.Y, normal.Z));
-						}
+							st.SetNormal(normals.Normals[i]);
 
 						// Set the UV of the next vertex
 						if (uvList is UVList uvs)
-						{
-							Pure3D.Vector2 uv = uvs.UVs[i];
-							st.SetUV(new Godot.Vector2(uv.X, uv.Y));
-						}
+							st.SetUV(uvs.UVs[i]);
 
 						// Set the bone weights of the next vertex
 						if (weightList is WeightList weights)
 						{
-							Pure3D.Vector3 weight = weights.Weights[i];
+							Vector3 weight = weights.Weights[i];
 							st.SetWeights(new float[] { weight.X, weight.Y, weight.Z, 0 });
 						}
 						else if (matrixList is MatrixList)
@@ -420,10 +414,7 @@ public partial class Viewer : Node
 
 						// Add the next vertex
 						if (vertList is PositionList verts)
-						{
-							Pure3D.Vector3 vert = verts.Positions[i];
-							st.AddVertex(new Godot.Vector3(vert.X, vert.Y, vert.Z));
-						}
+							st.AddVertex(verts.Positions[i]);
 					}
 
 					// Add tangents to the Mesh
@@ -468,7 +459,7 @@ public partial class Viewer : Node
 		{
 			// If the Godot Animation for this has not been created yet
 			// Create a new Godot Animation
-			Godot.Animation newAnim = new();
+			Animation newAnim = new();
 			GD.Print($"Creating animation {anim.Name}...");
 
 			// Set the frame rate of the Godot Animation, if not already set
@@ -479,7 +470,7 @@ public partial class Viewer : Node
 			newAnim.Length = anim.NumberOfFrames / anim.FrameRate;
 
 			// Set the Godot Animation to be looping, if needed
-			newAnim.LoopMode = anim.Looping == 1 ? Godot.Animation.LoopModeEnum.Linear : Godot.Animation.LoopModeEnum.None;
+			newAnim.LoopMode = anim.Looping == 1 ? Animation.LoopModeEnum.Linear : Animation.LoopModeEnum.None;
 
 			// Iterate through each group in the Animation's Group List
 			// Iterate through each group's Animation Channels
@@ -528,13 +519,13 @@ public partial class Viewer : Node
 									if (v1c.Parameter == "TRAN")
 									{
 										// Add a new position track for the bone to the animation
-										int v1cTrack = newAnim.AddTrack(Godot.Animation.TrackType.Position3D);
+										int v1cTrack = newAnim.AddTrack(Animation.TrackType.Position3D);
 										newAnim.TrackSetPath(v1cTrack, $":{ag.Name}");
 
 										// Add a new position frame
 										for (int i = 0; i < v1c.NumberOfFrames; i++)
 										{
-											Godot.Vector3 pos = Godot.Vector3.Zero;
+											Vector3 pos = Vector3.Zero;
 
 											pos.X = v1c.Constants.X;
 											pos.Y = v1c.Constants.Y;
@@ -559,13 +550,13 @@ public partial class Viewer : Node
 									if (v2c.Parameter == "TRAN")
 									{
 										// Add a new position track for the bone to the animation
-										int v2cTrack = newAnim.AddTrack(Godot.Animation.TrackType.Position3D);
+										int v2cTrack = newAnim.AddTrack(Animation.TrackType.Position3D);
 										newAnim.TrackSetPath(v2cTrack, $":{ag.Name}");
 
 										// Add a new position frame
 										for (int i = 0; i < v2c.NumberOfFrames; i++)
 										{
-											Godot.Vector3 pos = Godot.Vector3.Zero;
+											Vector3 pos = Vector3.Zero;
 
 											pos.X = v2c.Constants.X;
 											pos.Y = v2c.Constants.Y;
@@ -593,13 +584,13 @@ public partial class Viewer : Node
 									if (v3c.Parameter == "TRAN")
 									{
 										// Add a new position track for the bone to the animation
-										int v3cTrack = newAnim.AddTrack(Godot.Animation.TrackType.Position3D);
+										int v3cTrack = newAnim.AddTrack(Animation.TrackType.Position3D);
 										newAnim.TrackSetPath(v3cTrack, $":{ag.Name}");
 
 										// Add a new position frame
 										for (int i = 0; i < v3c.NumberOfFrames; i++)
 										{
-											Godot.Vector3 pos = Godot.Vector3.Zero;
+											Vector3 pos = Vector3.Zero;
 
 											pos.X = v3c.Values[i].X;
 											pos.Y = v3c.Values[i].Y;
@@ -646,20 +637,20 @@ public partial class Viewer : Node
 	/// <param name="times">Frames to add keys to</param>
 	/// <param name="values">Array of rotations</param>
 	private static void AddRotationFrames(
-		Godot.Animation anim,
+		Animation anim,
 		string bone,
 		ushort[] times,
-		Pure3D.Quaternion[] values
+		Quaternion[] values
 	)
 	{
 		// Add a new rotation track for the bone to the animation
-		int track = anim.AddTrack(Godot.Animation.TrackType.Rotation3D);
+		int track = anim.AddTrack(Animation.TrackType.Rotation3D);
 		anim.TrackSetPath(track, $":{bone}");
 
 		// Add the rotation frames
 		for (int i = 0; i < times.Length; i++)
 		{
-			Godot.Quaternion quat = Godot.Quaternion.Identity;
+			Quaternion quat = Quaternion.Identity;
 
 			quat.W = values[i].W;
 			quat.X = values[i].X;

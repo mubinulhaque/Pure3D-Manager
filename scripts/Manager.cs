@@ -19,7 +19,7 @@ public partial class Manager : Control
 	/// Displays the chunks of a P3D file in a suitable hierarchy
 	/// </summary>
 	[Export]
-	private Godot.Tree _chunk_tree;
+	private Tree _chunk_tree;
 	/// <summary>
 	/// Views assets
 	/// </summary>

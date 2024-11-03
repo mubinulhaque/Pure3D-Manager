@@ -222,7 +222,7 @@ public partial class Detailer : Tree
 				break;
 
 			case CollisionOBB colOBB:
-				AddItem(root, $"Half Extents: {Util.PrintVector3(colOBB.HalfExtents)}");
+				AddItem(root, $"Half Extents: {colOBB.HalfExtents}");
 				break;
 
 			case CollisionObject colObject:
@@ -242,7 +242,7 @@ public partial class Detailer : Tree
 				break;
 
 			case CollisionVector colVector:
-				AddItem(root, $"Vector: {Util.PrintVector3(colVector.Vector)}");
+				AddItem(root, $"Vector: {colVector.Vector}");
 				break;
 
 			case CollisionVolume colVol:
@@ -350,7 +350,7 @@ public partial class Detailer : Tree
 				break;
 
 			case LightVector lightVec:
-				AddItem(root, $"{lightVec.ToShortString()}: {Util.PrintVector3(lightVec.Vector)}");
+				AddItem(root, $"{lightVec.ToShortString()}: {lightVec.Vector}");
 				break;
 
 			case LightShadow lightShadow:
@@ -378,7 +378,7 @@ public partial class Detailer : Tree
 
 			case TriggerVolume trigger:
 				AddItem(root, $"Is Rect: {trigger.IsRect}");
-				AddItem(root, $"Half Extents: {Util.PrintVector3(trigger.HalfExtents)}");
+				AddItem(root, $"Half Extents: {trigger.HalfExtents}");
 				ViewMatrix(root, "Shape:", trigger.Shape);
 				break;
 			#endregion
@@ -819,8 +819,8 @@ public partial class Detailer : Tree
 				AddItem(root, $"Track Distance: {railcam.TrackDistance}");
 				AddItem(root, $"Reverse Sense: {railcam.ReverseSense}");
 				AddItem(root, $"Field of View: {railcam.FOV}");
-				AddItem(root, $"Target Offset: {Util.PrintVector3(railcam.TargetOffset)}");
-				AddItem(root, $"Axis Play: {Util.PrintVector3(railcam.AxisPlay)}");
+				AddItem(root, $"Target Offset: {railcam.TargetOffset}");
+				AddItem(root, $"Axis Play: {railcam.AxisPlay}");
 				AddItem(root, $"Position Lag: {railcam.PositionLag}");
 				AddItem(root, $"Target Lag: {railcam.TargetLag}");
 				break;

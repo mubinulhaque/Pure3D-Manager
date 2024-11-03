@@ -1,3 +1,4 @@
+using Godot;
 using System.IO;
 
 namespace Pure3D.Chunks
@@ -19,7 +20,7 @@ namespace Pure3D.Chunks
 
         public override string ToString()
         {
-            return $"{ToShortString()} {Util.PrintVector3(Vector)}";
+            return $"{ToShortString()} {Vector}";
         }
 
         public override string ToShortString()

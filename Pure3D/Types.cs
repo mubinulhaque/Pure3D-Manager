@@ -1,49 +1,5 @@
 namespace Pure3D
 {
-    public struct Vector2
-    {
-        public float X;
-        public float Y;
-
-        public override readonly string ToString()
-        {
-            return $"({X}, {Y})";
-        }
-    }
-
-    public struct Vector3
-    {
-        public float X;
-        public float Y;
-        public float Z;
-
-        public override readonly string ToString()
-        {
-            return $"({X}, {Y}, {Z})";
-        }
-    }
-
-    public struct Quaternion
-    {
-        public Quaternion(float x, float y, float z, float w)
-        {
-            X = x;
-            Y = y;
-            Z = z;
-            W = w;
-        }
-
-        public float X;
-        public float Y;
-        public float Z;
-        public float W;
-
-        public override readonly string ToString()
-        {
-            return $"({X}, {Y}, {Z}, {W})";
-        }
-    }
-
     public struct Matrix
     {
         public float M11;
