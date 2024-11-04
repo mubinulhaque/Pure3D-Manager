@@ -265,6 +265,7 @@ public partial class Viewer : Node
 				Name = "Skel_" + bones.Name,
 				Visible = false
 			};
+			_3d_positions.Add(bones, Vector3.Zero);
 			_3d_scenes.Add(bones, parent);
 			_3d_root.AddChild(parent);
 
@@ -293,7 +294,7 @@ public partial class Viewer : Node
 						skeleton.SetBoneParent(boneIndex, (int)joint.SkeletonParent);
 
 					// Set the bone's rest pose
-					Pure3D.Matrix restPose = joint.RestPose;
+					Matrix restPose = joint.RestPose;
 
 					Transform3D boneTransform = new(new Basis(
 						new Vector3(restPose.M11, restPose.M12, restPose.M13),
@@ -401,6 +402,7 @@ public partial class Viewer : Node
 						}
 
 						// Set the bones of the next vertex
+						int firstBone = -1;
 						if (matrixList is MatrixList matrices
 							&& matrixPalette is MatrixPalette palette)
 						{
@@ -411,11 +413,37 @@ public partial class Viewer : Node
 								(int)palette.Matrices[bones[1]],
 								(int)palette.Matrices[bones[0]]
 							});
+							firstBone = (int)palette.Matrices[bones[3]];
 						}
 
 						// Set the normal of the next vertex
 						if (normalList is NormalList normals)
-							st.SetNormal(normals.Normals[i]);
+						{
+							Vector3 normal = normals.Normals[i];
+
+							if (firstBone != -1
+							&& GetNode(_animator.RootNode) is Skeleton3D skeleton
+							&& mesh is SkinChunk)
+							{
+								GD.Print("skin & skeleton detected!");
+								Vector3 oldNormal = normals.Normals[i];
+								Basis boneBasis = skeleton.GetBonePose(firstBone).Basis;
+
+								normal.X = boneBasis[0, 0] * oldNormal.X
+								+ boneBasis[1, 0] * oldNormal.Y
+								+ boneBasis[2, 0] * oldNormal.Z;
+
+								normal.Y = boneBasis[0, 1] * oldNormal.X
+								+ boneBasis[1, 1] * oldNormal.Y
+								+ boneBasis[2, 1] * oldNormal.Z;
+
+								normal.Z = boneBasis[0, 2] * oldNormal.X
+								+ boneBasis[1, 2] * oldNormal.Y
+								+ boneBasis[2, 2] * oldNormal.Z;
+							}
+
+							st.SetNormal(normal);
+						}
 
 						// Set the UV of the next vertex
 						if (uvList is UVList uvs)
@@ -463,7 +491,7 @@ public partial class Viewer : Node
 
 					// Bind the Mesh to a Skeleton3D, if needed
 					if (GetNode(_animator.RootNode) is Skeleton3D skel
-						&& mesh is SkinChunk)
+					&& mesh is SkinChunk)
 						newInstance.Skeleton = skel.GetPath();
 				}
 			}

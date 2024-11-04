@@ -906,6 +906,13 @@ public partial class Detailer : Tree
 			#endregion
 
 			#region Misc Chunks
+			case FrameController fc:
+				AddItem(root, $"Value: {fc.Value}");
+				AddItem(root, $"Frame Offset: {fc.FrameOffset}");
+				AddItem(root, $"Hierarchy: {fc.HierarchyName}");
+				AddItem(root, $"Animation: {fc.AnimName}");
+				break;
+
 			case GameAttribute attribute:
 				AddItem(root, $"{attribute.NumberOfParameters} Parameters");
 				break;
