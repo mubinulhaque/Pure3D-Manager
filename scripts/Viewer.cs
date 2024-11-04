@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Godot;
@@ -301,7 +302,7 @@ public partial class Viewer : Node
 						new Vector3(restPose.M21, restPose.M22, restPose.M23),
 						new Vector3(restPose.M31, restPose.M32, restPose.M33)
 					), new Vector3(restPose.M41, restPose.M42, restPose.M43));
-					skeleton.SetBoneRest(boneIndex, boneTransform);
+					skeleton.SetBoneRest(boneIndex, boneTransform.Orthonormalized());
 
 					// Add a primitive sphere to the bone to indicate its position
 					BoneAttachment3D attachment = new();
@@ -388,6 +389,7 @@ public partial class Viewer : Node
 					Chunk matrixList = prim.Children.Find(x => x is MatrixList);
 					Chunk matrixPalette = prim.Children.Find(x => x is MatrixPalette);
 					Chunk normalList = prim.Children.Find(x => x is NormalList);
+					Chunk packedNormalList = prim.Children.Find(x => x is PackedNormalList);
 					Chunk uvList = prim.Children.Find(x => x is UVList);
 					Chunk vertList = prim.Children.Find(x => x is PositionList);
 					Chunk weightList = prim.Children.Find(x => x is WeightList);
@@ -418,32 +420,10 @@ public partial class Viewer : Node
 
 						// Set the normal of the next vertex
 						if (normalList is NormalList normals)
-						{
-							Vector3 normal = normals.Normals[i];
+							st.SetNormal(normals.Normals[i]);
 
-							if (firstBone != -1
-							&& GetNode(_animator.RootNode) is Skeleton3D skeleton
-							&& mesh is SkinChunk)
-							{
-								GD.Print("skin & skeleton detected!");
-								Vector3 oldNormal = normals.Normals[i];
-								Basis boneBasis = skeleton.GetBonePose(firstBone).Basis;
-
-								normal.X = boneBasis[0, 0] * oldNormal.X
-								+ boneBasis[1, 0] * oldNormal.Y
-								+ boneBasis[2, 0] * oldNormal.Z;
-
-								normal.Y = boneBasis[0, 1] * oldNormal.X
-								+ boneBasis[1, 1] * oldNormal.Y
-								+ boneBasis[2, 1] * oldNormal.Z;
-
-								normal.Z = boneBasis[0, 2] * oldNormal.X
-								+ boneBasis[1, 2] * oldNormal.Y
-								+ boneBasis[2, 2] * oldNormal.Z;
-							}
-
-							st.SetNormal(normal);
-						}
+						if (packedNormalList is PackedNormalList pnl)
+							st.SetNormal(pnl.Normals[i]);
 
 						// Set the UV of the next vertex
 						if (uvList is UVList uvs)
@@ -453,7 +433,7 @@ public partial class Viewer : Node
 						if (weightList is WeightList weights)
 						{
 							Vector3 weight = weights.Weights[i];
-							st.SetWeights(new float[] { weight.X, weight.Y, weight.Z, 0 });
+							st.SetWeights(new float[4] { weight.X, weight.Y, weight.Z, 0 });
 						}
 						else if (matrixList is MatrixList)
 							st.SetWeights(new float[4] { 1, 0, 0, 0 });
