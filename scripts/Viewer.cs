@@ -404,7 +404,6 @@ public partial class Viewer : Node
 						}
 
 						// Set the bones of the next vertex
-						int firstBone = -1;
 						if (matrixList is MatrixList matrices
 							&& matrixPalette is MatrixPalette palette)
 						{
@@ -415,7 +414,6 @@ public partial class Viewer : Node
 								(int)palette.Matrices[bones[1]],
 								(int)palette.Matrices[bones[0]]
 							});
-							firstBone = (int)palette.Matrices[bones[3]];
 						}
 
 						// Set the normal of the next vertex
