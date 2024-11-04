@@ -1,5 +1,4 @@
 ﻿using System.IO;
-using System.Text;
 
 namespace Pure3D.Chunks
 {
@@ -14,7 +13,7 @@ namespace Pure3D.Chunks
 
         public override void ReadHeader(Stream stream, long length)
         {
-            BinaryReader reader = new BinaryReader(stream);
+            BinaryReader reader = new(stream);
             uint len = reader.ReadUInt32();
             Normals = reader.ReadBytes((int)len);
         }
