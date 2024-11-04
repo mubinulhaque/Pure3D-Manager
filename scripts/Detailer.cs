@@ -793,6 +793,7 @@ public partial class Detailer : Tree
 				AddItem(root, $"{primGroup.NumVertices} Vertices");
 				AddItem(root, $"{primGroup.NumIndices} Indices");
 				AddItem(root, $"{primGroup.NumMatrices} Palette Matrices");
+				AddItem(root, $"Primitive Type: {primGroup.PrimitiveType}");
 				TreeItem primContains = AddItem(root, "Contains:");
 
 				if (primGroup.VertexType.HasFlag(PrimitiveGroup.VertexTypes.Colours))
